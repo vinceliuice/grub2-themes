@@ -12,5 +12,9 @@ Run
 
     ./Install
 
-By root user
+By Root user
+
+### GRUB2
+![01](https://github.com/vinceliuice/grub2-themes/blob/master/screenshot-vimix.jpeg?raw=true) 
+![02](https://github.com/vinceliuice/grub2-themes/blob/master/screenshot-stylish.jpeg?raw=true) 
 
