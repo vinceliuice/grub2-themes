@@ -2,6 +2,11 @@
 
 ROOT_UID=0
 
+# check command avalibility
+function has_command() {
+    command -v $1 > /dev/null
+}
+
 if [ "$UID" -eq "$ROOT_UID" ]; then
 
   # Copy Vimix
@@ -12,14 +17,16 @@ if [ "$UID" -eq "$ROOT_UID" ]; then
   echo "GRUB_THEME=\"/boot/grub/themes/Vimix/theme.txt\"" >> /etc/default/grub
 
   # update grub
-  update-grub
+  if has_command update-grub; then
+    update-grub
+  elif has_command grub-mkconfig; then
+    grub-mkconfig -o /boot/grub/grub.cfg
+  fi
 
-  echo -e "/n All done!"
-  notify-send "All done!" -i face-smile
+  echo -e "\n All done!"
 
 else
-  echo -e "/n Please run this script by root..."
-  notify-send "Please run this script by root..." -i notification
+  echo -e "\n Please run this script by root..."
 fi
 
 

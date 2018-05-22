@@ -12,14 +12,12 @@ if [ "$UID" -eq "$ROOT_UID" ]; then
   echo "GRUB_THEME=\"/boot/grub/themes/StylishDark/theme.txt\"" >> /etc/default/grub
 
   # update grub
-  update-grub
+  grub-mkconfig -o /boot/grub/grub.cfg
 
-  echo -e "/n All done!"
-  notify-send "All done!" -i face-smile
+  echo -e "\n All done!"
 
 else
-  echo -e "/n Please run this script by root..."
-  notify-send "Please run this script by root..." -i notification
+  echo -e "\n Please run this script by root..."
 fi
 
 
