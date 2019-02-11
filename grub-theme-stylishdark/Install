@@ -9,7 +9,7 @@ echo -e "\n\t************************************\n\t*  StylishDark - Grub2 Dark
 
 # Check command avalibility
 function has_command() {
-    command -v $1 > /dev/null
+  command -v $1 > /dev/null
 }
 
 echo -e "\nChecking for root access..."
