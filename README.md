@@ -10,9 +10,9 @@ OrOpen the terminal at current directory.
 
 Run
 
-    sudo ./Install
+    sudo ./install.sh
 
-Or use Root user run ./Install
+Or use Root user run ./install.sh
 
 ## Screenshots
 ![01](https://github.com/vinceliuice/grub2-themes/blob/master/screenshot-vimix.jpeg?raw=true) 
