@@ -12,7 +12,7 @@ Usage:  `sudo ./install.sh`  **[OPTIONS...]**
 | -v, --vimix    | Vimix grub theme |
 | -s, --stylish  | Stylish grub theme |
 | -t, --tela     | Tela grub theme |
-| -s, --slaze    | Slaze grub theme |
+| -l, --slaze    | Slaze grub theme |
 | -h, --help     | Show this help |
 
 ## Screenshots
