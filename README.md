@@ -5,7 +5,7 @@ Flat Design themes for Grub2.
 
 ## Install
 
-Usage:  `./Install`  **[OPTIONS...]**
+Usage:  `sudo ./install.sh`  **[OPTIONS...]**
 
 |  OPTIONS:      | |
 |:---------------|:-------------|
