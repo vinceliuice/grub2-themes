@@ -40,6 +40,7 @@ tz
 unset
 arcolinux
 pop-os
+devuan
 
 
 
