@@ -126,7 +126,8 @@ install() {
     fi
 
     # Success message
-    prompt -s "\n All done!"
+    prompt -s "\n All done!" 
+    prompt -w "* At the next restart of your computer you can admire your new Grub theme named << $theme >> " 
 
   else
     # Error message
@@ -233,6 +234,5 @@ while [[ $# -ge 1 ]]; do
 done
 
 install_dialog && install
-test $? -eq 0 && prompt  -w "* At the next restart of your computer you can admire your new Grub theme named << ${theme} >>" 
 
 exit 0
