@@ -191,20 +191,19 @@ if [[ $# -lt 1 ]] && [[ $UID -eq $ROOT_UID ]]; then
 fi
 
 if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]]; then
+  # Error message
+  prompt -e "\n [ Error!] -> Run me as root "
 
-    # Error message
-    prompt -e "\n [ Error!] -> Run me as root "
+  # persisted execution of the script as root
+  read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
+  [[ -n "$REPLY" ]]&& {
+    sudo -S <<< $REPLY $0
+  }|| {
+    prompt  "\n Operation canceled  Bye"
+    exit 1
+  }
 
-    # persisted execution of the script as root
-    read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
-    [[ -n "$REPLY" ]]&& {
-      sudo -S <<< $REPLY $0
-    }|| {
-      prompt  "\n Operation canceled  Bye"
-      exit 1
-    }
-
-    run_dialog
+  run_dialog
 fi
 
 while [[ $# -ge 1 ]]; do
