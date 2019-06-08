@@ -1,11 +1,19 @@
+```
+  ____ ____  _   _ ____ ____    _____ _   _ _____ __  __ _____ ____  
+ / ___|  _ \| | | | __ )___ \  |_   _| | | | ____|  \/  | ____/ ___| 
+| |  _| |_) | | | |  _ \ __) |   | | | |_| |  _| | |\/| |  _| \___ \ 
+| |_| |  _ <| |_| | |_) / __/    | | |  _  | |___| |  | | |___ ___) |
+ \____|_| \_\\___/|____/_____|   |_| |_| |_|_____|_|  |_|_____|____/ 
+                                                                     
 
-## Grub2 Themes
+``` 
 
-Flat Design themes for Grub2.
+##Flat Design themes for Grub2.
 
 ## Install
-
-Usage:  `sudo ./install.sh`  **[OPTIONS...]**
+ 
+Usage:  `sudo ./install.sh`  **[OPTIONS...]** 
+*if no option used the terminal user interface will be show up* 
 
 |  OPTIONS:      | |
 |:---------------|:-------------|
