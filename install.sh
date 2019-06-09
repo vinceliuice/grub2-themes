@@ -126,7 +126,8 @@ install() {
     fi
 
     # Success message
-    prompt -s "\n All done!"
+    prompt -s "\n All done!" 
+    prompt -w "* At the next restart of your computer you can admire your new Grub theme named << $theme >> " 
 
   else
     # Error message
@@ -165,7 +166,7 @@ run_dialog() {
 
 install_dialog() {
   if [ ! "$(which dialog 2> /dev/null)" ]; then
-    prompt -i "\n 'dialog' needs to be installed for this shell "
+    prompt -i "\n 'dialog' needs to be installed for this shell"
     if has_command zypper; then
 
       sudo zypper in dialog
@@ -197,13 +198,12 @@ if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]]; then
   # persisted execution of the script as root
   read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
   [[ -n "$REPLY" ]]&& {
-    sudo -S <<< $REPLY $0
+   exec sudo -S <<< $REPLY $0
   }|| {
     prompt  "\n Operation canceled  Bye"
     exit 1
   }
 
-  run_dialog
 fi
 
 while [[ $# -ge 1 ]]; do
