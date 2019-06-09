@@ -126,12 +126,12 @@ install() {
     fi
 
     # Success message
-    prompt -s "\n All done!" 
-    prompt -w "* At the next restart of your computer you can admire your new Grub theme named << $theme >> " 
+    prompt -s "\n * All done!"
+    prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
 
   else
     # Error message
-    prompt -e "\n [ E r r o r ] -> Run me as root "
+    prompt -e "\n [ Error!] -> Run me as root "
 
     # persisted execution of the script as root
     read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
@@ -148,17 +148,17 @@ install() {
 
 run_dialog() {
   if [[ -x /usr/bin/dialog ]]; then
-    tui=$(dialog --backtitle "Grub 2 Themes" \
+    tui=$(dialog --backtitle "BRUB2 THEMES" \
     --radiolist "Choose your Grub theme : " 15 40 5 \
-      1 "Slaze Theme" off  \
-      2 "Stylish Theme" on \
-      3 "Tela Theme" off  \
-      4 "Vimix Theme" off --output-fd 1 )
+      1 "Vimix Theme" off  \
+      2 "Tela Theme" on \
+      3 "Stylish Theme" off  \
+      4 "Slaze Theme" off --output-fd 1 )
       case "$tui" in
-        1) theme="slaze"     ;;
-        2) theme="stylish"   ;;
-        3) theme="tela"      ;;
-        4) theme="vimix"     ;;
+        1) theme="vimix"     ;;
+        2) theme="tela"      ;;
+        3) theme="stylish"   ;;
+        4) theme="slaze"     ;;
         *) prompt "Canceled" ;;
      esac
   fi
@@ -203,7 +203,6 @@ if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]]; then
     prompt  "\n Operation canceled  Bye"
     exit 1
   }
-
 fi
 
 while [[ $# -ge 1 ]]; do
