@@ -148,7 +148,7 @@ install() {
 
 run_dialog() {
   if [[ -x /usr/bin/dialog ]]; then
-    tui=$(dialog --backtitle "BRUB2 THEMES" \
+    tui=$(dialog --backtitle "GRUB2 THEMES" \
     --radiolist "Choose your Grub theme : " 15 40 5 \
       1 "Vimix Theme" off  \
       2 "Tela Theme" on \
