@@ -5,6 +5,7 @@
 ROOT_UID=0
 THEME_DIR="/boot/grub/themes"
 THEME_DIR_2="/boot/grub2/themes"
+G_SNAP="themes_ori.tar.gz"                          # name of archive file  used to restore default grub theme 
 
 REO_DIR=$(cd $(dirname $0) && pwd)
 
@@ -52,9 +53,105 @@ usage() {
   printf "  %-25s%s\n" "-t, --tela" "tela grub theme"
   printf "  %-25s%s\n" "-v, --vimix" "vimix grub theme"
   printf "  %-25s%s\n" "-h, --help" "Show this help"
+  printf "  %-25s%s\n" "-r, --restore" "Restore default themes"
+  
 }
 
-install() {
+#  [spnap shot] :=> boot to prepare for uninstall 
+freezing_snapshot() {  
+    declare -ar grub=(
+        "grub"          # ---> reference to THEME_DIR 
+        "grub2"         # ---> reference to THEME_DIR_2 
+    ) 
+    local format 
+    local current_grub  
+
+{ #[ auto_detect_grub_type ] 
+    for grub_type in $(ls -d /boot/*/)  ; do 
+        if  [[ -d ${grub_type} ]] ; then
+            format=${grub_type%*/} 
+            current_grub="${format##*/}"
+            for grub_target in ${grub[@]} ; do
+                [[ ${current_grub} == ${grub_target} ]]  && break   
+            done 
+        fi 
+    done  
+}   
+
+    local use_related_dir 
+    case "${current_grub}" in 
+        "${grub}") use_related_dir=${THEME_DIR};; 
+        "${grub[1]}")use_related_dir=${THEME_DIR_2};; 
+   esac 
+
+   if [[ -n $1 ]] ; then 
+       case ${1} in 
+           "--no-snap") echo "${use_related_dir}";;       #  /boot/[grub|grup2]/themes
+       esac
+   else
+       local themes_folder=${use_related_dir##*/}         # extract themes folder
+       if [[ ! -f ${use_related_dir/themes/}$G_SNAP ]] ; then 
+           prompt -i "* freezing default themes..."  
+           cd ${use_related_dir/$themes_folder/}
+           [[  $? -eq 0 ]] || prompt -e "cannot change directory"  
+           sudo tar -zcf ${G_SNAP}  "${themes_folder}/"
+           [[ $? -eq 0 ]] && {
+                prompt -i "snap shot forzen "  
+           }||{
+                prompt -e "[x] cannot freeze default themes"
+           }
+       else 
+           prompt -i "[escaping] snapshot ..."
+    fi
+fi
+
+}
+
+uninstall() {
+
+    local related_path=$(freezing_snapshot --no-snap) 
+    local archive_path="${related_path/themes/}/${G_SNAP}" 
+    [[ ! -f ${archive_path} ]] && { 
+    prompt -w "not allowed to proceed uninstallation X( !!"
+    sleep 2 
+    exit 12
+    }|| {
+     prompt -w "-- uninstalling  Grub2-Themes"   
+     prompt -i "removing installed directories ..." 
+     if [[ -n $(sudo ls -r "${related_path}/") ]] ; then
+         sudo rm -r ${related_path}/* 
+         [[ $? -eq 0 ]] && {
+            prompt -s "removed" 
+            prompt -i "restor default themes" 
+            sleep 2 
+            sudo tar -zxf ${related_path/themes/}${G_SNAP} --directory "${related_path/themes/}" 
+            [[ $? -eq 0 ]] &&  {
+                prompt -s "default themes successfully restored" 
+                prompt -w "deleting archive file ..." 
+                sleep 2 
+                [[ $(sudo rm  "$archive_path") -eq 0 ]] &&{ 
+                    prompt -s "[ done ]"   
+                    exit 0 
+                }||{    
+                   prompt -e "no deletable archive file" 
+                   exit 3
+                } 
+            } 
+        }|| {
+            prompt -e "[ deletion error] connot remove  directories" 
+            exit 2 
+        }
+    else 
+        prompt -e "[ Fatal Error ] Empty themes ..."
+    fi 
+     
+    } 
+}
+
+
+
+install() { 
+  freezing_snapshot
   if [[ ${theme} == 'slaze' ]]; then
     local name="Slaze"
   elif [[ ${theme} == 'stylish' ]]; then
@@ -222,6 +319,9 @@ while [[ $# -ge 1 ]]; do
     -h|--help)
       usage
       exit 0
+      ;; 
+  -r|--restore) 
+      uninstall 
       ;;
     *)
       prompt  -e "\n ERROR: Unrecognized installation option '$1'."
