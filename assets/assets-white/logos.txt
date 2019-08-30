@@ -23,6 +23,7 @@ lubuntu
 solus
 kaos
 macosx
+endeavouros
 recovery
 restart
 shutdown

@@ -24,6 +24,7 @@ solus
 kaos
 void
 macosx
+endeavouros
 recovery
 restart
 shutdown
