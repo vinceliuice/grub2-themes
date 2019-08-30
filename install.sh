@@ -6,7 +6,7 @@ ROOT_UID=0
 THEME_DIR="/boot/grub/themes"
 THEME_DIR_2="/boot/grub2/themes"
 
-REO_DIR=$(cd $(dirname $0) && pwd)
+REO_DIR="$(cd $(dirname $0) && pwd)"
 
 MAX_DELAY=20                                        # max delay for user to enter root password
 
@@ -74,37 +74,37 @@ install() {
     # Create themes directory if not exists
     echo -e "\n Checking for the existence of themes directory..."
 
-    [[ -d ${THEME_DIR}/${name} ]] && rm -rf ${THEME_DIR}/${name}
-    [[ -d ${THEME_DIR_2}/${name} ]] && rm -rf ${THEME_DIR_2}/${name}
-    [[ -d /boot/grub ]] && mkdir -p ${THEME_DIR}/${name}
-    [[ -d /boot/grub2 ]] && mkdir -p ${THEME_DIR_2}/${name}
+    [[ -d "${THEME_DIR}/${name}" ]] && rm -rf "${THEME_DIR}/${name}"
+    [[ -d "${THEME_DIR_2}/${name}" ]] && rm -rf "${THEME_DIR_2}/${name}"
+    [[ -d /boot/grub ]] && mkdir -p "${THEME_DIR}/${name}"
+    [[ -d /boot/grub2 ]] && mkdir -p "${THEME_DIR_2}/${name}"
 
     # Copy theme
     prompt -i "\n Installing ${name} theme..."
 
     if [ -d /boot/grub ]; then
-      cp -a ${REO_DIR}/common/* ${THEME_DIR}/${name}
-      cp -a ${REO_DIR}/backgrounds/background-${theme}.jpg ${THEME_DIR}/${name}/background.jpg
+      cp -a "${REO_DIR}/common/"* "${THEME_DIR}/${name}"
+      cp -a "${REO_DIR}/backgrounds/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
 
       if [ ${theme} == 'tela' ]; then
-        cp -a ${REO_DIR}/assets/assets-tela/icons ${THEME_DIR}/${name}
-        cp -a ${REO_DIR}/assets/assets-tela/select/*.png ${THEME_DIR}/${name}
+        cp -a "${REO_DIR}/assets/assets-tela/icons" "${THEME_DIR}/${name}"
+        cp -a "${REO_DIR}/assets/assets-tela/select/"*.png "${THEME_DIR}/${name}"
       else
-        cp -a ${REO_DIR}/assets/assets-white/icons ${THEME_DIR}/${name}
-        cp -a ${REO_DIR}/assets/assets-white/select/*.png ${THEME_DIR}/${name}
+        cp -a "${REO_DIR}/assets/assets-white/icons" "${THEME_DIR}/${name}"
+        cp -a "${REO_DIR}/assets/assets-white/select/"*.png "${THEME_DIR}/${name}"
       fi
     fi
 
     if [ -d /boot/grub2 ]; then
-      cp -a ${REO_DIR}/common/* ${THEME_DIR_2}/${name}
-      cp -a ${REO_DIR}/backgrounds/background-${theme}.jpg ${THEME_DIR_2}/${name}/background.jpg
+      cp -a "${REO_DIR}/common/"* "${THEME_DIR_2}/${name}"
+      cp -a "${REO_DIR}/backgrounds/background-${theme}.jpg" "${THEME_DIR_2}/${name}/background.jpg"
 
       if [ ${theme} == 'tela' ]; then
-        cp -a ${REO_DIR}/assets/assets-tela/icons ${THEME_DIR_2}/${name}
-        cp -a ${REO_DIR}/assets/assets-tela/select/*.png ${THEME_DIR_2}/${name}
+        cp -a "${REO_DIR}/assets/assets-tela/icons" "${THEME_DIR_2}/${name}"
+        cp -a "${REO_DIR}/assets/assets-tela/select/"*.png "${THEME_DIR_2}/${name}"
       else
-        cp -a ${REO_DIR}/assets/assets-white/icons ${THEME_DIR_2}/${name}
-        cp -a ${REO_DIR}/assets/assets-white/select/*.png ${THEME_DIR_2}/${name}
+        cp -a "${REO_DIR}/assets/assets-white/icons" "${THEME_DIR_2}/${name}"
+        cp -a "${REO_DIR}/assets/assets-white/select/*".png "${THEME_DIR_2}/${name}"
       fi
     fi
 
@@ -112,6 +112,10 @@ install() {
     prompt -i "\n Setting ${name} as default..."
     grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
 
+    # Backup grub config
+    cp -an /etc/default/grub /etc/default/grub.bak
+
+    # Edit grub config
     [[ -d /boot/grub ]] && echo "GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"" >> /etc/default/grub
     [[ -d /boot/grub2 ]] && echo "GRUB_THEME=\"${THEME_DIR_2}/${name}/theme.txt\"" >> /etc/default/grub
 
@@ -131,7 +135,7 @@ install() {
 
   else
     # Error message
-    prompt -e "\n [ Error!] -> Run me as root "
+    prompt -e "\n [ Error! ] -> Run me as root "
 
     # persisted execution of the script as root
     read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
@@ -193,7 +197,7 @@ fi
 
 if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]]; then
   # Error message
-  prompt -e "\n [ Error!] -> Run me as root "
+  prompt -e "\n [ Error! ] -> Run me as root "
 
   # persisted execution of the script as root
   read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
