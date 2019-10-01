@@ -51,6 +51,8 @@ usage() {
   printf "  %-25s%s\n" "-s, --stylish" "stylish grub theme"
   printf "  %-25s%s\n" "-t, --tela" "tela grub theme"
   printf "  %-25s%s\n" "-v, --vimix" "vimix grub theme"
+  printf "  %-25s%s\n" "-2, --2k" "Install 2k(2560x1440) background image"
+  printf "  %-25s%s\n" "-4, --24" "Install 4k(3840x2160) background image"
   printf "  %-25s%s\n" "-h, --help" "Show this help"
 }
 
@@ -64,8 +66,18 @@ install() {
   elif [[ ${theme} == 'vimix' ]]; then
     local name="Vimix"
   else
-    prompt -i "\n Run sudo ./install.sh again! or run ./install.sh -h for help"
+    prompt -i "\n Run ./install.sh -h for help or install dialog"
+    install_dialog
+    prompt -i "\n Run ./install.sh again!"
     exit 0
+  fi
+
+  if [[ ${screen} == '2k' ]]; then
+    local screen="2k"
+  elif [[ ${screen} == '4k' ]]; then
+    local screen="4k"
+  else
+    local screen="1080p"
   fi
 
   # Checking for root access and proceed if it is present
@@ -80,11 +92,11 @@ install() {
     [[ -d /boot/grub2 ]] && mkdir -p "${THEME_DIR_2}/${name}"
 
     # Copy theme
-    prompt -i "\n Installing ${name} theme..."
+    prompt -i "\n Installing ${name} ${screen} theme..."
 
     if [ -d /boot/grub ]; then
       cp -a "${REO_DIR}/common/"* "${THEME_DIR}/${name}"
-      cp -a "${REO_DIR}/backgrounds/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
+      cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
 
       if [ ${theme} == 'tela' ]; then
         cp -a "${REO_DIR}/assets/assets-tela/icons" "${THEME_DIR}/${name}"
@@ -97,7 +109,7 @@ install() {
 
     if [ -d /boot/grub2 ]; then
       cp -a "${REO_DIR}/common/"* "${THEME_DIR_2}/${name}"
-      cp -a "${REO_DIR}/backgrounds/background-${theme}.jpg" "${THEME_DIR_2}/${name}/background.jpg"
+      cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR_2}/${name}/background.jpg"
 
       if [ ${theme} == 'tela' ]; then
         cp -a "${REO_DIR}/assets/assets-tela/icons" "${THEME_DIR_2}/${name}"
@@ -223,6 +235,12 @@ while [[ $# -ge 1 ]]; do
     -v|--vimix)
       theme='vimix'
       ;;
+    -2|--2k)
+      screen='2k'
+      ;;
+    -4|--4k)
+      screen='4k'
+      ;;
     -h|--help)
       usage
       exit 0
@@ -236,6 +254,6 @@ while [[ $# -ge 1 ]]; do
   shift
 done
 
-install_dialog && install
+install
 
 exit 0
