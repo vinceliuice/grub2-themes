@@ -14,7 +14,7 @@ opensuse
 windows
 debian
 gnu-linux
-linux-mint
+linuxmint
 siduction
 xubuntu
 deepin
