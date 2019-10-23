@@ -19,7 +19,7 @@ terminal-border: "0"
   top = 30%
   width = 45%
   height = 60%
-  item_font = "cantarell regular 16"
+  item_font = "Cantarell regular 16"
   item_color = "#cccccc"
   selected_item_color = "#ffffff"
   icon_width = 32
@@ -40,5 +40,5 @@ terminal-border: "0"
   id = "__timeout__"
   text = "Booting in %d seconds"
   color = "#cccccc"
-  font = "cantarell regular 16"
+  font = "Cantarell regular 16"
 }
