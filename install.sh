@@ -1,10 +1,9 @@
 #!/bin/bash
 
-# Grub2 Dark Theme
+# Grub2 Themes
 
 ROOT_UID=0
-THEME_DIR="/boot/grub/themes"
-THEME_DIR_2="/boot/grub2/themes"
+THEME_DIR="/usr/share/grub/themes"
 
 REO_DIR="$(cd $(dirname $0) && pwd)"
 
@@ -87,49 +86,35 @@ install() {
     echo -e "\n Checking for the existence of themes directory..."
 
     [[ -d "${THEME_DIR}/${name}" ]] && rm -rf "${THEME_DIR}/${name}"
-    [[ -d "${THEME_DIR_2}/${name}" ]] && rm -rf "${THEME_DIR_2}/${name}"
-    [[ -d /boot/grub ]] && mkdir -p "${THEME_DIR}/${name}"
-    [[ -d /boot/grub2 ]] && mkdir -p "${THEME_DIR_2}/${name}"
+    mkdir -p "${THEME_DIR}/${name}"
 
     # Copy theme
     prompt -i "\n Installing ${name} ${screen} theme..."
 
-    if [ -d /boot/grub ]; then
-      cp -a "${REO_DIR}/common/"* "${THEME_DIR}/${name}"
-      cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
 
-      if [ ${theme} == 'tela' ]; then
-        cp -a "${REO_DIR}/assets/assets-tela/icons" "${THEME_DIR}/${name}"
-        cp -a "${REO_DIR}/assets/assets-tela/select/"*.png "${THEME_DIR}/${name}"
-      else
-        cp -a "${REO_DIR}/assets/assets-white/icons" "${THEME_DIR}/${name}"
-        cp -a "${REO_DIR}/assets/assets-white/select/"*.png "${THEME_DIR}/${name}"
-      fi
-    fi
+    cp -a "${REO_DIR}/common/"*.png "${THEME_DIR}/${name}"
+    cp -a "${REO_DIR}/common/"*.pf2 "${THEME_DIR}/${name}"
+    cp -a "${REO_DIR}/common/theme-${screen}.txt" "${THEME_DIR}/${name}/theme.txt"
+    cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
 
-    if [ -d /boot/grub2 ]; then
-      cp -a "${REO_DIR}/common/"* "${THEME_DIR_2}/${name}"
-      cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR_2}/${name}/background.jpg"
-
-      if [ ${theme} == 'tela' ]; then
-        cp -a "${REO_DIR}/assets/assets-tela/icons" "${THEME_DIR_2}/${name}"
-        cp -a "${REO_DIR}/assets/assets-tela/select/"*.png "${THEME_DIR_2}/${name}"
-      else
-        cp -a "${REO_DIR}/assets/assets-white/icons" "${THEME_DIR_2}/${name}"
-        cp -a "${REO_DIR}/assets/assets-white/select/*".png "${THEME_DIR_2}/${name}"
-      fi
+    if [ ${theme} == 'tela' ]; then
+      cp -a "${REO_DIR}/assets/assets-tela/icons-${screen}" "${THEME_DIR}/${name}/icons"
+      cp -a "${REO_DIR}/assets/assets-tela/select-${screen}/"*.png "${THEME_DIR}/${name}"
+    else
+      cp -a "${REO_DIR}/assets/assets-white/icons-${screen}" "${THEME_DIR}/${name}/icons"
+      cp -a "${REO_DIR}/assets/assets-white/select-${screen}/"*.png "${THEME_DIR}/${name}"
     fi
 
     # Set theme
     prompt -i "\n Setting ${name} as default..."
-    grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
 
     # Backup grub config
     cp -an /etc/default/grub /etc/default/grub.bak
 
+    grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
+
     # Edit grub config
-    [[ -d /boot/grub ]] && echo "GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"" >> /etc/default/grub
-    [[ -d /boot/grub2 ]] && echo "GRUB_THEME=\"${THEME_DIR_2}/${name}/theme.txt\"" >> /etc/default/grub
+    echo "GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"" >> /etc/default/grub
 
     # Update grub config
     prompt -i "\n Updating grub config..."
@@ -175,6 +160,17 @@ run_dialog() {
         2) theme="tela"      ;;
         3) theme="stylish"   ;;
         4) theme="slaze"     ;;
+        *) prompt "Canceled" ;;
+     esac
+    tui=$(dialog --backtitle "GRUB2 THEMES" \
+    --radiolist "Choose your Display Resolution : " 15 40 5 \
+      1 "1080p" on  \
+      2 "2k" off \
+      3 "4k" off --output-fd 1 )
+      case "$tui" in
+        1) screen="1080p"     ;;
+        2) screen="2k"      ;;
+        3) screen="4k"   ;;
         *) prompt "Canceled" ;;
      esac
   fi
