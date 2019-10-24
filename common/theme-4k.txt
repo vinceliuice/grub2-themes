@@ -19,7 +19,7 @@ terminal-border: "0"
   top = 30%
   width = 45%
   height = 60%
-  item_font = "Cantarell Regular 32"
+  item_font = "DejaVu Regular 32"
   item_color = "#cccccc"
   selected_item_color = "#ffffff"
   icon_width = 64
@@ -40,5 +40,5 @@ terminal-border: "0"
   id = "__timeout__"
   text = "Booting in %d seconds"
   color = "#cccccc"
-  font = "Cantarell Regular 32"
+  font = "DejaVu Regular 32"
 }
