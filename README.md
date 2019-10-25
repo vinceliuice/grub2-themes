@@ -23,11 +23,17 @@ Usage:  `sudo ./install.sh`  **[OPTIONS...]**
 | -l, --slaze    | Slaze grub theme |
 | -2, --2k       | Install 2k(2560x1440) background image |
 | -4, --4k       | Install 4k(3840x2160) background image |
+| -r, --remove   | Remove theme (must add theme name option) |
 | -h, --help     | Show this help |
 
-For example:  `Install Tela theme on 2k display device`
+For example:
+1. `Install Tela theme on 2k display device`
 
-    sudo ./install -t -2
+    sudo ./install.sh -t -2
+
+2. `Remove Tela theme`
+
+    sudo ./install.sh -r -t
 
 ## Screenshots
 

@@ -52,6 +52,7 @@ usage() {
   printf "  %-25s%s\n" "-v, --vimix" "vimix grub theme"
   printf "  %-25s%s\n" "-2, --2k" "Install 2k(2560x1440) background image"
   printf "  %-25s%s\n" "-4, --24" "Install 4k(3840x2160) background image"
+  printf "  %-25s%s\n" "-r, --remove" "Remove theme (must add theme name option)"
   printf "  %-25s%s\n" "-h, --help" "Show this help"
 }
 
@@ -90,7 +91,6 @@ install() {
 
     # Copy theme
     prompt -i "\n Installing ${name} ${screen} theme..."
-
 
     cp -a "${REO_DIR}/common/"*.png "${THEME_DIR}/${name}"
     cp -a "${REO_DIR}/common/"*.pf2 "${THEME_DIR}/${name}"
@@ -136,11 +136,11 @@ install() {
 
     # persisted execution of the script as root
     read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
-    [[ -n "$REPLY" ]]&& {
-      if  [[  -n  "${theme}" ]]  ; then
-        sudo -S <<< $REPLY $0 --${theme}
+    [[ -n "$REPLY" ]] && {
+      if [[ -n "${theme}" && -n "${screen}" ]]; then
+        sudo -S <<< $REPLY $0 --${theme} --${screen}
       fi
-    }|| {
+    } || {
       prompt  "\n Operation canceled  Bye"
       exit 1
     }
@@ -168,9 +168,9 @@ run_dialog() {
       2 "2k" off \
       3 "4k" off --output-fd 1 )
       case "$tui" in
-        1) screen="1080p"     ;;
-        2) screen="2k"      ;;
-        3) screen="4k"   ;;
+        1) screen="1080p"    ;;
+        2) screen="2k"       ;;
+        3) screen="4k"       ;;
         *) prompt "Canceled" ;;
      esac
   fi
@@ -195,6 +195,69 @@ install_dialog() {
 
       sudo pacman -S --noconfirm dialog
     fi
+  fi
+}
+
+remove() {
+  if [[ ${theme} == 'slaze' ]]; then
+    local name="Slaze"
+  elif [[ ${theme} == 'stylish' ]]; then
+    local name="Stylish"
+  elif [[ ${theme} == 'tela' ]]; then
+    local name="Tela"
+  elif [[ ${theme} == 'vimix' ]]; then
+    local name="Vimix"
+  else
+    prompt -i "\n Run ./install.sh -h for help!"
+    exit 0
+  fi
+
+  # Checking for root access and proceed if it is present
+  if [ "$UID" -eq "$ROOT_UID" ]; then
+    echo -e "\n Checking for the existence of themes directory..."
+    if [[ -d "${THEME_DIR}/${name}" ]]; then
+      rm -rf "${THEME_DIR}/${name}"
+    else
+      prompt -i "\n ${name} grub theme not exist!"
+      exit 0
+    fi
+
+    # Backup grub config
+    if [[ -f /etc/default/grub.bak ]]; then
+      rm -rf /etc/default/grub && mv /etc/default/grub.bak /etc/default/grub
+    else
+      prompt -i "\n grub.bak not exist!"
+      exit 0
+    fi
+
+    # Update grub config
+    prompt -i "\n Resetting grub theme...\n"
+    if has_command update-grub; then
+      update-grub
+    elif has_command grub-mkconfig; then
+      grub-mkconfig -o /boot/grub/grub.cfg
+    elif has_command grub2-mkconfig; then
+      grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+    fi
+
+    # Success message
+    prompt -s "\n * All done!"
+    prompt -w "\n * At the next restart of your computer you will see your default Grub theme back! "
+
+  else
+    # Error message
+    prompt -e "\n [ Error! ] -> Run me as root "
+
+    # persisted execution of the script as root
+    read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
+    [[ -n "$REPLY" ]] && {
+      if [[ -n "${theme}" ]]; then
+        sudo -S <<< $REPLY $0 --remove --${theme}
+      fi
+    } || {
+      prompt  "\n Operation canceled  Bye"
+      exit 1
+    }
   fi
 }
 
@@ -231,11 +294,17 @@ while [[ $# -ge 1 ]]; do
     -v|--vimix)
       theme='vimix'
       ;;
+    -1|--1080p)
+      screen='1080p'
+      ;;
     -2|--2k)
       screen='2k'
       ;;
     -4|--4k)
       screen='4k'
+      ;;
+    -r|--remove)
+      remove='true'
       ;;
     -h|--help)
       usage
@@ -250,6 +319,12 @@ while [[ $# -ge 1 ]]; do
   shift
 done
 
-install
+if [[ "${remove:-}" != 'true' ]]; then
+  install
+fi
+
+if [[ "${remove:-}" == 'true' ]]; then
+  remove
+fi
 
 exit 0
