@@ -184,19 +184,14 @@ install_dialog() {
   if [ ! "$(which dialog 2> /dev/null)" ]; then
     prompt -i "\n 'dialog' needs to be installed for this shell"
     if has_command zypper; then
-
       sudo zypper in dialog
-        elif has_command apt-get; then
-
+    elif has_command apt-get; then
       sudo apt-get install dialog
-        elif has_command dnf; then
-
+    elif has_command dnf; then
       sudo dnf install dialog
-        elif has_command yum; then
-
+    elif has_command yum; then
       sudo yum install dialog
-        elif has_command pacman; then
-
+    elif has_command pacman; then
       sudo pacman -S --noconfirm dialog
     fi
   fi
