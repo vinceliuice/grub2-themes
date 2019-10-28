@@ -123,7 +123,11 @@ install() {
     elif has_command grub-mkconfig; then
       grub-mkconfig -o /boot/grub/grub.cfg
     elif has_command grub2-mkconfig; then
-      grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+      if [ $(which zypper &>/dev/null) ]; then
+        grub2-mkconfig -o /boot/grub2/grub.cfg
+      elif [ $(which dnf &>/dev/null) ]; then
+        grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+      fi
     fi
 
     # Success message
