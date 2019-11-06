@@ -188,7 +188,7 @@ install_dialog() {
     elif has_command apt-get; then
       sudo apt-get install dialog
     elif has_command dnf; then
-      sudo dnf install dialog
+      sudo dnf install -y dialog
     elif has_command yum; then
       sudo yum install dialog
     elif has_command pacman; then
