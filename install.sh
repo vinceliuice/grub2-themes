@@ -99,9 +99,8 @@ install() {
     # Copy theme
     prompt -i "\n Installing ${name} ${screen} theme..."
 
-    cp -a "${REO_DIR}/common/"*.png "${THEME_DIR}/${name}"
-    cp -a "${REO_DIR}/common/"*.pf2 "${THEME_DIR}/${name}"
-    cp -a "${REO_DIR}/common/theme-${screen}.txt" "${THEME_DIR}/${name}/theme.txt"
+    cp -a "${REO_DIR}/common/"* "${THEME_DIR}/${name}"
+    cp -a "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${name}/theme.txt"
     cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
     cp -a "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${name}/icons"
     cp -a "${REO_DIR}/assets/assets-${icon}/select-${screen}/"*.png "${THEME_DIR}/${name}"
