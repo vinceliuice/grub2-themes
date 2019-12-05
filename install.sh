@@ -50,6 +50,7 @@ usage() {
   printf "  %-25s%s\n" "-s, --stylish" "stylish grub theme"
   printf "  %-25s%s\n" "-t, --tela" "tela grub theme"
   printf "  %-25s%s\n" "-v, --vimix" "vimix grub theme"
+  printf "  %-25s%s\n" "-w, --white" "Install white icon version"
   printf "  %-25s%s\n" "-2, --2k" "Install 2k(2560x1440) background image"
   printf "  %-25s%s\n" "-4, --24" "Install 4k(3840x2160) background image"
   printf "  %-25s%s\n" "-r, --remove" "Remove theme (must add theme name option)"
@@ -80,6 +81,12 @@ install() {
     local screen="1080p"
   fi
 
+  if [[ ${icon} == 'white' ]]; then
+    local icon="white"
+  else
+    local icon="color"
+  fi
+
   # Checking for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
 
@@ -96,14 +103,8 @@ install() {
     cp -a "${REO_DIR}/common/"*.pf2 "${THEME_DIR}/${name}"
     cp -a "${REO_DIR}/common/theme-${screen}.txt" "${THEME_DIR}/${name}/theme.txt"
     cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
-
-    if [ ${theme} == 'tela' ]; then
-      cp -a "${REO_DIR}/assets/assets-tela/icons-${screen}" "${THEME_DIR}/${name}/icons"
-      cp -a "${REO_DIR}/assets/assets-tela/select-${screen}/"*.png "${THEME_DIR}/${name}"
-    else
-      cp -a "${REO_DIR}/assets/assets-white/icons-${screen}" "${THEME_DIR}/${name}/icons"
-      cp -a "${REO_DIR}/assets/assets-white/select-${screen}/"*.png "${THEME_DIR}/${name}"
-    fi
+    cp -a "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${name}/icons"
+    cp -a "${REO_DIR}/assets/assets-${icon}/select-${screen}/"*.png "${THEME_DIR}/${name}"
 
     # Set theme
     prompt -i "\n Setting ${name} as default..."
@@ -174,6 +175,15 @@ run_dialog() {
         2) theme="tela"      ;;
         3) theme="stylish"   ;;
         4) theme="slaze"     ;;
+        *) prompt "Canceled" ;;
+     esac
+    tui=$(dialog --backtitle "GRUB2 THEMES" \
+    --radiolist "Choose icon style : " 15 40 5 \
+      1 "white" off \
+      2 "color" on --output-fd 1 )
+      case "$tui" in
+        1) icon="white"      ;;
+        2) icon="color"      ;;
         *) prompt "Canceled" ;;
      esac
     tui=$(dialog --backtitle "GRUB2 THEMES" \
@@ -302,6 +312,12 @@ while [[ $# -ge 1 ]]; do
       ;;
     -v|--vimix)
       theme='vimix'
+      ;;
+    -w|--white)
+      icon='white'
+      ;;
+    -c|--color)
+      icon='color'
       ;;
     -1|--1080p)
       screen='1080p'
