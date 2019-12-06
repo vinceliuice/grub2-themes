@@ -36,7 +36,8 @@ For example:
 
     sudo ./install.sh -r -t
 
-## Set the right resolution of your display
+## Display resolution issues
+#### Set the right resolution of your display
 On the grub screen, `press c` to get the commandline,
 and enter `vbeinfo` to check what resolutions you can use,
 then edit `/etc/default/grub` , add your resolution `GRUB_GFXMODE=****x****x32` into it,
