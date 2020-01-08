@@ -112,18 +112,19 @@ install() {
     cp -an /etc/default/grub /etc/default/grub.bak
 
     grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
-    grep "GRUB_GFXMODE=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_GFXMODE=/d' /etc/default/grub
+
+    if [[ ${screen} != '1080p' ]]; then
+      grep "GRUB_GFXMODE=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_GFXMODE=/d' /etc/default/grub
+    fi
 
     # Edit grub config
     echo "GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"" >> /etc/default/grub
-    
+
     # Make sure set the right resolution for grub
     if [[ ${screen} == '4k' ]]; then
       echo "GRUB_GFXMODE=3840x2160x32" >> /etc/default/grub
-      echo "GRUB_GFXPAYLOAD_LINUX=text" >> /etc/default/grub
     elif [[ ${screen} == '2k' ]]; then
       echo "GRUB_GFXMODE=2560×1440x32" >> /etc/default/grub
-      echo "GRUB_GFXPAYLOAD_LINUX=text" >> /etc/default/grub
     fi
 
     # Update grub config
@@ -132,12 +133,10 @@ install() {
       update-grub
     elif has_command grub-mkconfig; then
       grub-mkconfig -o /boot/grub/grub.cfg
-    elif has_command grub2-mkconfig; then
-      if [ $(which zypper &>/dev/null) ]; then
-        grub2-mkconfig -o /boot/grub2/grub.cfg
-      elif [ $(which dnf &>/dev/null) ]; then
-        grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
-      fi
+    elif has_command zypper; then
+      grub2-mkconfig -o /boot/grub2/grub.cfg
+    elif has_command dnf; then
+      grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
     fi
 
     # Success message
