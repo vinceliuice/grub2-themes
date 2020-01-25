@@ -28,11 +28,6 @@ _if no option used the terminal user interface will be show up_
 | -h, --help     | Show this help |
 
 For example:
-<<<<<<< HEAD
-=======
-
-1. `Install Tela theme on 2k display device`
->>>>>>> 33e88a798b2eae21cf2e923f5df9c2e8388363a3
 
 1. Install Tela theme on 2k display device
 
@@ -48,14 +43,7 @@ For example:
 
 #### Set the right resolution of your display
 
-<<<<<<< HEAD
 On the grub screen, `press c` to get the commandline, and enter `vbeinfo` or `videoinfo` on EFI boot to check what resolutions you can use, then edit `/etc/default/grub` , add your resolution `GRUB_GFXMODE=****x****x32` into it, last you can run `grub-mkconfig -o /boot/grub/grub.cfg` to update your grub.cfg.
-=======
-On the grub screen, `press c` to get the commandline,
-and enter `vbeinfo` or `videoinfo` on EFI boot to check what resolutions you can use,
-then edit `/etc/default/grub` , add your resolution `GRUB_GFXMODE=****x****x32` into it,
-last you can run `grub-mkconfig -o /boot/grub/grub.cfg` to update your grub.cfg.
->>>>>>> 33e88a798b2eae21cf2e923f5df9c2e8388363a3
 
 ## Screenshots
 
@@ -69,8 +57,8 @@ last you can run `grub-mkconfig -o /boot/grub/grub.cfg` to update your grub.cfg.
 
 ### Tela grub theme
 
-![Tela](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-tela.jpg?raw=true)
+![Tela grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-tela.jpg?raw=true)
 
 ### Slaze grub theme
 
-![Slaze](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-slaze.jpg?raw=true)
+![Slaze grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-slaze.jpg?raw=true)
