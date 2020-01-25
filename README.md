@@ -49,7 +49,7 @@ On the grub screen, `press c` to get the commandline, and enter `vbeinfo` or `vi
 
 ### Vimix grub theme
 
-![vimix grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-vimix.jpg?raw=true)
+![vimix grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-vimix.jpg?raw=true "vimix grub theme")
 
 ### Stylish grub theme
 
