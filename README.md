@@ -28,6 +28,7 @@ Usage:  `sudo ./install.sh`  **[OPTIONS...]**
 | -h, --help     | Show this help |
 
 For example:
+
 1. `Install Tela theme on 2k display device`
 
     sudo ./install.sh -t -2
@@ -37,7 +38,9 @@ For example:
     sudo ./install.sh -r -t
 
 ## Display resolution issues
+
 #### Set the right resolution of your display
+
 On the grub screen, `press c` to get the commandline,
 and enter `vbeinfo` or `videoinfo` on EFI boot to check what resolutions you can use,
 then edit `/etc/default/grub` , add your resolution `GRUB_GFXMODE=****x****x32` into it,
