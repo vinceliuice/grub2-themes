@@ -130,7 +130,7 @@ install() {
 
     # Update grub config
     prompt -i "\n Updating grub config..."
-    
+
     updating_grub
   fi
 }
@@ -150,6 +150,7 @@ run_dialog() {
         4) theme="slaze"     ;;
         *) operation_canceled ;;
      esac
+
     tui=$(dialog --backtitle "GRUB2 THEMES" \
     --radiolist "Choose icon style : " 15 40 5 \
       1 "white" off \
@@ -159,6 +160,7 @@ run_dialog() {
         2) icon="color"      ;;
         *) operation_canceled ;;
      esac
+
     tui=$(dialog --backtitle "GRUB2 THEMES" \
     --radiolist "Choose your Display Resolution : " 15 40 5 \
       1 "1080p" on  \
@@ -320,7 +322,7 @@ while [[ $# -ge 1 ]]; do
       ;;
     *)
       prompt  -e "\n ERROR: Unrecognized installation option '$1'."
-      prompt  -i "\n Try '$0 --help' for more information."
+      prompt  -i "Try '$0 --help' for more information."
       exit 1
       ;;
   esac
