@@ -89,6 +89,7 @@ install() {
 
   # Checking for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
+    clear
 
     # Create themes directory if not exists
     echo -e "\n Checking for the existence of themes directory..."
@@ -129,33 +130,8 @@ install() {
 
     # Update grub config
     prompt -i "\n Updating grub config..."
-    if has_command update-grub; then
-      update-grub
-    elif has_command grub-mkconfig; then
-      grub-mkconfig -o /boot/grub/grub.cfg
-    elif has_command zypper; then
-      grub2-mkconfig -o /boot/grub2/grub.cfg
-    elif has_command dnf; then
-      grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
-    fi
-
-    # Success message
-    prompt -s "\n * All done!"
-    prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
-
-  else
-    # Error message
-    prompt -e "\n [ Error! ] -> Run me as root "
-
-    # persisted execution of the script as root
-    read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
-    [[ -n "$REPLY" ]] && {
-      if [[ -n "${theme}" && -n "${screen}" ]]; then
-        sudo -S <<< $REPLY $0 --${theme} --${screen}
-      fi
-    } || {
-      operation_canceled
-    }
+    
+    updating_grub
   fi
 }
 
@@ -199,8 +175,24 @@ run_dialog() {
 
 operation_canceled() {
   clear
-  prompt  "\n Operation canceled by user Bye"
+  prompt  "\n Operation canceled by user, Bye!"
   exit 1
+}
+
+updating_grub() {
+  if has_command update-grub; then
+    update-grub
+  elif has_command grub-mkconfig; then
+    grub-mkconfig -o /boot/grub/grub.cfg
+  elif has_command zypper; then
+    grub2-mkconfig -o /boot/grub2/grub.cfg
+  elif has_command dnf; then
+    grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+  fi
+
+  # Success message
+  prompt -s "\n * All done!"
+  prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
 }
 
 install_dialog() {
@@ -254,17 +246,7 @@ remove() {
 
     # Update grub config
     prompt -i "\n Resetting grub theme...\n"
-    if has_command update-grub; then
-      update-grub
-    elif has_command grub-mkconfig; then
-      grub-mkconfig -o /boot/grub/grub.cfg
-    elif has_command grub2-mkconfig; then
-      grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
-    fi
-
-    # Success message
-    prompt -s "\n * All done!"
-    prompt -w "\n * At the next restart of your computer you will see your default Grub theme back! "
+    updating_grub
 
   else
     # Error message
