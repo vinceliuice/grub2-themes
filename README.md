@@ -11,11 +11,11 @@
 
 ## Install
 
-Usage:  `sudo ./install.sh`  **[OPTIONS...]**
+Usage:  `sudo ./install.sh [OPTIONS...]`
 
-*if no option used the terminal user interface will be show up*
+_if no option used the terminal user interface will be show up_
 
-|  OPTIONS:      | |
+|  OPTIONS:      | description |
 |:---------------|:-------------|
 | -v, --vimix    | Vimix grub theme |
 | -s, --stylish  | Stylish grub theme |
@@ -28,35 +28,37 @@ Usage:  `sudo ./install.sh`  **[OPTIONS...]**
 | -h, --help     | Show this help |
 
 For example:
-1. `Install Tela theme on 2k display device`
 
-    sudo ./install.sh -t -2
+1. Install Tela theme on 2k display device
 
-2. `Remove Tela theme`
+    `sudo ./install.sh -t -2`
+    or
+    `sudo ./install.sh --tela --2k`
 
-    sudo ./install.sh -r -t
+2. Remove Tela theme
+
+    `sudo ./install.sh -r -t`
 
 ## Display resolution issues
+
 #### Set the right resolution of your display
-On the grub screen, `press c` to get the commandline,
-and enter `vbeinfo` or `videoinfo` on EFI boot to check what resolutions you can use,
-then edit `/etc/default/grub` , add your resolution `GRUB_GFXMODE=****x****x32` into it,
-last you can run `grub-mkconfig -o /boot/grub/grub.cfg` to update your grub.cfg.
+
+On the grub screen, `press c` to get the commandline, and enter `vbeinfo` or `videoinfo` on EFI boot to check what resolutions you can use, then edit `/etc/default/grub` , add your resolution `GRUB_GFXMODE=****x****x32` into it, last you can run `grub-mkconfig -o /boot/grub/grub.cfg` to update your grub.cfg.
 
 ## Screenshots
 
 ### Vimix grub theme
 
-![01](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-vimix.jpg?raw=true)
+![vimix grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-vimix.jpg?raw=true "vimix grub theme")
 
 ### Stylish grub theme
 
-![02](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-stylish.jpg?raw=true)
+![Stylish grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-stylish.jpg?raw=true)
 
 ### Tela grub theme
 
-![03](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-tela.jpg?raw=true)
+![Tela grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-tela.jpg?raw=true)
 
 ### Slaze grub theme
 
-![04](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-slaze.jpg?raw=true)
+![Slaze grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-slaze.jpg?raw=true)

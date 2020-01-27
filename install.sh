@@ -154,8 +154,7 @@ install() {
         sudo -S <<< $REPLY $0 --${theme} --${screen}
       fi
     } || {
-      prompt  "\n Operation canceled  Bye"
-      exit 1
+      operation_canceled
     }
   fi
 }
@@ -173,7 +172,7 @@ run_dialog() {
         2) theme="tela"      ;;
         3) theme="stylish"   ;;
         4) theme="slaze"     ;;
-        *) prompt "Canceled" ;;
+        *) operation_canceled ;;
      esac
     tui=$(dialog --backtitle "GRUB2 THEMES" \
     --radiolist "Choose icon style : " 15 40 5 \
@@ -182,7 +181,7 @@ run_dialog() {
       case "$tui" in
         1) icon="white"      ;;
         2) icon="color"      ;;
-        *) prompt "Canceled" ;;
+        *) operation_canceled ;;
      esac
     tui=$(dialog --backtitle "GRUB2 THEMES" \
     --radiolist "Choose your Display Resolution : " 15 40 5 \
@@ -193,9 +192,15 @@ run_dialog() {
         1) screen="1080p"    ;;
         2) screen="2k"       ;;
         3) screen="4k"       ;;
-        *) prompt "Canceled" ;;
+        *) operation_canceled ;;
      esac
   fi
+}
+
+operation_canceled() {
+  clear
+  prompt  "\n Operation canceled by user Bye"
+  exit 1
 }
 
 install_dialog() {
@@ -272,8 +277,7 @@ remove() {
         sudo -S <<< $REPLY $0 --remove --${theme}
       fi
     } || {
-      prompt  "\n Operation canceled  Bye"
-      exit 1
+      operation_canceled
     }
   fi
 }
@@ -292,8 +296,7 @@ if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]]; then
   [[ -n "$REPLY" ]]&& {
    exec sudo -S <<< $REPLY $0
   }|| {
-    prompt  "\n Operation canceled  Bye"
-    exit 1
+    operation_canceled
   }
 fi
 
