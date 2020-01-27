@@ -52,7 +52,7 @@ usage() {
   printf "  %-25s%s\n" "-v, --vimix" "vimix grub theme"
   printf "  %-25s%s\n" "-w, --white" "Install white icon version"
   printf "  %-25s%s\n" "-2, --2k" "Install 2k(2560x1440) background image"
-  printf "  %-25s%s\n" "-4, --24" "Install 4k(3840x2160) background image"
+  printf "  %-25s%s\n" "-4, --4k" "Install 4k(3840x2160) background image"
   printf "  %-25s%s\n" "-r, --remove" "Remove theme (must add theme name option)"
   printf "  %-25s%s\n" "-h, --help" "Show this help"
 }
@@ -331,9 +331,7 @@ done
 
 if [[ "${remove:-}" != 'true' ]]; then
   install
-fi
-
-if [[ "${remove:-}" == 'true' ]]; then
+elif [[ "${remove:-}" == 'true' ]]; then
   remove
 fi
 
