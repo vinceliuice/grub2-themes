@@ -52,7 +52,7 @@ usage() {
   printf "  %-25s%s\n" "-v, --vimix" "vimix grub theme"
   printf "  %-25s%s\n" "-w, --white" "Install white icon version"
   printf "  %-25s%s\n" "-2, --2k" "Install 2k(2560x1440) background image"
-  printf "  %-25s%s\n" "-4, --24" "Install 4k(3840x2160) background image"
+  printf "  %-25s%s\n" "-4, --4k" "Install 4k(3840x2160) background image"
   printf "  %-25s%s\n" "-r, --remove" "Remove theme (must add theme name option)"
   printf "  %-25s%s\n" "-h, --help" "Show this help"
 }
@@ -89,6 +89,7 @@ install() {
 
   # Checking for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
+    clear
 
     # Create themes directory if not exists
     echo -e "\n Checking for the existence of themes directory..."
@@ -129,33 +130,8 @@ install() {
 
     # Update grub config
     prompt -i "\n Updating grub config..."
-    if has_command update-grub; then
-      update-grub
-    elif has_command grub-mkconfig; then
-      grub-mkconfig -o /boot/grub/grub.cfg
-    elif has_command zypper; then
-      grub2-mkconfig -o /boot/grub2/grub.cfg
-    elif has_command dnf; then
-      grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
-    fi
 
-    # Success message
-    prompt -s "\n * All done!"
-    prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
-
-  else
-    # Error message
-    prompt -e "\n [ Error! ] -> Run me as root "
-
-    # persisted execution of the script as root
-    read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
-    [[ -n "$REPLY" ]] && {
-      if [[ -n "${theme}" && -n "${screen}" ]]; then
-        sudo -S <<< $REPLY $0 --${theme} --${screen}
-      fi
-    } || {
-      operation_canceled
-    }
+    updating_grub
   fi
 }
 
@@ -174,6 +150,7 @@ run_dialog() {
         4) theme="slaze"     ;;
         *) operation_canceled ;;
      esac
+
     tui=$(dialog --backtitle "GRUB2 THEMES" \
     --radiolist "Choose icon style : " 15 40 5 \
       1 "white" off \
@@ -183,6 +160,7 @@ run_dialog() {
         2) icon="color"      ;;
         *) operation_canceled ;;
      esac
+
     tui=$(dialog --backtitle "GRUB2 THEMES" \
     --radiolist "Choose your Display Resolution : " 15 40 5 \
       1 "1080p" on  \
@@ -199,8 +177,28 @@ run_dialog() {
 
 operation_canceled() {
   clear
+<<<<<<< HEAD
   prompt -i "\n Operation canceled by user Bye"
+=======
+  prompt  "\n Operation canceled by user, Bye!"
+>>>>>>> a8c7cb246016a1bbedc9865971aa4ed0b0cf3bbf
   exit 1
+}
+
+updating_grub() {
+  if has_command update-grub; then
+    update-grub
+  elif has_command grub-mkconfig; then
+    grub-mkconfig -o /boot/grub/grub.cfg
+  elif has_command zypper; then
+    grub2-mkconfig -o /boot/grub2/grub.cfg
+  elif has_command dnf; then
+    grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+  fi
+
+  # Success message
+  prompt -s "\n * All done!"
+  prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
 }
 
 install_dialog() {
@@ -254,17 +252,7 @@ remove() {
 
     # Update grub config
     prompt -i "\n Resetting grub theme...\n"
-    if has_command update-grub; then
-      update-grub
-    elif has_command grub-mkconfig; then
-      grub-mkconfig -o /boot/grub/grub.cfg
-    elif has_command grub2-mkconfig; then
-      grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
-    fi
-
-    # Success message
-    prompt -s "\n * All done!"
-    prompt -w "\n * At the next restart of your computer you will see your default Grub theme back! "
+    updating_grub
 
   else
     # Error message
@@ -338,7 +326,7 @@ while [[ $# -ge 1 ]]; do
       ;;
     *)
       prompt  -e "\n ERROR: Unrecognized installation option '$1'."
-      prompt  -i "\n Try '$0 --help' for more information."
+      prompt  -i "Try '$0 --help' for more information."
       exit 1
       ;;
   esac
@@ -347,9 +335,7 @@ done
 
 if [[ "${remove:-}" != 'true' ]]; then
   install
-fi
-
-if [[ "${remove:-}" == 'true' ]]; then
+elif [[ "${remove:-}" == 'true' ]]; then
   remove
 fi
 
