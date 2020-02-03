@@ -132,6 +132,19 @@ install() {
     prompt -i "\n Updating grub config..."
 
     updating_grub
+  else
+    # Error message
+    prompt -e "\n [ Error! ] -> Run me as root! "
+
+    # persisted execution of the script as root
+    read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
+    [[ -n "$REPLY" ]] && {
+      if [[ -n "${theme}" && -n "${screen}" ]]; then
+        sudo -S <<< $REPLY $0 --${theme} --${screen}
+      fi
+    } || {
+      operation_canceled
+    }
   fi
 }
 
@@ -177,11 +190,7 @@ run_dialog() {
 
 operation_canceled() {
   clear
-<<<<<<< HEAD
-  prompt -i "\n Operation canceled by user Bye"
-=======
-  prompt  "\n Operation canceled by user, Bye!"
->>>>>>> a8c7cb246016a1bbedc9865971aa4ed0b0cf3bbf
+  prompt  -i "\n Operation canceled by user, Bye!"
   exit 1
 }
 
@@ -277,10 +286,10 @@ fi
 
 if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]]; then
   # Error message
-  prompt -e "\n [ Error! ] -> Run me as root "
+  prompt -e "\n [ Error! ] -> Run me as root! "
 
   # persisted execution of the script as root
-  read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
+  read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
   [[ -n "$REPLY" ]]&& {
    exec sudo -S <<< $REPLY $0
   }|| {
