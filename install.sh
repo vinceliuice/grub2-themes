@@ -199,7 +199,7 @@ run_dialog() {
 
 operation_canceled() {
   clear
-  prompt  "\n Operation canceled by user Bye"
+  prompt -i "\n Operation canceled by user Bye"
   exit 1
 }
 
