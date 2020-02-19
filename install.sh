@@ -125,7 +125,7 @@ install() {
     if [[ ${screen} == '4k' ]]; then
       echo "GRUB_GFXMODE=3840x2160x32" >> /etc/default/grub
     elif [[ ${screen} == '2k' ]]; then
-      echo "GRUB_GFXMODE=2560×1440x32" >> /etc/default/grub
+      echo "GRUB_GFXMODE=2560x1440x32" >> /etc/default/grub
     fi
 
     # Update grub config
