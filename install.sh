@@ -1,13 +1,20 @@
 #!/bin/bash
 
 # Grub2 Themes
+set  -o errexit
 
-ROOT_UID=0
+[  GLOBAL::CONF  ]
+{
+readonly ROOT_UID=0
+readonly Project_Name="GRUB2::THEMES"
+readonly MAX_DELAY=20                               # max delay for user to enter root password
+tui_root_login=
+
 THEME_DIR="/usr/share/grub/themes"
-
 REO_DIR="$(cd $(dirname $0) && pwd)"
 
-MAX_DELAY=20                                        # max delay for user to enter root password
+}
+                                     
 
 #COLORS
 CDEF=" \033[0m"                                     # default color
@@ -132,25 +139,43 @@ install() {
     prompt -i "\n Updating grub config..."
 
     updating_grub
-  else
+  else 
     # Error message
     prompt -e "\n [ Error! ] -> Run me as root! "
 
     # persisted execution of the script as root
-    read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
-    [[ -n "$REPLY" ]] && {
-      if [[ -n "${theme}" && -n "${screen}" ]]; then
-        sudo -S <<< $REPLY $0 --${theme} --${screen}
-      fi
-    } || {
-      operation_canceled
-    }
-  fi
+    if [[ -n ${tui_root_login} ]] ; then
+        if [[ -n "${theme}" && -n "${screen}" ]]; then
+            sudo -S <<< ${tui_root_login} $0 --${theme} --${screen}
+        fi
+    else 
+        read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
+        [[ -n "$REPLY" ]] && {
+        if [[ -n "${theme}" && -n "${screen}" ]]; then
+            sudo -S <<< $REPLY $0 --${theme} --${screen}
+        fi
+        } || {
+             operation_canceled
+        }      
+    fi
+
+ fi
 }
 
 run_dialog() {
   if [[ -x /usr/bin/dialog ]]; then
-    tui=$(dialog --backtitle "GRUB2 THEMES" \
+    tui_root_login=$(dialog --backtitle ${Project_Name} \
+          --title  "ROOT LOGIN" \
+          --insecure \
+          --passwordbox  "require  root  permission" 8 50 \
+          --output-fd 1 )
+    [[  -z ${tui_root_login} ]]  &&   exit  ${UID} 
+    sudo -S  <<<  $tui_root_login   $0 
+    test $? -eq 0  || { 
+        prompt -e "\n [ Error! ] -> wrong passwords"
+        exit  1 
+    }
+    tui=$(dialog --backtitle ${Project_Name} \
     --radiolist "Choose your Grub theme : " 15 40 5 \
       1 "Vimix Theme" off  \
       2 "Tela Theme" on \
@@ -164,7 +189,7 @@ run_dialog() {
         *) operation_canceled ;;
      esac
 
-    tui=$(dialog --backtitle "GRUB2 THEMES" \
+    tui=$(dialog --backtitle ${Project_Name} \
     --radiolist "Choose icon style : " 15 40 5 \
       1 "white" off \
       2 "color" on --output-fd 1 )
@@ -174,7 +199,7 @@ run_dialog() {
         *) operation_canceled ;;
      esac
 
-    tui=$(dialog --backtitle "GRUB2 THEMES" \
+    tui=$(dialog --backtitle ${Project_Name} \
     --radiolist "Choose your Display Resolution : " 15 40 5 \
       1 "1080p" on  \
       2 "2k" off \
@@ -280,11 +305,11 @@ remove() {
 }
 
 # show terminal user interface for better use
-if [[ $# -lt 1 ]] && [[ $UID -eq $ROOT_UID ]]; then
+if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ -x /usr/bin/dialog ]] ; then
   run_dialog
 fi
 
-if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]]; then
+if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ ! -x /usr/bin/dialog ]] ;  then
   # Error message
   prompt -e "\n [ Error! ] -> Run me as root! "
 
