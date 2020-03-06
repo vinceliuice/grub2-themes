@@ -120,20 +120,18 @@ install() {
     cp -an /etc/default/grub /etc/default/grub.bak
 
     grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
-
-    if [[ ${screen} != '1080p' ]]; then
-      grep "GRUB_GFXMODE=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_GFXMODE=/d' /etc/default/grub
-    fi
+    grep "GRUB_GFXMODE=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_GFXMODE=/d' /etc/default/grub
 
     # Edit grub config
     echo "GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"" >> /etc/default/grub
+    echo "GRUB_GFXMODE=auto" >> /etc/default/grub
 
     # Make sure set the right resolution for grub
-    if [[ ${screen} == '4k' ]]; then
-      echo "GRUB_GFXMODE=3840x2160x32" >> /etc/default/grub
-    elif [[ ${screen} == '2k' ]]; then
-      echo "GRUB_GFXMODE=2560x1440x32" >> /etc/default/grub
-    fi
+#    if [[ ${screen} == '4k' ]]; then
+#      echo "GRUB_GFXMODE=3840x2160x32" >> /etc/default/grub
+#    elif [[ ${screen} == '2k' ]]; then
+#      echo "GRUB_GFXMODE=2560x1440x32" >> /etc/default/grub
+#    fi
 
     # Update grub config
     prompt -i "\n Updating grub config..."
