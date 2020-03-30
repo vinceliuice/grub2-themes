@@ -26,6 +26,7 @@ solus
 kaos
 void
 macosx
+haiku
 endeavouros
 recovery
 restart
