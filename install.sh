@@ -12,9 +12,7 @@ tui_root_login=
 
 THEME_DIR="/usr/share/grub/themes"
 REO_DIR="$(cd $(dirname $0) && pwd)"
-
 }
-                                     
 
 #COLORS
 CDEF=" \033[0m"                                     # default color
@@ -53,6 +51,7 @@ function has_command() {
 usage() {
   printf "%s\n" "Usage: ${0##*/} [OPTIONS...]"
   printf "\n%s\n" "OPTIONS:"
+  printf "  %-25s%s\n" "-b, --boot" "install grub theme into /boot/grub/themes"
   printf "  %-25s%s\n" "-l, --slaze" "slaze grub theme"
   printf "  %-25s%s\n" "-s, --stylish" "stylish grub theme"
   printf "  %-25s%s\n" "-t, --tela" "tela grub theme"
@@ -137,7 +136,7 @@ install() {
     prompt -i "\n Updating grub config..."
 
     updating_grub
-  else 
+  else
     # Error message
     prompt -e "\n [ Error! ] -> Run me as root! "
 
@@ -146,7 +145,7 @@ install() {
         if [[ -n "${theme}" && -n "${screen}" ]]; then
             sudo -S <<< ${tui_root_login} $0 --${theme} --${screen}
         fi
-    else 
+    else
         read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
         [[ -n "$REPLY" ]] && {
         if [[ -n "${theme}" && -n "${screen}" ]]; then
@@ -154,7 +153,7 @@ install() {
         fi
         } || {
              operation_canceled
-        }      
+        }
     fi
 
  fi
@@ -322,6 +321,9 @@ fi
 
 while [[ $# -ge 1 ]]; do
   case "${1}" in
+    -b|--boot)
+      THEME_DIR="/boot/grub/themes"
+      ;;
     -l|--slaze)
       theme='slaze'
       ;;

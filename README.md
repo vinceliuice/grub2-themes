@@ -17,6 +17,7 @@ _if no option used the terminal user interface will be show up_
 
 |  OPTIONS:      | description |
 |:---------------|:-------------|
+| -b, --boot     | Install grub theme into /boot/grub/themes |
 | -v, --vimix    | Vimix grub theme |
 | -s, --stylish  | Stylish grub theme |
 | -t, --tela     | Tela grub theme |
@@ -35,7 +36,11 @@ For example:
     or
     `sudo ./install.sh --tela --2k`
 
-2. Remove Tela theme
+2. Install Tela theme into /boot/grub/themes
+
+    `sudo ./install.sh -b -t`
+
+3. Remove Tela theme
 
     `sudo ./install.sh -r -t`
 
@@ -49,16 +54,16 @@ On the grub screen, `press c` to get the commandline, and enter `vbeinfo` or `vi
 
 ### Vimix grub theme
 
-![vimix grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-vimix.jpg?raw=true "vimix grub theme")
+![vimix grub theme](screenshots/grub-theme-vimix.jpg?raw=true)
 
 ### Stylish grub theme
 
-![Stylish grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-stylish.jpg?raw=true)
+![Stylish grub theme](screenshots/grub-theme-stylish.jpg?raw=true)
 
 ### Tela grub theme
 
-![Tela grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-tela.jpg?raw=true)
+![Tela grub theme](screenshots/grub-theme-tela.jpg?raw=true)
 
 ### Slaze grub theme
 
-![Slaze grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-slaze.jpg?raw=true)
+![Slaze grub theme](screenshots/grub-theme-slaze.jpg?raw=true)
