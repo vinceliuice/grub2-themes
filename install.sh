@@ -123,17 +123,18 @@ install() {
 
     # Edit grub config
     echo "GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"" >> /etc/default/grub
-    echo "GRUB_GFXMODE=auto" >> /etc/default/grub
 
     # Make sure set the right resolution for grub
-#    if [[ ${screen} == '4k' ]]; then
-#      echo "GRUB_GFXMODE=3840x2160x32" >> /etc/default/grub
-#    elif [[ ${screen} == '2k' ]]; then
-#      echo "GRUB_GFXMODE=2560x1440x32" >> /etc/default/grub
-#    fi
+    if [[ ${screen} == '1080p' ]]; then
+      echo "GRUB_GFXMODE=1920x1080,auto" >> /etc/default/grub
+    elif [[ ${screen} == '4k' ]]; then
+      echo "GRUB_GFXMODE=3840x2160,auto" >> /etc/default/grub
+    elif [[ ${screen} == '2k' ]]; then
+      echo "GRUB_GFXMODE=2560x1440,auto" >> /etc/default/grub
+    fi
 
     # Update grub config
-    prompt -i "\n Updating grub config..."
+    prompt -i "\n Updating grub config...\n"
 
     updating_grub
   else
