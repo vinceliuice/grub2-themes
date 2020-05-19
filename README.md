@@ -15,18 +15,19 @@ Usage:  `sudo ./install.sh [OPTIONS...]`
 
 _if no option used the terminal user interface will be show up_
 
-|  OPTIONS:      | description |
-|:---------------|:-------------|
-| -b, --boot     | Install grub theme into /boot/grub/themes |
-| -v, --vimix    | Vimix grub theme |
-| -s, --stylish  | Stylish grub theme |
-| -t, --tela     | Tela grub theme |
-| -l, --slaze    | Slaze grub theme |
-| -w, --white    | Install white color icon version |
-| -2, --2k       | Install 2k(2560x1440) background image |
-| -4, --4k       | Install 4k(3840x2160) background image |
-| -r, --remove   | Remove theme (must add theme name option) |
-| -h, --help     | Show this help |
+|  OPTIONS:          | description |
+|:-------------------|:-------------|
+| -b, --boot         | Install grub theme into /boot/grub/themes |
+| -v, --vimix        | Vimix grub theme |
+| -s, --stylish      | Stylish grub theme |
+| -t, --tela         | Tela grub theme |
+| -l, --slaze        | Slaze grub theme |
+| -w, --white        | Install white color icon version |
+| -u, --ultrawide    | Install 2560x1080 background image - not available for slaze theme|
+| -2, --2k           | Install 2k(2560x1440) background image |
+| -4, --4k           | Install 4k(3840x2160) background image |
+| -r, --remove       | Remove theme (must add theme name option) |
+| -h, --help         | Show this help |
 
 For example:
 
