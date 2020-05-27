@@ -3,7 +3,7 @@
 
 # Global Property
 title-text: ""
-desktop-image: "background.jpg"
+desktop-image: "background.png"
 desktop-color: "#000000"
 terminal-font: "Terminus Regular 14"
 terminal-box: "terminal_box_*.png"
@@ -16,9 +16,9 @@ terminal-border: "0"
 # Show the boot menu
 + boot_menu {
   left = 30%
-  top = 30%
+  top = 20%
   width = 45%
-  height = 60%
+  height = 70%
   item_font = "Unifont Regular 16"
   item_color = "#cccccc"
   selected_item_color = "#ffffff"
