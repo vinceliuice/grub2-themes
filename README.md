@@ -15,17 +15,19 @@ Usage:  `sudo ./install.sh [OPTIONS...]`
 
 _if no option used the terminal user interface will be show up_
 
-|  OPTIONS:      | description |
-|:---------------|:-------------|
-| -v, --vimix    | Vimix grub theme |
-| -s, --stylish  | Stylish grub theme |
-| -t, --tela     | Tela grub theme |
-| -l, --slaze    | Slaze grub theme |
-| -w, --white    | Install white color icon version |
-| -2, --2k       | Install 2k(2560x1440) background image |
-| -4, --4k       | Install 4k(3840x2160) background image |
-| -r, --remove   | Remove theme (must add theme name option) |
-| -h, --help     | Show this help |
+|  OPTIONS:          | description |
+|:-------------------|:-------------|
+| -b, --boot         | Install grub theme into /boot/grub/themes |
+| -v, --vimix        | Vimix grub theme |
+| -s, --stylish      | Stylish grub theme |
+| -t, --tela         | Tela grub theme |
+| -l, --slaze        | Slaze grub theme |
+| -w, --white        | Install white color icon version |
+| -u, --ultrawide    | Install 2560x1080 background image - not available for slaze theme|
+| -2, --2k           | Install 2k(2560x1440) background image |
+| -4, --4k           | Install 4k(3840x2160) background image |
+| -r, --remove       | Remove theme (must add theme name option) |
+| -h, --help         | Show this help |
 
 For example:
 
@@ -35,7 +37,11 @@ For example:
     or
     `sudo ./install.sh --tela --2k`
 
-2. Remove Tela theme
+2. Install Tela theme into /boot/grub/themes
+
+    `sudo ./install.sh -b -t`
+
+3. Remove Tela theme
 
     `sudo ./install.sh -r -t`
 
@@ -49,16 +55,16 @@ On the grub screen, `press c` to get the commandline, and enter `vbeinfo` or `vi
 
 ### Vimix grub theme
 
-![vimix grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-vimix.jpg?raw=true "vimix grub theme")
+![vimix grub theme](screenshots/grub-theme-vimix.jpg?raw=true)
 
 ### Stylish grub theme
 
-![Stylish grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-stylish.jpg?raw=true)
+![Stylish grub theme](screenshots/grub-theme-stylish.jpg?raw=true)
 
 ### Tela grub theme
 
-![Tela grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-tela.jpg?raw=true)
+![Tela grub theme](screenshots/grub-theme-tela.jpg?raw=true)
 
 ### Slaze grub theme
 
-![Slaze grub theme](https://github.com/vinceliuice/grub2-themes/blob/master/screenshots/grub-theme-slaze.jpg?raw=true)
+![Slaze grub theme](screenshots/grub-theme-slaze.jpg?raw=true)

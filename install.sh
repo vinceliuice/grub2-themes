@@ -1,13 +1,18 @@
 #!/bin/bash
 
 # Grub2 Themes
+set  -o errexit
 
-ROOT_UID=0
+[  GLOBAL::CONF  ]
+{
+readonly ROOT_UID=0
+readonly Project_Name="GRUB2::THEMES"
+readonly MAX_DELAY=20                               # max delay for user to enter root password
+tui_root_login=
+
 THEME_DIR="/usr/share/grub/themes"
-
 REO_DIR="$(cd $(dirname $0) && pwd)"
-
-MAX_DELAY=20                                        # max delay for user to enter root password
+}
 
 #COLORS
 CDEF=" \033[0m"                                     # default color
@@ -46,11 +51,13 @@ function has_command() {
 usage() {
   printf "%s\n" "Usage: ${0##*/} [OPTIONS...]"
   printf "\n%s\n" "OPTIONS:"
+  printf "  %-25s%s\n" "-b, --boot" "install grub theme into /boot/grub/themes"
   printf "  %-25s%s\n" "-l, --slaze" "slaze grub theme"
   printf "  %-25s%s\n" "-s, --stylish" "stylish grub theme"
   printf "  %-25s%s\n" "-t, --tela" "tela grub theme"
   printf "  %-25s%s\n" "-v, --vimix" "vimix grub theme"
   printf "  %-25s%s\n" "-w, --white" "Install white icon version"
+  printf "  %-25s%s\n" "-u, --ultrawide" "Install 2560x1080 background image - not available for slaze grub theme"
   printf "  %-25s%s\n" "-2, --2k" "Install 2k(2560x1440) background image"
   printf "  %-25s%s\n" "-4, --4k" "Install 4k(3840x2160) background image"
   printf "  %-25s%s\n" "-r, --remove" "Remove theme (must add theme name option)"
@@ -77,16 +84,23 @@ install() {
     local screen="2k"
   elif [[ ${screen} == '4k' ]]; then
     local screen="4k"
+  elif [[ ${screen} == '1080p_21:9' ]]; then
+    local screen="1080p_21:9"
   else
     local screen="1080p"
+  fi
+
+  if [[ ${screen} == '1080p_21:9' && ${name} == 'Slaze' ]]; then
+    prompt -e "ultrawide 1080p does not support Slaze theme"
+    exit 1
   fi
 
   if [[ ${icon} == 'white' ]]; then
     local icon="white"
   else
     local icon="color"
-  fi
-
+  fi  
+  
   # Checking for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
     clear
@@ -98,11 +112,15 @@ install() {
     mkdir -p "${THEME_DIR}/${name}"
 
     # Copy theme
-    prompt -i "\n Installing ${name} ${screen} theme..."
+    prompt -i "\n Installing ${name} ${icon} ${screen} theme..."
 
     cp -a "${REO_DIR}/common/"* "${THEME_DIR}/${name}"
     cp -a "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${name}/theme.txt"
-    cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
+    if [[ ${screen} == '1080p_21:9' ]]; then
+      cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.png" "${THEME_DIR}/${name}/background.png"
+    else
+      cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
+    fi
     cp -a "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${name}/icons"
     cp -a "${REO_DIR}/assets/assets-${icon}/select-${screen}/"*.png "${THEME_DIR}/${name}"
 
@@ -113,23 +131,24 @@ install() {
     cp -an /etc/default/grub /etc/default/grub.bak
 
     grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
-
-    if [[ ${screen} != '1080p' ]]; then
-      grep "GRUB_GFXMODE=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_GFXMODE=/d' /etc/default/grub
-    fi
+    grep "GRUB_GFXMODE=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_GFXMODE=/d' /etc/default/grub
 
     # Edit grub config
     echo "GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"" >> /etc/default/grub
 
     # Make sure set the right resolution for grub
-    if [[ ${screen} == '4k' ]]; then
-      echo "GRUB_GFXMODE=3840x2160x32" >> /etc/default/grub
+    if [[ ${screen} == '1080p' ]]; then
+      echo "GRUB_GFXMODE=1920x1080,auto" >> /etc/default/grub
+    elif [[ ${screen} == '1080p_21:9' ]]; then
+      echo "GRUB_GFXMODE=2560x1080,auto" >> /etc/default/grub
+    elif [[ ${screen} == '4k' ]]; then
+      echo "GRUB_GFXMODE=3840x2160,auto" >> /etc/default/grub
     elif [[ ${screen} == '2k' ]]; then
-      echo "GRUB_GFXMODE=2560×1440x32" >> /etc/default/grub
+      echo "GRUB_GFXMODE=2560x1440,auto" >> /etc/default/grub
     fi
 
     # Update grub config
-    prompt -i "\n Updating grub config..."
+    prompt -i "\n Updating grub config...\n"
 
     updating_grub
   else
@@ -137,20 +156,38 @@ install() {
     prompt -e "\n [ Error! ] -> Run me as root! "
 
     # persisted execution of the script as root
-    read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
-    [[ -n "$REPLY" ]] && {
-      if [[ -n "${theme}" && -n "${screen}" ]]; then
-        sudo -S <<< $REPLY $0 --${theme} --${screen}
-      fi
-    } || {
-      operation_canceled
-    }
-  fi
+    if [[ -n ${tui_root_login} ]] ; then
+        if [[ -n "${theme}" && -n "${screen}" ]]; then
+            sudo -S <<< ${tui_root_login} $0 ${ORIGINAL_ARGUMENTS}
+        fi
+    else
+        read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
+        [[ -n "$REPLY" ]] && {
+        if [[ -n "${theme}" && -n "${screen}" ]]; then
+            sudo -S <<< $REPLY $0 ${ORIGINAL_ARGUMENTS}
+        fi
+        } || {
+             operation_canceled
+        }
+    fi
+
+ fi
 }
 
 run_dialog() {
   if [[ -x /usr/bin/dialog ]]; then
-    tui=$(dialog --backtitle "GRUB2 THEMES" \
+    tui_root_login=$(dialog --backtitle ${Project_Name} \
+          --title  "ROOT LOGIN" \
+          --insecure \
+          --passwordbox  "require  root  permission" 8 50 \
+          --output-fd 1 )
+    [[  -z ${tui_root_login} ]]  &&   exit  ${UID} 
+    sudo -S  <<<  $tui_root_login   $0 
+    test $? -eq 0  || { 
+        prompt -e "\n [ Error! ] -> wrong passwords"
+        exit  1 
+    }
+    tui=$(dialog --backtitle ${Project_Name} \
     --radiolist "Choose your Grub theme : " 15 40 5 \
       1 "Vimix Theme" off  \
       2 "Tela Theme" on \
@@ -164,7 +201,7 @@ run_dialog() {
         *) operation_canceled ;;
      esac
 
-    tui=$(dialog --backtitle "GRUB2 THEMES" \
+    tui=$(dialog --backtitle ${Project_Name} \
     --radiolist "Choose icon style : " 15 40 5 \
       1 "white" off \
       2 "color" on --output-fd 1 )
@@ -174,15 +211,17 @@ run_dialog() {
         *) operation_canceled ;;
      esac
 
-    tui=$(dialog --backtitle "GRUB2 THEMES" \
+    tui=$(dialog --backtitle ${Project_Name} \
     --radiolist "Choose your Display Resolution : " 15 40 5 \
       1 "1080p" on  \
-      2 "2k" off \
-      3 "4k" off --output-fd 1 )
+      2 "1080p ultrawide" off  \
+      3 "2k" off \
+      4 "4k" off --output-fd 1 )
       case "$tui" in
         1) screen="1080p"    ;;
-        2) screen="2k"       ;;
-        3) screen="4k"       ;;
+        2) screen="1080p_21:9"  ;;
+        3) screen="2k"       ;;
+        4) screen="4k"       ;;
         *) operation_canceled ;;
      esac
   fi
@@ -280,11 +319,11 @@ remove() {
 }
 
 # show terminal user interface for better use
-if [[ $# -lt 1 ]] && [[ $UID -eq $ROOT_UID ]]; then
+if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ -x /usr/bin/dialog ]] ; then
   run_dialog
 fi
 
-if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]]; then
+if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ ! -x /usr/bin/dialog ]] ;  then
   # Error message
   prompt -e "\n [ Error! ] -> Run me as root! "
 
@@ -298,7 +337,11 @@ if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]]; then
 fi
 
 while [[ $# -ge 1 ]]; do
+  ORIGINAL_ARGUMENTS="$ORIGINAL_ARGUMENTS $1"
   case "${1}" in
+    -b|--boot)
+      THEME_DIR="/boot/grub/themes"
+      ;;
     -l|--slaze)
       theme='slaze'
       ;;
@@ -325,6 +368,9 @@ while [[ $# -ge 1 ]]; do
       ;;
     -4|--4k)
       screen='4k'
+      ;;
+    -u|--ultrawide|--1080p_21:9)
+      screen='1080p_21:9'
       ;;
     -r|--remove)
       remove='true'

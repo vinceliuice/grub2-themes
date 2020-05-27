@@ -23,6 +23,7 @@ lubuntu
 solus
 kaos
 macosx
+haiku
 endeavouros
 recovery
 restart

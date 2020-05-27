@@ -1,10 +1,12 @@
 antergos
+arcolinux
 elementary
 korora
 mageia
 steamos
 archlinux
 fedora
+freebsd
 kubuntu
 manjaro
 ubuntu
@@ -24,6 +26,7 @@ solus
 kaos
 void
 macosx
+haiku
 endeavouros
 recovery
 restart
