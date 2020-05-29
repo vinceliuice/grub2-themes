@@ -99,8 +99,8 @@ install() {
     local icon="white"
   else
     local icon="color"
-  fi  
-  
+  fi
+
   # Checking for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
     clear
@@ -158,13 +158,13 @@ install() {
     # persisted execution of the script as root
     if [[ -n ${tui_root_login} ]] ; then
         if [[ -n "${theme}" && -n "${screen}" ]]; then
-            sudo -S <<< ${tui_root_login} $0 ${ORIGINAL_ARGUMENTS}
+            sudo -S <<< ${tui_root_login} $0 --${theme} --${icon} --${screen}
         fi
     else
         read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
         [[ -n "$REPLY" ]] && {
         if [[ -n "${theme}" && -n "${screen}" ]]; then
-            sudo -S <<< $REPLY $0 ${ORIGINAL_ARGUMENTS}
+            sudo -S <<< $REPLY $0 --${theme} --${icon} --${screen}
         fi
         } || {
              operation_canceled
@@ -179,13 +179,13 @@ run_dialog() {
     tui_root_login=$(dialog --backtitle ${Project_Name} \
           --title  "ROOT LOGIN" \
           --insecure \
-          --passwordbox  "require  root  permission" 8 50 \
+          --passwordbox  "require root permission" 8 50 \
           --output-fd 1 )
-    [[  -z ${tui_root_login} ]]  &&   exit  ${UID} 
-    sudo -S  <<<  $tui_root_login   $0 
-    test $? -eq 0  || { 
+    [[ -z ${tui_root_login} ]] && exit ${UID}
+    sudo -S <<< $tui_root_login $0
+    test $? -eq 0 || {
         prompt -e "\n [ Error! ] -> wrong passwords"
-        exit  1 
+        exit 1
     }
     tui=$(dialog --backtitle ${Project_Name} \
     --radiolist "Choose your Grub theme : " 15 40 5 \
@@ -337,7 +337,6 @@ if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ ! -x /usr/bin/dialog ]] ;  t
 fi
 
 while [[ $# -ge 1 ]]; do
-  ORIGINAL_ARGUMENTS="$ORIGINAL_ARGUMENTS $1"
   case "${1}" in
     -b|--boot)
       THEME_DIR="/boot/grub/themes"
