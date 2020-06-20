@@ -15,6 +15,7 @@ gentoo
 opensuse
 windows
 debian
+parrot
 gnu-linux
 linuxmint
 siduction

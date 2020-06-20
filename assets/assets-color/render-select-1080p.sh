@@ -1,6 +1,7 @@
 #! /bin/bash
 
 INKSCAPE="/usr/bin/inkscape"
+OPTIPNG="/usr/bin/optipng"
 
 INDEX="select.txt"
 ASSETS_DIR="select-1080p"
@@ -17,7 +18,8 @@ else
   echo Rendering $ASSETS_DIR/$i.png
   $INKSCAPE --export-id=$i \
             --export-id-only \
-            --export-png=$ASSETS_DIR/$i.png $SRC_FILE >/dev/null
+            --export-filename=$ASSETS_DIR/$i.png $SRC_FILE >/dev/null
+  $OPTIPNG -o7 --quiet $ASSETS_DIR/$1.png
 fi
 done
 

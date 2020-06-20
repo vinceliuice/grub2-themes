@@ -25,6 +25,11 @@ kaos
 macosx
 haiku
 endeavouros
+arcolinux
+pop-os
+devuan
+void
+parrot
 recovery
 restart
 shutdown
@@ -40,10 +45,6 @@ lang
 type
 tz
 unset
-arcolinux
-pop-os
-devuan
-void
 
 
 

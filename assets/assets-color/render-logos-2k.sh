@@ -1,6 +1,7 @@
 #! /bin/bash
 
 INKSCAPE="/usr/bin/inkscape"
+OPTIPNG="/usr/bin/optipng"
 
 INDEX="logos.txt"
 ASSETS_DIR="icons-2k"
@@ -18,7 +19,8 @@ else
   $INKSCAPE --export-id=$i \
             --export-dpi=144 \
             --export-id-only \
-            --export-png=$ASSETS_DIR/$i.png $SRC_FILE >/dev/null
+            --export-filename=$ASSETS_DIR/$i.png $SRC_FILE >/dev/null
+  $OPTIPNG -o7 --quiet $ASSETS_DIR/$1.png
 fi
 done
 

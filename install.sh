@@ -114,15 +114,16 @@ install() {
     # Copy theme
     prompt -i "\n Installing ${name} ${icon} ${screen} theme..."
 
-    cp -a "${REO_DIR}/common/"* "${THEME_DIR}/${name}"
+    cp -a "${REO_DIR}/common/"{*.png,*.pf2} "${THEME_DIR}/${name}"
     cp -a "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${name}/theme.txt"
+    cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
     if [[ ${screen} == '1080p_21:9' ]]; then
-      cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.png" "${THEME_DIR}/${name}/background.png"
+      cp -a "${REO_DIR}/assets/assets-${icon}/icons-1080p" "${THEME_DIR}/${name}/icons"
+      cp -a "${REO_DIR}/assets/assets-${icon}/select-1080p/"*.png "${THEME_DIR}/${name}"
     else
-      cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
+      cp -a "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${name}/icons"
+      cp -a "${REO_DIR}/assets/assets-${icon}/select-${screen}/"*.png "${THEME_DIR}/${name}"
     fi
-    cp -a "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${name}/icons"
-    cp -a "${REO_DIR}/assets/assets-${icon}/select-${screen}/"*.png "${THEME_DIR}/${name}"
 
     # Set theme
     prompt -i "\n Setting ${name} as default..."
@@ -213,10 +214,10 @@ run_dialog() {
 
     tui=$(dialog --backtitle ${Project_Name} \
     --radiolist "Choose your Display Resolution : " 15 40 5 \
-      1 "1080p" on  \
-      2 "1080p ultrawide" off  \
-      3 "2k" off \
-      4 "4k" off --output-fd 1 )
+      1 "1080p (1920x1080)" on  \
+      2 "1080p ultrawide (2560x1080)" off  \
+      3 "2k (2560x1440)" off \
+      4 "4k (3840x2160)" off --output-fd 1 )
       case "$tui" in
         1) screen="1080p"    ;;
         2) screen="1080p_21:9"  ;;
