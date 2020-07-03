@@ -1,3 +1,4 @@
+anonymous
 antergos
 elementary
 korora
