@@ -188,6 +188,7 @@ run_dialog() {
         prompt -e "\n [ Error! ] -> wrong passwords"
         exit 1
     }
+
     tui=$(dialog --backtitle ${Project_Name} \
     --radiolist "Choose your Grub theme : " 15 40 5 \
       1 "Vimix Theme" off  \

@@ -31,6 +31,13 @@ void
 macosx
 haiku
 endeavouros
+pop-os
+mx-linux
+devuan
+4MLinux
+AlpineLinux
+SystemRescueCD
+
 recovery
 restart
 shutdown
@@ -46,9 +53,3 @@ lang
 type
 tz
 unset
-
-
-
-
-
-
