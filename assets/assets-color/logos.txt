@@ -18,6 +18,7 @@ opensuse
 windows
 debian
 parrot
+pop-os
 gnu-linux
 linuxmint
 siduction
