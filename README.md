@@ -9,6 +9,8 @@
 
 ## Flat Design themes for Grub2.
 
+**If you want to use Custom Wallpapers read the "Add_Custom_Wallpaper" file in the backgrounds folder**
+
 ## Install
 
 Usage:  `sudo ./install.sh [OPTIONS...]`
