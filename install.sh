@@ -58,6 +58,7 @@ usage() {
   printf "  %-25s%s\n" "-v, --vimix" "vimix grub theme"
   printf "  %-25s%s\n" "-w, --white" "Install white icon version"
   printf "  %-25s%s\n" "-u, --ultrawide" "Install 2560x1080 background image - not available for slaze grub theme"
+  printf "  %-25s%s\n" "-C, --custom-background" "Use either background.jpg or custom-background.jpg as theme background instead"
   printf "  %-25s%s\n" "-2, --2k" "Install 2k(2560x1440) background image"
   printf "  %-25s%s\n" "-4, --4k" "Install 4k(3840x2160) background image"
   printf "  %-25s%s\n" "-r, --remove" "Remove theme (must add theme name option)"
