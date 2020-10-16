@@ -90,6 +90,12 @@ install() {
     local screen="1080p"
   fi
 
+  if [[ ${custom_background} == 'custom-background' ]]; then
+    local custom_background="custom-background"
+  else
+    local custom_background="default-background"
+  fi
+
   if [[ ${screen} == '1080p_21:9' && ${name} == 'Slaze' ]]; then
     prompt -e "ultrawide 1080p does not support Slaze theme"
     exit 1
@@ -105,6 +111,17 @@ install() {
   if [ "$UID" -eq "$ROOT_UID" ]; then
     clear
 
+    if [[ "${custom_background}" == "custom-background" ]]; then
+      if [[ -f "background.jpg" ]]; then
+        custom_background="background.jpg"
+      elif [[ -f "custom-background.jpg" ]]; then
+        custom_background="custom-background.jpg"
+      else
+        prompt -e "Neither background.jpg, or custom-background.jpg could be found, exiting"
+        exit 0
+      fi
+    fi
+
     # Create themes directory if not exists
     echo -e "\n Checking for the existence of themes directory..."
 
@@ -116,13 +133,24 @@ install() {
 
     cp -a "${REO_DIR}/common/"{*.png,*.pf2} "${THEME_DIR}/${name}"
     cp -a "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${name}/theme.txt"
-    cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
-    if [[ ${screen} == '1080p_21:9' ]]; then
-      cp -a "${REO_DIR}/assets/assets-${icon}/icons-1080p" "${THEME_DIR}/${name}/icons"
-      cp -a "${REO_DIR}/assets/assets-${icon}/select-1080p/"*.png "${THEME_DIR}/${name}"
+
+    if [[ ${custom_background} == "background.jpg" ]] || [[ ${custom_background} == "custom-background.jpg" ]]; then
+      if [[ -f "$custom_background" ]]; then
+        prompt -i "\n Using ${custom_background} as background image..."
+        cp -a "${REO_DIR}/${custom_background}" "${THEME_DIR}/${name}/background.jpg"
+      else
+        prompt -e "$custom_background couldn't be found, exiting"
+        exit 0
+      fi
     else
-      cp -a "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${name}/icons"
-      cp -a "${REO_DIR}/assets/assets-${icon}/select-${screen}/"*.png "${THEME_DIR}/${name}"
+      cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
+      if [[ ${screen} == '1080p_21:9' ]]; then
+        cp -a "${REO_DIR}/assets/assets-${icon}/icons-1080p" "${THEME_DIR}/${name}/icons"
+        cp -a "${REO_DIR}/assets/assets-${icon}/select-1080p/"*.png "${THEME_DIR}/${name}"
+      else
+        cp -a "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${name}/icons"
+        cp -a "${REO_DIR}/assets/assets-${icon}/select-${screen}/"*.png "${THEME_DIR}/${name}"
+      fi
     fi
 
     # Set theme
@@ -159,13 +187,13 @@ install() {
     # persisted execution of the script as root
     if [[ -n ${tui_root_login} ]] ; then
         if [[ -n "${theme}" && -n "${screen}" ]]; then
-            sudo -S <<< ${tui_root_login} $0 --${theme} --${icon} --${screen}
+            sudo -S <<< ${tui_root_login} $0 --${theme} --${icon} --${screen} --${custom_background}
         fi
     else
         read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
         [[ -n "$REPLY" ]] && {
         if [[ -n "${theme}" && -n "${screen}" ]]; then
-            sudo -S <<< $REPLY $0 --${theme} --${icon} --${screen}
+            sudo -S <<< $REPLY $0 --${theme} --${icon} --${screen} --${custom_background}
         fi
         } || {
              operation_canceled
@@ -372,6 +400,12 @@ while [[ $# -ge 1 ]]; do
       ;;
     -u|--ultrawide|--1080p_21:9)
       screen='1080p_21:9'
+      ;;
+    -C|--custom-background|--custom)
+      custom_background='custom-background'
+      ;;
+    -D|--default-background)
+      custom_background='default-background'
       ;;
     -r|--remove)
       remove='true'
