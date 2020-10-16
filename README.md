@@ -13,19 +13,20 @@
 
 Usage:  `sudo ./install.sh [OPTIONS...]`
 
-|  Options:           | Description: |
-|:--------------------|:-------------|
-| -b, --boot          | Install grub theme into `/boot/grub/themes` |
-| -v, --vimix         | Install Vimix grub theme |
-| -s, --stylish       | Install Stylish grub theme |
-| -t, --tela          | Install Tela grub theme |
-| -l, --slaze         | Install Slaze grub theme |
-| -w, --white         | Install using black and white icons |
-| -u, --ultrawide     | Install 21:9 (2560x1080) background image - not available for slaze theme|
-| -2, --2k            | Install 2k (2560x1440) background image |
-| -4, --4k            | Install 4k (3840x2160) background image |
-| -r, --remove [THEME]| Uninstall selected theme |
-| -h, --help          | Show this help |
+|  Options:              | Description: |
+|:-----------------------|:-------------|
+| -b, --boot             | Install grub theme into `/boot/grub/themes` |
+| -v, --vimix            | Install Vimix grub theme |
+| -s, --stylish          | Install Stylish grub theme |
+| -t, --tela             | Install Tela grub theme |
+| -l, --slaze            | Install Slaze grub theme |
+| -w, --white            | Install using black and white icons |
+| -u, --ultrawide        | Install 21:9 (2560x1080) background image - not available for slaze theme|
+| -C, --custom-background| Use either background.jpg or custom-background.jpg as theme background instead
+| -2, --2k               | Install 2k (2560x1440) background image |
+| -4, --4k               | Install 4k (3840x2160) background image |
+| -r, --remove [THEME]   | Uninstall selected theme |
+| -h, --help             | Show this help |
 
 _If no options are used, a user interface will show up instead_
 
@@ -51,10 +52,8 @@ _If no options are used, a user interface will show up instead_
 ### Setting a custom background:
 
  - Find the resolution of your display (1920x1080 -> 1080p, 2560x1080 -> 1080p_21:9, 2560x1440 -> 2k, 3840x2160 -> 4k)
- - Place your custom background inside the correct folder matching your resolution, and make sure it's a .jpg
- - Rename the default wallpaper for your chosen theme to something else
- - Rename the custom wallpaper to the name of the default wallpaper for your chosen theme
- - Run the installer like normal, making sure to select your chosen theme
+ - Place your custom background inside the root of the project, and name it either background.jpg or custom-background.jpg
+ - Run the installer like normal, but with `--custom-background` as en extra argument
 
 ## Screenshots:
 
