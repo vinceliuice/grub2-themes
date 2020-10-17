@@ -31,29 +31,38 @@ Usage:  `sudo ./install.sh [OPTIONS...]`
 _If no options are used, a user interface will show up instead_
 
 ### Examples:
-  - Install Tela theme on 2k display device:
-    - `sudo ./install.sh --tela --2k`
+ - Install Tela theme on 2k display device:
+   - `sudo ./install.sh --tela --2k`
 
-  - Install Tela theme into /boot/grub/themes:
-    - `sudo ./install.sh -b -t`
+ - Install Tela theme into /boot/grub/themes:
+   - `sudo ./install.sh -b -t`
 
-  - Uninstall Tela theme:
-    - `sudo ./install.sh -r -t`
+ - Uninstall Tela theme:
+   - `sudo ./install.sh -r -t`
 
 ## Issues / tweaks:
 
 ### Correcting display resolution:
 
- - On the grub screen, precc `c` to enter the command line
+ - On the grub screen, press `c` to enter the command line
  - Enter `vbeinfo` or `videoinfo` to check available resolutions
  - Open `/etc/default/grub`, and edit `GRUB_GFXMODE=[height]x[width]x32` to match your resolution
  - Finally, run `grub-mkconfig -o /boot/grub/grub.cfg` to update your grub config
 
 ### Setting a custom background:
 
- - Find the resolution of your display (1920x1080 -> 1080p, 2560x1080 -> 1080p_21:9, 2560x1440 -> 2k, 3840x2160 -> 4k)
+ - Find the resolution of your display, and make sure your background matches the resolution
+   - (1920x1080 -> --1080p, 2560x1080 -> --ultrawide, 2560x1440 -> --2k, 3840x2160 -> --4k)
  - Place your custom background inside the root of the project, and name it either background.jpg or custom-background.jpg
- - Run the installer like normal, but with `--custom-background` as en extra argument
+ - Run the installer like normal, but with `--custom-background`, `--[YOUR_RESOLUTION]` and `--[THEME]`
+   - Make sure to replace `[YOUR_RESOLUTION]` with your resolution and `[THEME]` with the theme
+
+## Contributing:
+ - If you made changes to icons, or added a new one:
+   - Delete the existing icon, if there is one
+   - Run `cd assets; ./render-all.sh`
+ - Create a pull request from your branch or fork
+ - If any issues occur, report then to the [issue](https://github.com/vinceliuice/grub2-themes/issues) page
 
 ## Screenshots:
 
