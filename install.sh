@@ -195,7 +195,11 @@ install() {
         read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
         [[ -n "$REPLY" ]] && {
         if [[ -n "${theme}" && -n "${screen}" ]]; then
+          if [[ ${THEME_DIR} == '/boot/grub/themes' ]]; then
+            sudo -S <<< $REPLY $0 --boot --${theme} --${icon} --${screen} --${custom_background}
+          else
             sudo -S <<< $REPLY $0 --${theme} --${icon} --${screen} --${custom_background}
+          fi
         fi
         } || {
              operation_canceled
@@ -342,7 +346,11 @@ remove() {
     read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
     [[ -n "$REPLY" ]] && {
       if [[ -n "${theme}" ]]; then
-        sudo -S <<< $REPLY $0 --remove --${theme}
+        if [[ ${THEME_DIR} == '/boot/grub/themes' ]]; then
+          sudo -S <<< $REPLY $0 --remove --boot --${theme}
+        else
+          sudo -S <<< $REPLY $0 --remove --${theme}
+        fi
       fi
     } || {
       operation_canceled
