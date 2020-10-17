@@ -1,3 +1,0 @@
-select_w
-select_c
-select_e
