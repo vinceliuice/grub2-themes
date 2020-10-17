@@ -139,6 +139,7 @@ install() {
       if [[ -f "$custom_background" ]]; then
         prompt -i "\n Using ${custom_background} as background image..."
         cp -a "${REO_DIR}/${custom_background}" "${THEME_DIR}/${name}/background.jpg"
+        convert -auto-orient "${THEME_DIR}/${name}/background.jpg" "${THEME_DIR}/${name}/background.jpg"
       else
         prompt -e "$custom_background couldn't be found, exiting"
         exit 0
