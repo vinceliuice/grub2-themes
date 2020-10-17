@@ -196,7 +196,7 @@ install() {
         read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
         [[ -n "$REPLY" ]] && {
         if [[ -n "${theme}" && -n "${screen}" ]]; then
-            sudo -S <<< $REPLY $0 --${theme} --${icon} --${screen} --${custom_background}
+          sudo -S <<< $REPLY "$0" "${PROG_ARGS[@]}"
         fi
         } || {
              operation_canceled
@@ -343,7 +343,7 @@ remove() {
     read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
     [[ -n "$REPLY" ]] && {
       if [[ -n "${theme}" ]]; then
-        sudo -S <<< $REPLY $0 --remove --${theme}
+        sudo -S <<< $REPLY "$0" "${PROG_ARGS[@]}"
       fi
     } || {
       operation_canceled
@@ -370,6 +370,7 @@ if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ ! -x /usr/bin/dialog ]] ;  t
 fi
 
 while [[ $# -ge 1 ]]; do
+  PROG_ARGS+=("${1}")
   case "${1}" in
     -b|--boot)
       THEME_DIR="/boot/grub/themes"
@@ -406,9 +407,6 @@ while [[ $# -ge 1 ]]; do
       ;;
     -C|--custom-background|--custom)
       custom_background='custom-background'
-      ;;
-    -D|--default-background)
-      custom_background='default-background'
       ;;
     -r|--remove)
       remove='true'
