@@ -51,6 +51,7 @@ _If no options are used, a user interface will show up instead_
 
 ### Setting a custom background:
 
+ - Make sure you have `imagemagick` installed, or at least something that provides `convert`
  - Find the resolution of your display, and make sure your background matches the resolution
    - (1920x1080 -> --1080p, 2560x1080 -> --ultrawide, 2560x1440 -> --2k, 3840x2160 -> --4k)
  - Place your custom background inside the root of the project, and name it either background.jpg or custom-background.jpg
