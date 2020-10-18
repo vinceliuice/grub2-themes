@@ -189,6 +189,11 @@ install() {
       echo "${gfxmode}" >> /etc/default/grub
     fi
 
+    if grep "GRUB_TERMINAL=console" /etc/default/grub 2>&1 >/dev/null; then
+      #Replace GRUB_TERMINAL
+      sed -i "s|.*GRUB_TERMINAL=console.*|#GRUB_TERMINAL=console|" /etc/default/grub
+    fi
+
     # Update grub config
     prompt -i "\n Updating grub config...\n"
 
