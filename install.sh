@@ -162,21 +162,36 @@ install() {
     # Backup grub config
     cp -an /etc/default/grub /etc/default/grub.bak
 
-    grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_THEME=/d' /etc/default/grub
-    grep "GRUB_GFXMODE=" /etc/default/grub 2>&1 >/dev/null && sed -i '/GRUB_GFXMODE=/d' /etc/default/grub
-
-    # Edit grub config
-    echo "GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"" >> /etc/default/grub
+    if grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null; then
+      #Replace GRUB_THEME
+      sed -i "s|.*GRUB_THEME=.*|GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"|" /etc/default/grub
+    else
+      #Append GRUB_THEME
+      echo "GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"" >> /etc/default/grub
+    fi
 
     # Make sure set the right resolution for grub
     if [[ ${screen} == '1080p' ]]; then
-      echo "GRUB_GFXMODE=1920x1080,auto" >> /etc/default/grub
+      gfxmode="GRUB_GFXMODE=1920x1080,auto"
     elif [[ ${screen} == '1080p_21:9' ]]; then
-      echo "GRUB_GFXMODE=2560x1080,auto" >> /etc/default/grub
+      gfxmode="GRUB_GFXMODE=2560x1080,auto"
     elif [[ ${screen} == '4k' ]]; then
-      echo "GRUB_GFXMODE=3840x2160,auto" >> /etc/default/grub
+      gfxmode="GRUB_GFXMODE=3840x2160,auto"
     elif [[ ${screen} == '2k' ]]; then
-      echo "GRUB_GFXMODE=2560x1440,auto" >> /etc/default/grub
+      gfxmode="GRUB_GFXMODE=2560x1440,auto"
+    fi
+
+    if grep "GRUB_GFXMODE=" /etc/default/grub 2>&1 >/dev/null; then
+      #Replace GRUB_GFXMODE
+      sed -i "s|.*GRUB_GFXMODE=.*|${gfxmode}|" /etc/default/grub
+    else
+      #Append GRUB_GFXMODE
+      echo "${gfxmode}" >> /etc/default/grub
+    fi
+
+    if grep "GRUB_TERMINAL=console" /etc/default/grub 2>&1 >/dev/null; then
+      #Replace GRUB_TERMINAL
+      sed -i "s|.*GRUB_TERMINAL=console.*|#GRUB_TERMINAL=console|" /etc/default/grub
     fi
 
     # Update grub config
