@@ -205,7 +205,7 @@ install() {
     # persisted execution of the script as root
     if [[ -n ${tui_root_login} ]] ; then
         if [[ -n "${theme}" && -n "${screen}" ]]; then
-            sudo -S <<< ${tui_root_login} $0 --${theme} --${icon} --${screen} --${custom_background}
+            sudo -S <<< ${tui_root_login} $0 "${PROG_ARGS[@]}"
         fi
     else
         read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
