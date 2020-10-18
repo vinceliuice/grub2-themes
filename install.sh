@@ -198,6 +198,7 @@ install() {
     prompt -i "\n Updating grub config...\n"
 
     updating_grub
+    prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
   else
     # Error message
     prompt -e "\n [ Error! ] -> Run me as root! "
@@ -205,13 +206,13 @@ install() {
     # persisted execution of the script as root
     if [[ -n ${tui_root_login} ]] ; then
         if [[ -n "${theme}" && -n "${screen}" ]]; then
-            sudo -S <<< ${tui_root_login} $0 "${PROG_ARGS[@]}"
+            sudo -S <<< ${tui_root_login} $0 --${theme} --${icon} --${screen}
         fi
     else
         read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
         [[ -n "$REPLY" ]] && {
         if [[ -n "${theme}" && -n "${screen}" ]]; then
-          sudo -S <<< $REPLY "$0" "${PROG_ARGS[@]}"
+          sudo -S <<< $REPLY "$0" --${theme} --${icon} --${screen}
         fi
         } || {
              operation_canceled
@@ -294,7 +295,6 @@ updating_grub() {
 
   # Success message
   prompt -s "\n * All done!"
-  prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
 }
 
 install_dialog() {
