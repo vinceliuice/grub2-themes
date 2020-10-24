@@ -52,7 +52,7 @@ while read -r i; do
               "--export-dpi=$EXPORT_DPI" \
               "--export-id-only" \
               "--export-filename=$ASSETS_DIR/$i.png" "$SRC_FILE" >/dev/null
-    $OPTIPNG -o7 --quiet "$ASSETS_DIR/$i.png"
+    #$OPTIPNG -o7 --quiet "$ASSETS_DIR/$i.png"
   fi
 done < "$INDEX"
 
