@@ -43,7 +43,7 @@ prompt () {
   esac
 }
 
-# Check command avalibility
+# Check command availability
 function has_command() {
   command -v $1 > /dev/null
 }
@@ -108,7 +108,7 @@ install() {
     local icon="color"
   fi
 
-  # Checking for root access and proceed if it is present
+  # Check for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
     clear
 
@@ -123,7 +123,7 @@ install() {
       fi
     fi
 
-    # Create themes directory if not exists
+    # Create themes directory if it didn't exist
     echo -e "\n Checking for the existence of themes directory..."
 
     [[ -d "${THEME_DIR}/${name}" ]] && rm -rf "${THEME_DIR}/${name}"
@@ -170,7 +170,7 @@ install() {
       echo "GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"" >> /etc/default/grub
     fi
 
-    # Make sure set the right resolution for grub
+    # Make sure the right resolution for grub is set
     if [[ ${screen} == '1080p' ]]; then
       gfxmode="GRUB_GFXMODE=1920x1080,auto"
     elif [[ ${screen} == '1080p_21:9' ]]; then
@@ -208,7 +208,7 @@ install() {
     # Error message
     prompt -e "\n [ Error! ] -> Run me as root! "
 
-    # persisted execution of the script as root
+    # Persistent execution of the script as root
     if [[ -n ${tui_root_login} ]] ; then
         if [[ -n "${theme}" && -n "${screen}" ]]; then
             sudo -S <<< ${tui_root_login} $0 --${theme} --${icon} --${screen}
@@ -333,7 +333,7 @@ remove() {
     exit 0
   fi
 
-  # Checking for root access and proceed if it is present
+  # Check for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
     echo -e "\n Checking for the existence of themes directory..."
     if [[ -d "${THEME_DIR}/${name}" ]]; then
@@ -359,7 +359,7 @@ remove() {
     # Error message
     prompt -e "\n [ Error! ] -> Run me as root "
 
-    # persisted execution of the script as root
+    # Persistent execution of the script as root
     read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
     [[ -n "$REPLY" ]] && {
       if [[ -n "${theme}" ]]; then
@@ -371,7 +371,7 @@ remove() {
   fi
 }
 
-# show terminal user interface for better use
+# Show terminal user interface for better use
 if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ -x /usr/bin/dialog ]] ; then
   run_dialog
 fi
