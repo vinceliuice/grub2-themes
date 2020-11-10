@@ -110,7 +110,6 @@ install() {
 
   # Check for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
-
     clear
 
     if [[ "${custom_background}" == "custom-background" ]]; then
@@ -133,28 +132,29 @@ install() {
     # Copy theme
     prompt -i "\n Installing ${name} ${icon} ${screen} theme..."
 
-    cp -a "${REO_DIR}/common/"{*.png,*.pf2} "${THEME_DIR}/${name}"
-    cp -a "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${name}/theme.txt"
+    # Don't preserve ownership because the owner will be root, and that causes the script to crash if it is ran from terminal by sudo
+    cp -a --no-preserve=ownership "${REO_DIR}/common/"{*.png,*.pf2} "${THEME_DIR}/${name}"
+    cp -a --no-preserve=ownership "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${name}/theme.txt"
 
     if [[ ${custom_background} == "background.jpg" ]] || [[ ${custom_background} == "custom-background.jpg" ]]; then
       if [[ -f "$custom_background" ]]; then
         prompt -i "\n Using ${custom_background} as background image..."
-        cp -a "${REO_DIR}/${custom_background}" "${THEME_DIR}/${name}/background.jpg"
+        cp -a --no-preserve=ownership "${REO_DIR}/${custom_background}" "${THEME_DIR}/${name}/background.jpg"
         convert -auto-orient "${THEME_DIR}/${name}/background.jpg" "${THEME_DIR}/${name}/background.jpg"
       else
         prompt -e "$custom_background couldn't be found, exiting"
         exit 0
       fi
     else
-      cp -a "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
+      cp -a --no-preserve=ownership "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${name}/background.jpg"
     fi
 
     if [[ ${screen} == '1080p_21:9' ]]; then
-      cp -a "${REO_DIR}/assets/assets-${icon}/icons-1080p" "${THEME_DIR}/${name}/icons"
-      cp -a "${REO_DIR}/assets/assets-${icon}/select-1080p/"*.png "${THEME_DIR}/${name}"
+      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-1080p" "${THEME_DIR}/${name}/icons"
+      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/select-1080p/"*.png "${THEME_DIR}/${name}"
     else
-      cp -a "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${name}/icons"
-      cp -a "${REO_DIR}/assets/assets-${icon}/select-${screen}/"*.png "${THEME_DIR}/${name}"
+      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${name}/icons"
+      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/select-${screen}/"*.png "${THEME_DIR}/${name}"
     fi
 
     # Set theme
@@ -206,41 +206,71 @@ install() {
     updating_grub
     prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
   else
-    # Error message
-    prompt -e "\n [ Error! ] -> Run me as root! "
+    #Check if password is cached (if cache timestamp not expired yet)
+    sudo -n true 2> /dev/null && echo
 
-    # Persistent execution of the script as root
-    if [[ -n ${tui_root_login} ]] ; then
-        if [[ -n "${theme}" && -n "${screen}" ]]; then
-            sudo -S <<< ${tui_root_login} $0 --${theme} --${icon} --${screen}
-        fi
+    if [[ $? == 0 ]]; then
+      #No need to ask for password
+      sudo "$0" --${theme} --${icon} --${screen}
+
     else
-        read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
-        [[ -n "$REPLY" ]] && {
-        if [[ -n "${theme}" && -n "${screen}" ]]; then
-          sudo -S <<< $REPLY "$0" --${theme} --${icon} --${screen}
-        fi
-        } || {
-             operation_canceled
-        }
-    fi
+      #Ask for password
 
+      if [[ -n ${tui_root_login} ]] ; then
+        if [[ -n "${theme}" && -n "${screen}" ]]; then
+          sudo -S $0 --${theme} --${icon} --${screen} <<< ${tui_root_login}
+        fi
+      else
+        prompt -e "\n [ Error! ] -> Run me as root! "
+        read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
+
+        sudo -S echo <<< $REPLY 2> /dev/null && echo
+                    
+        if [[ $? == 0 ]]; then
+          #Correct password, use with sudo's stdin
+          sudo -S "$0" --${theme} --${icon} --${screen} <<< ${REPLY}
+        else
+          #block for 3 seconds before allowing another attempt
+          sleep 3
+          prompt -e "\n [ Error! ] -> Incorrect password!\n"
+          exit 1
+        fi
+      fi
+    fi
  fi
 }
 
 run_dialog() {
   if [[ -x /usr/bin/dialog ]]; then
-    tui_root_login=$(dialog --backtitle ${Project_Name} \
-          --title  "ROOT LOGIN" \
-          --insecure \
-          --passwordbox  "require root permission" 8 50 \
-          --output-fd 1 )
-    [[ -z ${tui_root_login} ]] && exit ${UID}
-    sudo -S <<< $tui_root_login $0
-    test $? -eq 0 || {
-        prompt -e "\n [ Error! ] -> wrong passwords"
-        exit 1
-    }
+    if [[ "$UID" -ne "$ROOT_UID"  ]]; then
+      #Check if password is cached (if cache timestamp not expired yet)
+      sudo -n true 2> /dev/null && echo
+
+      if [[ $? == 0 ]]; then
+        #No need to ask for password
+        sudo $0
+      else
+        #Ask for password
+        tui_root_login=$(dialog --backtitle ${Project_Name} \
+        --title  "ROOT LOGIN" \
+        --insecure \
+        --passwordbox  "require root permission" 8 50 \
+        --output-fd 1 )
+        
+        sudo -S echo <<< $tui_root_login 2> /dev/null && echo
+        
+        if [[ $? == 0 ]]; then
+          #Correct password, use with sudo's stdin
+          sudo -S "$0" <<< $tui_root_login
+        else
+          #block for 3 seconds before allowing another attempt
+          sleep 3
+          clear
+          prompt -e "\n [ Error! ] -> Incorrect password!\n"
+          exit 1
+        fi
+      fi
+    fi
 
     tui=$(dialog --backtitle ${Project_Name} \
     --radiolist "Choose your Grub theme : " 15 40 5 \
@@ -357,18 +387,30 @@ remove() {
     updating_grub
 
   else
-    # Error message
-    prompt -e "\n [ Error! ] -> Run me as root "
+    #Check if password is cached (if cache timestamp not expired yet)
+    sudo -n true 2> /dev/null && echo
 
-    # Persistent execution of the script as root
-    read -p "[ trusted ] specify the root password : " -t${MAX_DELAY} -s
-    [[ -n "$REPLY" ]] && {
-      if [[ -n "${theme}" ]]; then
-        sudo -S <<< $REPLY "$0" "${PROG_ARGS[@]}"
+    if [[ $? == 0 ]]; then
+      #No need to ask for password
+      sudo "$0" "${PROG_ARGS[@]}"
+    else
+      #Ask for password
+      prompt -e "\n [ Error! ] -> Run me as root! "
+      read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
+
+      sudo -S echo <<< $REPLY 2> /dev/null && echo
+        
+      if [[ $? == 0 ]]; then
+        #Correct password, use with sudo's stdin
+        sudo -S "$0" "${PROG_ARGS[@]}" <<< $REPLY
+      else
+        #block for 3 seconds before allowing another attempt
+        sleep 3
+        clear
+        prompt -e "\n [ Error! ] -> Incorrect password!\n"
+        exit 1
       fi
-    } || {
-      operation_canceled
-    }
+    fi
   fi
 }
 
@@ -378,16 +420,29 @@ if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ -x /usr/bin/dialog ]] ; then
 fi
 
 if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ ! -x /usr/bin/dialog ]] ;  then
-  # Error message
-  prompt -e "\n [ Error! ] -> Run me as root! "
+  #Check if password is cached (if cache timestamp not expired yet)
+  sudo -n true 2> /dev/null && echo
 
-  # persisted execution of the script as root
-  read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
-  [[ -n "$REPLY" ]]&& {
-   exec sudo -S <<< $REPLY $0
-  }|| {
-    operation_canceled
-  }
+  if [[ $? == 0 ]]; then
+    #No need to ask for password
+    exec sudo $0
+  else
+    #Ask for password
+    prompt -e "\n [ Error! ] -> Run me as root! "
+    read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
+
+    sudo -S echo <<< $REPLY 2> /dev/null && echo
+                    
+    if [[ $? == 0 ]]; then
+      #Correct password, use with sudo's stdin
+      sudo $0 <<< $REPLY
+    else
+      #block for 3 seconds before allowing another attempt
+      sleep 3
+      prompt -e "\n [ Error! ] -> Incorrect password!\n"
+      exit 1
+    fi
+  fi
 fi
 
 while [[ $# -ge 1 ]]; do
