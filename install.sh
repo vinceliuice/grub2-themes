@@ -26,7 +26,7 @@ b_CGSC=" \033[1;32m"                                # bold success color
 b_CRER=" \033[1;31m"                                # bold error color
 b_CWAR=" \033[1;33m"                                # bold warning color
 
-# echo like ...  with  flag type  and display message  colors
+# echo like ... with flag type and display message colors
 prompt () {
   case ${1} in
     "-s"|"--success")
@@ -91,15 +91,15 @@ install() {
     local screen="1080p"
   fi
 
+  if [[ ${screen} == '1080p_21:9' && ${name} == 'Slaze' ]]; then
+    prompt -e "ultrawide 1080p does not support Slaze theme"
+    exit 1
+  fi
+
   if [[ ${custom_background} == 'custom-background' ]]; then
     local custom_background="custom-background"
   else
     local custom_background="default-background"
-  fi
-
-  if [[ ${screen} == '1080p_21:9' && ${name} == 'Slaze' ]]; then
-    prompt -e "ultrawide 1080p does not support Slaze theme"
-    exit 1
   fi
 
   if [[ ${icon} == 'white' ]]; then
@@ -110,6 +110,7 @@ install() {
 
   # Check for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
+
     clear
 
     if [[ "${custom_background}" == "custom-background" ]]; then
@@ -214,7 +215,7 @@ install() {
             sudo -S <<< ${tui_root_login} $0 --${theme} --${icon} --${screen}
         fi
     else
-        read -p "[ Trusted ] Specify the root password : " -t${MAX_DELAY} -s
+        read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
         [[ -n "$REPLY" ]] && {
         if [[ -n "${theme}" && -n "${screen}" ]]; then
           sudo -S <<< $REPLY "$0" --${theme} --${icon} --${screen}
