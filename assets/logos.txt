@@ -37,6 +37,8 @@ devuan
 4MLinux
 AlpineLinux
 SystemRescueCD
+regolith
+neon
 
 recovery
 restart
