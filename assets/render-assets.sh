@@ -64,6 +64,7 @@ if [[ "$EXPORT_TYPE" == "icons" ]]; then
   cp -a gnu-linux.png lfs.png
   cp -a manjaro.png Manjaro.i686.png
   cp -a manjaro.png Manjaro.x86_64.png
+  cp -a pop-os.png pop.png
   cp -a driver.png memtest.png
 fi
 exit 0
