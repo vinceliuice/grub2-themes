@@ -415,7 +415,7 @@ remove() {
 }
 
 # Show terminal user interface for better use
-if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ -x /usr/bin/dialog ]] ; then
+if [[ $# -lt 1 ]] && [[ -x /usr/bin/dialog ]] ; then
   run_dialog
 fi
 
