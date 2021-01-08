@@ -22,6 +22,7 @@ Usage:  `sudo ./install.sh [OPTIONS...]`
 | -l, --slaze            | Install Slaze grub theme |
 | -w, --white            | Install using black and white icons |
 | -u, --ultrawide        | Install 21:9 (2560x1080) background image - not available for slaze theme|
+| -U, --ultrawide2k      | Install 21:9 (3440x1440) background image - not available for slaze theme|
 | -C, --custom-background| Use either background.jpg or custom-background.jpg as theme background instead
 | -2, --2k               | Install 2k (2560x1440) background image |
 | -4, --4k               | Install 4k (3840x2160) background image |
@@ -53,7 +54,7 @@ _If no options are used, a user interface will show up instead_
 
  - Make sure you have `imagemagick` installed, or at least something that provides `convert`
  - Find the resolution of your display, and make sure your background matches the resolution
-   - (1920x1080 -> --1080p, 2560x1080 -> --ultrawide, 2560x1440 -> --2k, 3840x2160 -> --4k)
+   - (1920x1080 -> --1080p, 2560x1080 -> --ultrawide, 2560x1440 -> --2k, 3440x1440 -> --ultrawide2k, 3840x2160 -> --4k)
  - Place your custom background inside the root of the project, and name it either background.jpg or custom-background.jpg
  - Run the installer like normal, but with `--custom-background`, `--[YOUR_RESOLUTION]` and `--[THEME]`
    - Make sure to replace `[YOUR_RESOLUTION]` with your resolution and `[THEME]` with the theme

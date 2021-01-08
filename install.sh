@@ -58,6 +58,7 @@ usage() {
   printf "  %-25s%s\n" "-v, --vimix" "vimix grub theme"
   printf "  %-25s%s\n" "-w, --white" "Install white icon version"
   printf "  %-25s%s\n" "-u, --ultrawide" "Install 2560x1080 background image - not available for slaze grub theme"
+  printf "  %-25s%s\n" "-U, --ultrawide2k" "Install 3440x1440 background image"
   printf "  %-25s%s\n" "-C, --custom-background" "Use either background.jpg or custom-background.jpg as theme background instead"
   printf "  %-25s%s\n" "-2, --2k" "Install 2k(2560x1440) background image"
   printf "  %-25s%s\n" "-4, --4k" "Install 4k(3840x2160) background image"
@@ -87,12 +88,17 @@ install() {
     local screen="4k"
   elif [[ ${screen} == '1080p_21:9' ]]; then
     local screen="1080p_21:9"
+  elif [[ ${screen} == '1440p_21:9' ]]; then
+    local screen="1440p_21:9"
   else
     local screen="1080p"
   fi
 
   if [[ ${screen} == '1080p_21:9' && ${name} == 'Slaze' ]]; then
     prompt -e "ultrawide 1080p does not support Slaze theme"
+    exit 1
+  elif [[ ${screen} == '1440p_21:9' && ${name} == 'Slaze' ]]; then
+    prompt -e "ultrawide 1440p does not support Slaze theme"
     exit 1
   fi
 
@@ -152,6 +158,9 @@ install() {
     if [[ ${screen} == '1080p_21:9' ]]; then
       cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-1080p" "${THEME_DIR}/${name}/icons"
       cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/select-1080p/"*.png "${THEME_DIR}/${name}"
+    elif [[ ${screen} == '1440p_21:9' ]]; then
+      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-2k" "${THEME_DIR}/${name}/icons"
+      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/select-2k/"*.png "${THEME_DIR}/${name}"
     else
       cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${name}/icons"
       cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/select-${screen}/"*.png "${THEME_DIR}/${name}"
@@ -180,6 +189,8 @@ install() {
       gfxmode="GRUB_GFXMODE=3840x2160,auto"
     elif [[ ${screen} == '2k' ]]; then
       gfxmode="GRUB_GFXMODE=2560x1440,auto"
+    elif [[ ${screen} == '1440p_21:9' ]]; then
+      gfxmode="GRUB_GFXMODE=3440x1440,auto"
     fi
 
     if grep "GRUB_GFXMODE=" /etc/default/grub 2>&1 >/dev/null; then
@@ -301,12 +312,14 @@ run_dialog() {
       1 "1080p (1920x1080)" on  \
       2 "1080p ultrawide (2560x1080)" off  \
       3 "2k (2560x1440)" off \
-      4 "4k (3840x2160)" off --output-fd 1 )
+      4 "4k (3840x2160)" off \
+      5 "1440p ultrawide (3440x1440)" off --output-fd 1 )
       case "$tui" in
         1) screen="1080p"    ;;
         2) screen="1080p_21:9"  ;;
         3) screen="2k"       ;;
         4) screen="4k"       ;;
+        5) screen="1440p_21:9";;
         *) operation_canceled ;;
      esac
   fi
@@ -480,6 +493,9 @@ while [[ $# -ge 1 ]]; do
       ;;
     -u|--ultrawide|--1080p_21:9)
       screen='1080p_21:9'
+      ;;
+    -U|--ultrawide2k|--1440p_21:9)
+      screen='1440p_21:9'
       ;;
     -C|--custom-background|--custom)
       custom_background='custom-background'
