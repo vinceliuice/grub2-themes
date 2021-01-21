@@ -76,10 +76,8 @@ install() {
   elif [[ ${theme} == 'vimix' ]]; then
     local name="Vimix"
   else
-    prompt -i "\n Run ./install.sh -h for help or install dialog"
-    install_dialog
-    prompt -i "\n Run ./install.sh again!"
-    exit 0
+    prompt -i "\n Run ./install.sh -h for help!"
+    install_dialog && run_dialog
   fi
 
   if [[ ${screen} == '2k' ]]; then
@@ -348,7 +346,7 @@ updating_grub() {
 
 install_dialog() {
   if [ ! "$(which dialog 2> /dev/null)" ]; then
-    prompt -i "\n 'dialog' needs to be installed for this shell"
+    prompt -i "\n 'dialog' need to be installed for this shell"
     if has_command zypper; then
       sudo zypper in dialog
     elif has_command apt-get; then
@@ -429,7 +427,7 @@ remove() {
 
 # Show terminal user interface for better use
 if [[ $# -lt 1 ]] && [[ -x /usr/bin/dialog ]] ; then
-  run_dialog
+  install_dialog && run_dialog
 fi
 
 if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ ! -x /usr/bin/dialog ]] ;  then
