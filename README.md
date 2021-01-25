@@ -16,30 +16,23 @@ Usage:  `sudo ./install.sh [OPTIONS...]`
 |  Options:              | Description: |
 |:-----------------------|:-------------|
 | -b, --boot             | Install grub theme into `/boot/grub/themes` |
-| -v, --vimix            | Install Vimix grub theme |
-| -s, --stylish          | Install Stylish grub theme |
-| -t, --tela             | Install Tela grub theme |
-| -l, --slaze            | Install Slaze grub theme |
-| -w, --white            | Install using black and white icons |
-| -u, --ultrawide        | Install 21:9 (2560x1080) background image - not available for slaze theme|
-| -U, --ultrawide2k      | Install 21:9 (3440x1440) background image - not available for slaze theme|
-| -C, --custom-background| Use either background.jpg or custom-background.jpg as theme background instead
-| -2, --2k               | Install 2k (2560x1440) background image |
-| -4, --4k               | Install 4k (3840x2160) background image |
+| -t, --theme            | theme variant(s) [tela/vimix/stylish/slaze/whitesur] (default is tela)"
+| -i, --icon             | icon variant(s) [color/white/whitesur] (default is color)"
+| -s, --screen           | screen resolution variant(s) [1080p/2k/4k/ultrawide/ultrawide2k] (default is 1080p)"
 | -r, --remove [THEME]   | Uninstall selected theme |
 | -h, --help             | Show this help |
 
-_If no options are used, a user interface will show up instead_
+_If no options are used, a user interface `dialog` will show up instead_
 
 ### Examples:
  - Install Tela theme on 2k display device:
-   - `sudo ./install.sh --tela --2k`
+   - `sudo ./install.sh -t tela -s 2k`
 
  - Install Tela theme into /boot/grub/themes:
-   - `sudo ./install.sh -b -t`
+   - `sudo ./install.sh -b -t tela`
 
  - Uninstall Tela theme:
-   - `sudo ./install.sh -r -t`
+   - `sudo ./install.sh -r -t tela`
 
 ## Issues / tweaks:
 
@@ -55,8 +48,8 @@ _If no options are used, a user interface will show up instead_
  - Make sure you have `imagemagick` installed, or at least something that provides `convert`
  - Find the resolution of your display, and make sure your background matches the resolution
    - (1920x1080 -> --1080p, 2560x1080 -> --ultrawide, 2560x1440 -> --2k, 3440x1440 -> --ultrawide2k, 3840x2160 -> --4k)
- - Place your custom background inside the root of the project, and name it either background.jpg or custom-background.jpg
- - Run the installer like normal, but with `--custom-background`, `--[YOUR_RESOLUTION]` and `--[THEME]`
+ - Place your custom background inside the root of the project, and name it `background.jpg`
+ - Run the installer like normal, but with -s `[YOUR_RESOLUTION]` and -t `[THEME]` and -i `[ICON]`
    - Make sure to replace `[YOUR_RESOLUTION]` with your resolution and `[THEME]` with the theme
 
 ## Contributing:
