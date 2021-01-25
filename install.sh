@@ -209,6 +209,13 @@ install() {
       sed -i "s|.*GRUB_TERMINAL_OUTPUT=.*|#GRUB_TERMINAL_OUTPUT=console|" /etc/default/grub
     fi
 
+    # For Kali linux
+    if [[ -f "/etc/default/grub.d/kali-themes.cfg" ]]; then
+      cp -an /etc/default/grub.d/kali-themes.cfg /etc/default/grub.d/kali-themes.cfg.bak
+      sed -i "s|.*GRUB_GFXMODE=.*|${gfxmode}|" /etc/default/grub.d/kali-themes.cfg
+      sed -i "s|.*GRUB_THEME=.*|GRUB_THEME=\"${THEME_DIR}/${name}/theme.txt\"|" /etc/default/grub.d/kali-themes.cfg
+    fi
+
     # Update grub config
     prompt -i "\n Updating grub config...\n"
 
@@ -386,10 +393,18 @@ remove() {
     fi
 
     # Backup grub config
-    if [[ -f /etc/default/grub.bak ]]; then
+    if [[ -f "/etc/default/grub.bak" ]]; then
       rm -rf /etc/default/grub && mv /etc/default/grub.bak /etc/default/grub
     else
       prompt -i "\n grub.bak not exist!"
+      exit 0
+    fi
+
+    # For Kali linux
+    if [[ -f "/etc/default/grub.d/kali-themes.cfg.bak" ]]; then
+      rm -rf /etc/default/grub.d/kali-themes.cfg && mv /etc/default/grub.d/kali-themes.cfg.bak /etc/default/grub.d/kali-themes.cfg
+    else
+      prompt -i "\n kali-themes.cfg.bak not exist!"
       exit 0
     fi
 
