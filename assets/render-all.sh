@@ -1,14 +1,11 @@
 #!/bin/bash
 
-COLORS=("color" "white")
-TYPES=("icons" "select")
+THEMES=("color" "white" "whitesur" "select")
 RESOLUTIONS=("1080p" "2k" "4k")
 
-for COLOR in "${COLORS[@]}"; do
-  for TYPE in "${TYPES[@]}"; do
-    for RESOLUTION in "${RESOLUTIONS[@]}"; do
-      echo "./render-assets.sh \"$COLOR\" \"$TYPE\" \"$RESOLUTION\": "
-      ./render-assets.sh "$COLOR" "$TYPE" "$RESOLUTION"
-    done
+for theme in "${THEMES[@]}"; do
+  for resolution in "${RESOLUTIONS[@]}"; do
+    echo "./render-assets.sh \"$theme\" \"$resolution\": "
+    ./render-assets.sh "$theme" "$resolution"
   done
 done
