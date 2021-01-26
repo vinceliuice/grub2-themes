@@ -17,8 +17,8 @@ terminal-border: "0"
 + boot_menu {
   left = 30%
   top = 30%
-  width = 45%
-  height = 60%
+  width = 40%
+  height = 40%
   item_font = "DejaVu Sans Regular 24"
   item_color = "#cccccc"
   selected_item_color = "#ffffff"
@@ -35,7 +35,7 @@ terminal-border: "0"
 + label {
   top = 82%
   left = 32%
-  width = 30%
+  width = 36%
   align = "center"
   id = "__timeout__"
   text = "Booting in %d seconds"
