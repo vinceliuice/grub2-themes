@@ -13,7 +13,7 @@
    viewBox="0 0 95.25 105.83"
    id="svg453"
    sodipodi:docname="logos-white.svg"
-   inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07, custom)">
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)">
   <metadata
      id="metadata457">
     <rdf:RDF>
@@ -42,7 +42,7 @@
      inkscape:zoom="1.2993087"
      inkscape:cx="284.46505"
      inkscape:cy="173.67381"
-     inkscape:window-x="-70"
+     inkscape:window-x="0"
      inkscape:window-y="31"
      inkscape:window-maximized="0"
      inkscape:current-layer="svg453"
@@ -1358,5 +1358,23 @@
        stroke-width=".52917"
        style="paint-order:stroke fill markers"
        id="rect450" />
+  </g>
+  <g
+     inkscape:label="#artix"
+     id="artix"
+     transform="matrix(0.13953898,0,0,0.13953898,71.913326,82.296988)"
+     style="stroke-width:0.999258;stroke-miterlimit:4;stroke-dasharray:none">
+    <circle
+       style="opacity:0;fill:#10a0cc;fill-opacity:1;stroke:none;stroke-width:0.999258;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.00190358"
+       id="path1987"
+       cx="30.427076"
+       cy="30.427086"
+       r="30.337999" />
+    <path
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:17.6389px;line-height:1.25;font-family:'Bai Jamjuree';-inkscape-font-specification:'Bai Jamjuree';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;display:inline;opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.999258;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 30.764023,6.8041749 -8.03465,16.4739301 22.11234,12.389424 z M 20.302133,28.255063 7.9752327,53.529489 44.553363,38.417752 Z m 26.95597,12.367205 -11.53624,6.622851 17.83147,6.28437 z"
+       id="path4885-0"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cccccccccccc" />
   </g>
 </svg>
