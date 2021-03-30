@@ -39,6 +39,7 @@ AlpineLinux
 SystemRescueCD
 regolith
 neon
+artix
 
 recovery
 restart
