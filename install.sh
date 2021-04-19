@@ -68,11 +68,11 @@ install() {
   local icon=${2}
   local screen=${3}
 
-  if [[ ${screen} == 'ultrawide' && ${theme} == 'Slaze' ]]; then
-    prompt -e "ultrawide 1080p does not support Slaze theme"
+  if [[ ${screen} == 'ultrawide' && ( ${theme} == 'slaze' || ${theme} == 'whitesur' ) ]]; then
+    prompt -e "ultrawide 1080p does not support Slaze and WhiteSur theme"
     exit 1
-  elif [[ ${screen} == 'ultrawide2k' && ${theme} == 'Slaze' ]]; then
-    prompt -e "ultrawide 1440p does not support Slaze theme"
+  elif [[ ${screen} == 'ultrawide2k' && ( ${theme} == 'slaze' || ${theme} == 'whitesur' ) ]]; then
+    prompt -e "ultrawide 1440p does not support Slaze and WhiteSur theme"
     exit 1
   fi
 
