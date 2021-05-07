@@ -117,6 +117,18 @@ install() {
 
     # Backup grub config
     cp -an /etc/default/grub /etc/default/grub.bak
+    
+    # Fedora workaround to fix the missing unicode.pf2 file (tested on fedora 34): https://bugzilla.redhat.com/show_bug.cgi?id=1739762
+    # This occurs when we add a theme on grub2 with Fedora.
+    if has_command dnf; then
+      if grep "GRUB_FONT=" /etc/default/grub 2>&1 >/dev/null; then
+        #Replace GRUB_FONT
+        sed -i "s|.*GRUB_FONT=.*|GRUB_FONT=/boot/efi/EFI/fedora/fonts/unicode.pf2|" /etc/default/grub
+      else
+        #Append GRUB_FONT
+        echo "GRUB_FONT=/boot/efi/EFI/fedora/fonts/unicode.pf2" >> /etc/default/grub
+      fi 
+    fi 
 
     if grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null; then
       #Replace GRUB_THEME
