@@ -127,8 +127,8 @@ install() {
       else
         #Append GRUB_FONT
         echo "GRUB_FONT=/boot/efi/EFI/fedora/fonts/unicode.pf2" >> /etc/default/grub
-      fi 
-    fi 
+      fi
+    fi
 
     if grep "GRUB_THEME=" /etc/default/grub 2>&1 >/dev/null; then
       #Replace GRUB_THEME
@@ -555,4 +555,4 @@ elif [[ "${remove:-}" == 'true' ]]; then
   done
 fi
 
-exit 0
+exit 1

@@ -76,3 +76,7 @@ _If no options are used, a user interface `dialog` will show up instead_
 ### Slaze grub theme:
 
 ![Slaze](screenshots/grub-theme-slaze.jpg?raw=true)
+
+## Documents
+http://wiki.rosalab.ru/en/index.php/Grub2_theme_/_reference
+http://wiki.rosalab.ru/en/index.php/Grub2_theme_tutorial

@@ -40,6 +40,7 @@ SystemRescueCD
 regolith
 neon
 artix
+kernel
 
 recovery
 restart
