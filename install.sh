@@ -56,8 +56,8 @@ usage() {
   printf "%s\n" "Usage: ${0##*/} [OPTIONS...]"
   printf "\n%s\n" "OPTIONS:"
   printf "  %-25s%s\n" "-b, --boot" "install grub theme into /boot/grub/themes"
-  printf "  %-25s%s\n" "-t, --theme" "theme variant(s) [tela|vimix|stylish|slaze] (default is tela)"
-  printf "  %-25s%s\n" "-i, --icon" "icon variant(s) [color|white] (default is color)"
+  printf "  %-25s%s\n" "-t, --theme" "theme variant(s) [tela|vimix|stylish|slaze|whitesur] (default is tela)"
+  printf "  %-25s%s\n" "-i, --icon" "icon variant(s) [color|white|whitesur] (default is color)"
   printf "  %-25s%s\n" "-s, --screen" "screen display variant(s) [1080p|2k|4k|ultrawide|ultrawide2k] (default is 1080p)"
   printf "  %-25s%s\n" "-r, --remove" "Remove theme (must add theme name option)"
   printf "  %-25s%s\n" "-h, --help" "Show this help"
@@ -68,11 +68,11 @@ install() {
   local icon=${2}
   local screen=${3}
 
-  if [[ ${screen} == 'ultrawide' && ${theme} == 'Slaze' ]]; then
-    prompt -e "ultrawide 1080p does not support Slaze theme"
+  if [[ ${screen} == 'ultrawide' && ( ${theme} == 'slaze' || ${theme} == 'whitesur' ) ]]; then
+    prompt -e "ultrawide 1080p does not support Slaze and WhiteSur theme"
     exit 1
-  elif [[ ${screen} == 'ultrawide2k' && ${theme} == 'Slaze' ]]; then
-    prompt -e "ultrawide 1440p does not support Slaze theme"
+  elif [[ ${screen} == 'ultrawide2k' && ( ${theme} == 'slaze' || ${theme} == 'whitesur' ) ]]; then
+    prompt -e "ultrawide 1440p does not support Slaze and WhiteSur theme"
     exit 1
   fi
 
