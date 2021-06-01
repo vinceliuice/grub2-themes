@@ -117,7 +117,7 @@ install() {
 
     # Backup grub config
     cp -an /etc/default/grub /etc/default/grub.bak
-    
+
     # Fedora workaround to fix the missing unicode.pf2 file (tested on fedora 34): https://bugzilla.redhat.com/show_bug.cgi?id=1739762
     # This occurs when we add a theme on grub2 with Fedora.
     if has_command dnf; then
@@ -231,9 +231,9 @@ run_dialog() {
         --insecure \
         --passwordbox  "require root permission" 8 50 \
         --output-fd 1 )
-        
+
         sudo -S echo <<< $tui_root_login 2> /dev/null && echo
-        
+
         if [[ $? == 0 ]]; then
           #Correct password, use with sudo's stdin
           sudo -S "$0" <<< $tui_root_login
@@ -375,7 +375,7 @@ remove() {
       read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
 
       sudo -S echo <<< $REPLY 2> /dev/null && echo
-        
+
       if [[ $? == 0 ]]; then
         #Correct password, use with sudo's stdin
         sudo -S "$0" "${PROG_ARGS[@]}" <<< $REPLY
@@ -391,34 +391,36 @@ remove() {
 }
 
 # Show terminal user interface for better use
-if [[ $# -lt 1 ]] && [[ -x /usr/bin/dialog ]] ; then
-  install_dialog && run_dialog
-fi
+if [[ $# -eq 0 ]]; then
+  if [[ ! -x /usr/bin/dialog ]];  then
+    if [[ $UID -ne $ROOT_UID ]];  then
+      #Check if password is cached (if cache timestamp not expired yet)
+      sudo -n true 2> /dev/null && echo
 
-if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ ! -x /usr/bin/dialog ]] ;  then
-  #Check if password is cached (if cache timestamp not expired yet)
-  sudo -n true 2> /dev/null && echo
+      if [[ $? == 0 ]]; then
+        #No need to ask for password
+        exec sudo $0
+      else
+        #Ask for password
+        prompt -e "\n [ Error! ] -> Run me as root! "
+        read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
 
-  if [[ $? == 0 ]]; then
-    #No need to ask for password
-    exec sudo $0
-  else
-    #Ask for password
-    prompt -e "\n [ Error! ] -> Run me as root! "
-    read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
+        sudo -S echo <<< $REPLY 2> /dev/null && echo
 
-    sudo -S echo <<< $REPLY 2> /dev/null && echo
-                    
-    if [[ $? == 0 ]]; then
-      #Correct password, use with sudo's stdin
-      sudo $0 <<< $REPLY
-    else
-      #block for 3 seconds before allowing another attempt
-      sleep 3
-      prompt -e "\n [ Error! ] -> Incorrect password!\n"
-      exit 1
+        if [[ $? == 0 ]]; then
+          #Correct password, use with sudo's stdin
+          sudo $0 <<< $REPLY
+        else
+          #block for 3 seconds before allowing another attempt
+          sleep 3
+          prompt -e "\n [ Error! ] -> Incorrect password!\n"
+          exit 1
+        fi
+      fi
     fi
+    install_dialog
   fi
+  run_dialog
 fi
 
 while [[ $# -gt 0 ]]; do
