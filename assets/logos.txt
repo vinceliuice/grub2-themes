@@ -57,3 +57,4 @@ lang
 type
 tz
 unset
+submenu
