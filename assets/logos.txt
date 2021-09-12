@@ -41,6 +41,7 @@ regolith
 neon
 artix
 kernel
+gpart
 
 recovery
 restart

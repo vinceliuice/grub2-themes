@@ -38,16 +38,16 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1130"
-     inkscape:window-height="523"
+     inkscape:window-width="1920"
+     inkscape:window-height="1008"
      id="namedview373"
      showgrid="false"
      inkscape:zoom="2"
-     inkscape:cx="92.000001"
-     inkscape:cy="390"
-     inkscape:window-x="743"
-     inkscape:window-y="481"
-     inkscape:window-maximized="0"
+     inkscape:cx="116.25"
+     inkscape:cy="306.5"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
      inkscape:current-layer="svg371"
      inkscape:document-rotation="0"
      inkscape:pagecheckerboard="0">
@@ -229,6 +229,20 @@
        y1="-51.220001"
        x2="56.880001"
        y2="-1.04" />
+    <linearGradient
+       id="linearGradient3764"
+       x1="1"
+       x2="47"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="rotate(-90,23.999998,24)">
+      <stop
+         style="stop-color:#1a3f50;stop-opacity:1"
+         id="stop1175" />
+      <stop
+         offset="1"
+         style="stop-color:#1f4a5e;stop-opacity:1"
+         id="stop1177" />
+    </linearGradient>
   </defs>
   <g
      id="antergos"
@@ -1832,5 +1846,67 @@
        cx="41.539585"
        cy="90.752075"
        r="0.79374874" />
+  </g>
+  <g
+     id="gpart"
+     transform="matrix(0.18405798,0,0,0.18405798,56.788949,83.71797)">
+    <g
+       id="g1188" />
+    <g
+       id="g1192">
+      <path
+         d="M 24,1 C 36.703,1 47,11.297 47,24 47,36.703 36.703,47 24,47 11.297,47 1,36.703 1,24 1,11.297 11.297,1 24,1 Z"
+         style="fill:#4d4d4d;fill-opacity:1"
+         id="path1190" />
+    </g>
+    <g
+       id="g1200">
+      <g
+         id="g1198">
+        <g
+           transform="translate(1,1)"
+           id="g1196">
+          <g
+             style="opacity:0.1"
+             id="g1194">
+            <!-- color: #1f4a5e -->
+          </g>
+        </g>
+      </g>
+    </g>
+    <g
+       id="g1204">
+      <g
+         id="g1202">
+        <!-- color: #1f4a5e -->
+      </g>
+    </g>
+    <g
+       id="g1210" />
+    <g
+       id="g1224">
+      <path
+         d="M 19.383,26.986 11.418,32.14 A 15,15 0 0 0 24,38.999 a 15,15 0 0 0 7.06,-1.77 l -4.471,-8.381 a 5.5,5.5 0 0 1 -2.586,0.65 5.5,5.5 0 0 1 -4.617,-2.514"
+         style="opacity:1;fill:#aad629;fill-opacity:1;stroke:none"
+         id="path1212-7" />
+      <path
+         d="M 24,9 A 15,15 0 0 0 9,24 15,15 0 0 0 11.621,32.471 L 19.465,27.1 A 5.5,5.5 0 0 1 18.5,24 5.5,5.5 0 0 1 24,18.5 5.5,5.5 0 0 1 29.5,24 H 39 A 15,15 0 0 0 24,9 Z"
+         style="opacity:1;fill:#ff9752;fill-opacity:1;stroke:none"
+         id="path1214" />
+      <path
+         d="M 29.406,23 A 5.5,5.5 0 0 1 29.5,24 5.5,5.5 0 0 1 24,29.5 V 39 A 15,15 0 0 0 39,24 15,15 0 0 0 38.951,23 Z"
+         style="opacity:1;fill:#47aee1;fill-opacity:1;stroke:none"
+         id="path1216" />
+      <path
+         d="m 17.651,10.979 c 1.925,2.02 5.789,11.601 5.789,11.601 0,0 -8.03,-5.308 -10.08,-7.359 -1.172,-1.172 -1.152,-3.071 0.02,-4.243 1.172,-1.172 3.13,-1.2 4.272,0 z"
+         style="opacity:1;fill:#f9f9f9;fill-opacity:1;stroke:none"
+         id="path1220" />
+      <circle
+         r="1"
+         cy="13"
+         cx="15.5"
+         style="opacity:1;fill:#868686;fill-opacity:1;stroke:none"
+         id="circle1222" />
+    </g>
   </g>
 </svg>
