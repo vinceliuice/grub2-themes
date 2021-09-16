@@ -39,14 +39,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1008"
+     inkscape:window-height="1012"
      id="namedview373"
      showgrid="false"
-     inkscape:zoom="2"
-     inkscape:cx="116.25"
-     inkscape:cy="306.5"
+     inkscape:zoom="1.4142136"
+     inkscape:cx="104.6518"
+     inkscape:cy="171.11984"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="32"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg371"
      inkscape:document-rotation="0"
@@ -229,20 +229,6 @@
        y1="-51.220001"
        x2="56.880001"
        y2="-1.04" />
-    <linearGradient
-       id="linearGradient3764"
-       x1="1"
-       x2="47"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="rotate(-90,23.999998,24)">
-      <stop
-         style="stop-color:#1a3f50;stop-opacity:1"
-         id="stop1175" />
-      <stop
-         offset="1"
-         style="stop-color:#1f4a5e;stop-opacity:1"
-         id="stop1177" />
-    </linearGradient>
   </defs>
   <g
      id="antergos"
@@ -1908,5 +1894,19 @@
          style="opacity:1;fill:#868686;fill-opacity:1;stroke:none"
          id="circle1222" />
     </g>
+  </g>
+  <g
+     id="zorin">
+    <g
+       id="g1234">
+      <path
+         d="m 80.84111,4.0641438 c 2.338089,0 4.233334,1.895245 4.233334,4.2333334 0,2.3380878 -1.895245,4.2333328 -4.233334,4.2333328 -2.338088,0 -4.233333,-1.895245 -4.233333,-4.2333328 0,-2.3380884 1.895245,-4.2333334 4.233333,-4.2333334 z"
+         style="fill:#f2f2f2;fill-opacity:1;stroke-width:0.184058"
+         id="path17" />
+    </g>
+    <path
+       id="path2-6"
+       style="fill:#17b5f9;stroke-width:0.377976"
+       d="m 79.588327,5.6516434 c -0.166873,0 -0.372163,0.1159829 -0.455491,0.2576441 l -0.293081,0.4983084 h 4.00271 L 82.549385,5.9092875 C 82.46607,5.7676261 82.26077,5.6516434 82.093893,5.6516434 Z m -1.192987,1.511905 -0.515289,0.8762843 c -0.08333,0.1416629 -0.08333,0.3736268 0,0.5152883 l 0.435558,0.7404494 3.65943,-2.132022 z M 83.447816,7.436695 79.707181,9.4314056 H 83.28688 L 83.802169,8.555121 c 0.08333,-0.1416615 0.08333,-0.3736265 0,-0.5152883 z m -4.608061,2.750663 0.293081,0.498307 c 0.08333,0.141668 0.288618,0.257645 0.455491,0.257645 h 2.505566 c 0.166877,0 0.372178,-0.115988 0.455492,-0.257645 l 0.29308,-0.498307 z" />
   </g>
 </svg>

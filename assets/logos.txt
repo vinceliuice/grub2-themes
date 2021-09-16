@@ -41,6 +41,7 @@ regolith
 neon
 artix
 kernel
+zorin
 gpart
 
 recovery
