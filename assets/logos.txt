@@ -41,6 +41,8 @@ regolith
 neon
 artix
 kernel
+zorin
+gpart
 
 recovery
 restart
@@ -57,3 +59,4 @@ lang
 type
 tz
 unset
+submenu

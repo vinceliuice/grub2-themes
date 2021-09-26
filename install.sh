@@ -104,12 +104,15 @@ install() {
     if [[ ${screen} == 'ultrawide' ]]; then
       cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-1080p" "${THEME_DIR}/${theme}/icons"
       cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-1080p/"*.png "${THEME_DIR}/${theme}"
+      cp -a --no-preserve=ownership "${REO_DIR}/assets/info-1080p.png" "${THEME_DIR}/${theme}/info.png"
     elif [[ ${screen} == 'ultrawide2k' ]]; then
       cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-2k" "${THEME_DIR}/${theme}/icons"
       cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-2k/"*.png "${THEME_DIR}/${theme}"
+      cp -a --no-preserve=ownership "${REO_DIR}/assets/info-2k.png" "${THEME_DIR}/${theme}/info.png"
     else
       cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${theme}/icons"
       cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-${screen}/"*.png "${THEME_DIR}/${theme}"
+      cp -a --no-preserve=ownership "${REO_DIR}/assets/info-${screen}.png" "${THEME_DIR}/${theme}/info.png"
     fi
 
     # Set theme
@@ -117,7 +120,7 @@ install() {
 
     # Backup grub config
     cp -an /etc/default/grub /etc/default/grub.bak
-    
+
     # Fedora workaround to fix the missing unicode.pf2 file (tested on fedora 34): https://bugzilla.redhat.com/show_bug.cgi?id=1739762
     # This occurs when we add a theme on grub2 with Fedora.
     if has_command dnf; then
@@ -231,9 +234,9 @@ run_dialog() {
         --insecure \
         --passwordbox  "require root permission" 8 50 \
         --output-fd 1 )
-        
+
         sudo -S echo <<< $tui_root_login 2> /dev/null && echo
-        
+
         if [[ $? == 0 ]]; then
           #Correct password, use with sudo's stdin
           sudo -S "$0" <<< $tui_root_login
@@ -381,7 +384,7 @@ remove() {
       read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
 
       sudo -S echo <<< $REPLY 2> /dev/null && echo
-        
+
       if [[ $? == 0 ]]; then
         #Correct password, use with sudo's stdin
         sudo -S "$0" "${PROG_ARGS[@]}" <<< $REPLY
@@ -396,39 +399,42 @@ remove() {
   fi
 }
 
-# Show terminal user interface for better use
-if [[ $# -lt 1 ]] && [[ -x /usr/bin/dialog ]] ; then
-  install_dialog && run_dialog
-fi
+dialog_installer() {
+  if [[ ! -x /usr/bin/dialog ]];  then
+    if [[ $UID -ne $ROOT_UID ]];  then
+      #Check if password is cached (if cache timestamp not expired yet)
+      sudo -n true 2> /dev/null && echo
 
-if [[ $# -lt 1 ]] && [[ $UID -ne $ROOT_UID ]] && [[ ! -x /usr/bin/dialog ]] ;  then
-  #Check if password is cached (if cache timestamp not expired yet)
-  sudo -n true 2> /dev/null && echo
+      if [[ $? == 0 ]]; then
+        #No need to ask for password
+        exec sudo $0
+      else
+        #Ask for password
+        prompt -e "\n [ Error! ] -> Run me as root! "
+        read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
 
-  if [[ $? == 0 ]]; then
-    #No need to ask for password
-    exec sudo $0
-  else
-    #Ask for password
-    prompt -e "\n [ Error! ] -> Run me as root! "
-    read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
+        sudo -S echo <<< $REPLY 2> /dev/null && echo
 
-    sudo -S echo <<< $REPLY 2> /dev/null && echo
-                    
-    if [[ $? == 0 ]]; then
-      #Correct password, use with sudo's stdin
-      sudo $0 <<< $REPLY
-    else
-      #block for 3 seconds before allowing another attempt
-      sleep 3
-      prompt -e "\n [ Error! ] -> Incorrect password!\n"
-      exit 1
+        if [[ $? == 0 ]]; then
+          #Correct password, use with sudo's stdin
+          sudo $0 <<< $REPLY
+        else
+          #block for 3 seconds before allowing another attempt
+          sleep 3
+          prompt -e "\n [ Error! ] -> Incorrect password!\n"
+          exit 1
+        fi
+      fi
     fi
+    install_dialog
   fi
-fi
+  run_dialog
+  install "${theme}" "${icon}" "${screen}"
+}
 
 while [[ $# -gt 0 ]]; do
   PROG_ARGS+=("${1}")
+  dialog='false'
   case "${1}" in
     -b|--boot)
       THEME_DIR="/boot/grub/themes"
@@ -547,18 +553,23 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ "${remove:-}" != 'true' ]]; then
-  for theme in "${themes[@]-${THEME_VARIANTS[0]}}"; do
-    for icon in "${icons[@]-${ICON_VARIANTS[0]}}"; do
-      for screen in "${screens[@]-${SCREEN_VARIANTS[0]}}"; do
-        install "${theme}" "${icon}" "${screen}"
+# Show terminal user interface for better use
+if [[ "${dialog:-}" == 'false' ]]; then
+  if [[ "${remove:-}" != 'true' ]]; then
+    for theme in "${themes[@]-${THEME_VARIANTS[0]}}"; do
+      for icon in "${icons[@]-${ICON_VARIANTS[0]}}"; do
+        for screen in "${screens[@]-${SCREEN_VARIANTS[0]}}"; do
+          install "${theme}" "${icon}" "${screen}"
+        done
       done
     done
-  done
-elif [[ "${remove:-}" == 'true' ]]; then
-  for theme in "${themes[@]-${THEME_VARIANTS[0]}}"; do
-    remove "${theme}"
-  done
+  elif [[ "${remove:-}" == 'true' ]]; then
+    for theme in "${themes[@]-${THEME_VARIANTS[0]}}"; do
+      remove "${theme}"
+    done
+  fi
+  else
+  dialog_installer
 fi
 
 exit 1

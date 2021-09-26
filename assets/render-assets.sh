@@ -1,6 +1,7 @@
 #!/bin/bash
 
 INKSCAPE="/usr/bin/inkscape"
+OPTIPNG="/usr/bin/optipng"
 
 if [[ "$1" == "select" ]]; then
   EXPORT_TYPE="select"
@@ -39,11 +40,12 @@ while read -r i; do
               "--export-dpi=$EXPORT_DPI" \
               "--export-id-only" \
               "--export-filename=$ASSETS_DIR/$i.png" "$SRC_FILE" >/dev/null
+    $OPTIPNG -strip all -nc "$ASSETS_DIR/$i.png"
   fi
 done < "$INDEX"
 
 if [[ "$EXPORT_TYPE" == "icons" ]]; then
-  cd $ASSETS_DIR || exit 1
+  cd "$ASSETS_DIR" || exit 1
   cp -a archlinux.png arch.png
   cp -a gnu-linux.png linux.png
   cp -a gnu-linux.png unknown.png
