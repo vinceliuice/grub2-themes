@@ -14,7 +14,7 @@ THEME_DIR="/usr/share/grub/themes"
 REO_DIR="$(cd $(dirname $0) && pwd)"
 }
 
-THEME_VARIANTS=('tela' 'vimix' 'stylish' 'slaze' 'whitesur')
+THEME_VARIANTS=('tela' 'vimix' 'stylish' 'slaze' 'whitesur' 'cool')
 ICON_VARIANTS=('color' 'white' 'whitesur')
 SCREEN_VARIANTS=('1080p' '2k' '4k' 'ultrawide' 'ultrawide2k')
 
@@ -263,6 +263,7 @@ run_dialog() {
         3) theme="stylish"    ;;
         4) theme="slaze"      ;;
         5) theme="whitesur"   ;;
+        6) theme="cool"   ;;
         *) operation_canceled ;;
      esac
 
@@ -466,6 +467,10 @@ while [[ $# -gt 0 ]]; do
             ;;
           whitesur)
             themes+=("${THEME_VARIANTS[4]}")
+            shift
+            ;;
+               cool)
+            themes+=("${THEME_VARIANTS[5]}")
             shift
             ;;
           -*|--*)
