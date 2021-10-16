@@ -313,7 +313,8 @@ updating_grub() {
     if [[ -f /boot/efi/EFI/fedora/grub.cfg ]]; then
       prompt -i "Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
       grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
-    elif [[ -f /boot/grub2/grub.cfg ]]; then
+    fi
+    if [[ -f /boot/grub2/grub.cfg ]]; then
       prompt -i "Find config file on /boot/grub2/grub.cfg ...\n"
       grub2-mkconfig -o /boot/grub2/grub.cfg
     fi
