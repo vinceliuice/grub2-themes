@@ -1,3 +1,5 @@
+![banner](banner.png?raw=true)
+
 ## Installation:
 
 Usage:  `sudo ./install.sh [OPTIONS...]`
