@@ -59,23 +59,8 @@ _If no options are used, a user interface `dialog` will show up instead_
  - Create a pull request from your branch or fork
  - If any issues occur, report then to the [issue](https://github.com/vinceliuice/grub2-themes/issues) page
 
-## Screenshots:
-
-### Vimix grub theme:
-
-![Vimix](screenshots/grub-theme-vimix.jpg?raw=true)
-
-### Stylish grub theme:
-
-![Stylish](screenshots/grub-theme-stylish.jpg?raw=true)
-
-### Tela grub theme:
-
-![Tela](screenshots/grub-theme-tela.jpg?raw=true)
-
-### Slaze grub theme:
-
-![Slaze](screenshots/grub-theme-slaze.jpg?raw=true)
+## Preview:
+![preview](preview.png?raw=true)
 
 ## Documents
 
