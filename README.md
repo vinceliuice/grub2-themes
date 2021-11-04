@@ -79,7 +79,7 @@ _If no options are used, a user interface `dialog` will show up instead_
 
 ## Documents
 
-![Grub2 theme reference](http://wiki.rosalab.ru/en/index.php/Grub2_theme_/_reference)
+[Grub2 theme reference](http://wiki.rosalab.ru/en/index.php/Grub2_theme_/_reference)
 
-![Grub2 theme tutorial](http://wiki.rosalab.ru/en/index.php/Grub2_theme_tutorial)
+[Grub2 theme tutorial](http://wiki.rosalab.ru/en/index.php/Grub2_theme_tutorial)
 
