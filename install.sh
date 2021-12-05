@@ -14,7 +14,7 @@ THEME_DIR="/usr/share/grub/themes"
 REO_DIR="$(cd $(dirname $0) && pwd)"
 }
 
-THEME_VARIANTS=('tela' 'vimix' 'stylish' 'slaze' 'whitesur')
+THEME_VARIANTS=('tela' 'vimix' 'stylish' 'whitesur')
 ICON_VARIANTS=('color' 'white' 'whitesur')
 SCREEN_VARIANTS=('1080p' '2k' '4k' 'ultrawide' 'ultrawide2k')
 
@@ -56,7 +56,7 @@ usage() {
   printf "%s\n" "Usage: ${0##*/} [OPTIONS...]"
   printf "\n%s\n" "OPTIONS:"
   printf "  %-25s%s\n" "-b, --boot" "install grub theme into /boot/grub/themes"
-  printf "  %-25s%s\n" "-t, --theme" "theme variant(s) [tela|vimix|stylish|slaze|whitesur] (default is tela)"
+  printf "  %-25s%s\n" "-t, --theme" "theme variant(s) [tela|vimix|stylish|whitesur] (default is tela)"
   printf "  %-25s%s\n" "-i, --icon" "icon variant(s) [color|white|whitesur] (default is color)"
   printf "  %-25s%s\n" "-s, --screen" "screen display variant(s) [1080p|2k|4k|ultrawide|ultrawide2k] (default is 1080p)"
   printf "  %-25s%s\n" "-r, --remove" "Remove theme (must add theme name option)"
@@ -67,14 +67,6 @@ install() {
   local theme=${1}
   local icon=${2}
   local screen=${3}
-
-  if [[ ${screen} == 'ultrawide' && ( ${theme} == 'slaze' || ${theme} == 'whitesur' ) ]]; then
-    prompt -e "ultrawide 1080p does not support Slaze and WhiteSur theme"
-    exit 1
-  elif [[ ${screen} == 'ultrawide2k' && ( ${theme} == 'slaze' || ${theme} == 'whitesur' ) ]]; then
-    prompt -e "ultrawide 1440p does not support Slaze and WhiteSur theme"
-    exit 1
-  fi
 
   # Check for root access and proceed if it is present
   if [[ "$UID" -eq "$ROOT_UID" ]]; then
@@ -261,18 +253,16 @@ run_dialog() {
     fi
 
     tui=$(dialog --backtitle ${Project_Name} \
-    --radiolist "Choose your Grub theme : " 15 40 5 \
+    --radiolist "Choose your Grub theme background picture : " 15 40 5 \
       1 "Vimix Theme" off  \
       2 "Tela Theme" on \
       3 "Stylish Theme" off  \
-      4 "Slaze Theme" off  \
-      5 "WhiteSur Theme" off --output-fd 1 )
+      4 "WhiteSur Theme" off --output-fd 1 )
       case "$tui" in
         1) theme="vimix"      ;;
         2) theme="tela"       ;;
         3) theme="stylish"    ;;
-        4) theme="slaze"      ;;
-        5) theme="whitesur"   ;;
+        4) theme="whitesur"   ;;
         *) operation_canceled ;;
      esac
 
@@ -471,12 +461,8 @@ while [[ $# -gt 0 ]]; do
             themes+=("${THEME_VARIANTS[2]}")
             shift
             ;;
-          slaze)
-            themes+=("${THEME_VARIANTS[3]}")
-            shift
-            ;;
           whitesur)
-            themes+=("${THEME_VARIANTS[4]}")
+            themes+=("${THEME_VARIANTS[3]}")
             shift
             ;;
           -*|--*)

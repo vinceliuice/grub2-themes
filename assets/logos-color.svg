@@ -6,7 +6,7 @@
    viewBox="0 0 69.85 118.53334"
    id="svg371"
    sodipodi:docname="logos-color.svg"
-   inkscape:version="1.1 (c4e8f9ed74, 2021-05-24)"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -39,14 +39,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1012"
+     inkscape:window-height="1020"
      id="namedview373"
      showgrid="false"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="104.6518"
-     inkscape:cy="171.11984"
+     inkscape:zoom="2.8284272"
+     inkscape:cx="76.89786"
+     inkscape:cy="100.23238"
      inkscape:window-x="0"
-     inkscape:window-y="32"
+     inkscape:window-y="28"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg371"
      inkscape:document-rotation="0"
@@ -569,26 +569,6 @@
          inkscape:connector-curvature="0"
          style="stroke-width:1.2657" />
     </g>
-  </g>
-  <g
-     id="manjaro"
-     transform="matrix(0.59264,0,0,0.59258,35.19937,19.049763)">
-    <g
-       transform="matrix(1.0384,0,0,1.0385,-0.32571,-8.7917)"
-       id="g162"
-       style="stroke-width:1.5649">
-      <path
-         transform="matrix(0.26458,0,0,0.26458,1.323,2.91)"
-         d="M 27,-5 C 41.36,-5 53,6.64 53,21 53,35.36 41.36,47 27,47 12.64,47 1,35.36 1,21 1,6.64 12.64,-5 27,-5 Z"
-         id="path160"
-         inkscape:connector-curvature="0"
-         style="fill:#16a085;fill-opacity:1;stroke-width:1.5649" />
-    </g>
-    <path
-       d="m 4.7624,-4.2335 v 2.513 H 4.76357 L 4.7624,-0.79373 H 6.879 v -1.0583 h 2.6458 v -2.3812 l -4.7624,0.00675 m 5.2916,-0.00675 v 8.4665 h 2.1166 v -8.4665 m -4.7624,2.9104 v 5.5561 h 2.1166 v -5.5561 m -4.7624,1.0583 0.00117,4.4981 2.1155,-2.5e-4 v -4.4978"
-       id="path164"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;fill-rule:evenodd;stroke-width:1.2656" />
   </g>
   <g
      id="opensuse"
@@ -1908,5 +1888,44 @@
        id="path2-6"
        style="fill:#17b5f9;stroke-width:0.377976"
        d="m 79.588327,5.6516434 c -0.166873,0 -0.372163,0.1159829 -0.455491,0.2576441 l -0.293081,0.4983084 h 4.00271 L 82.549385,5.9092875 C 82.46607,5.7676261 82.26077,5.6516434 82.093893,5.6516434 Z m -1.192987,1.511905 -0.515289,0.8762843 c -0.08333,0.1416629 -0.08333,0.3736268 0,0.5152883 l 0.435558,0.7404494 3.65943,-2.132022 z M 83.447816,7.436695 79.707181,9.4314056 H 83.28688 L 83.802169,8.555121 c 0.08333,-0.1416615 0.08333,-0.3736265 0,-0.5152883 z m -4.608061,2.750663 0.293081,0.498307 c 0.08333,0.141668 0.288618,0.257645 0.455491,0.257645 h 2.505566 c 0.166877,0 0.372178,-0.115988 0.455492,-0.257645 l 0.29308,-0.498307 z" />
+  </g>
+  <g
+     id="manjaro">
+    <g
+       transform="matrix(0.61539738,0,0,0.61539433,35.006341,13.839977)"
+       id="g162"
+       style="stroke-width:1.5649">
+      <path
+         transform="matrix(0.26458,0,0,0.26458,1.323,2.91)"
+         d="M 27,-5 C 41.36,-5 53,6.64 53,21 53,35.36 41.36,47 27,47 12.64,47 1,35.36 1,21 1,6.64 12.64,-5 27,-5 Z"
+         id="path160"
+         inkscape:connector-curvature="0"
+         style="fill:#16a085;fill-opacity:1;stroke-width:1.5649" />
+    </g>
+    <g
+       id="g1374"
+       style="fill:#ffffff"
+       transform="matrix(0.29090906,0,0,0.29090906,30.830112,13.169309)">
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.568425;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.70527, 1.70527;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect4149-7"
+         width="4.5476413"
+         height="14.552139"
+         x="34.994804"
+         y="12.938837" />
+      <rect
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.568425;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.70527, 1.70527;stroke-dashoffset:0;stroke-opacity:1"
+         id="rect4149-0-6"
+         width="4.5475264"
+         height="9.0950537"
+         x="29.537773"
+         y="18.395868" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path5961"
+         d="M 24.990362,12.938891 H 34.0853 l 0,4.547472 h -5.457032 v 10.004559 l -3.637906,5.4e-5 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.0682128px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         sodipodi:nodetypes="ccccccc" />
+    </g>
   </g>
 </svg>
