@@ -39,14 +39,14 @@
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      inkscape:window-width="1920"
-     inkscape:window-height="1020"
+     inkscape:window-height="1014"
      id="namedview373"
      showgrid="false"
-     inkscape:zoom="2.8284272"
-     inkscape:cx="76.89786"
-     inkscape:cy="100.23238"
+     inkscape:zoom="8.0000002"
+     inkscape:cx="130.8125"
+     inkscape:cy="76.437498"
      inkscape:window-x="0"
-     inkscape:window-y="28"
+     inkscape:window-y="34"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg371"
      inkscape:document-rotation="0"
@@ -1916,14 +1916,14 @@
       <rect
          style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.568425;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:1.70527, 1.70527;stroke-dashoffset:0;stroke-opacity:1"
          id="rect4149-0-6"
-         width="4.5475264"
-         height="9.0950537"
-         x="29.537773"
+         width="3.6380222"
+         height="9.0950527"
+         x="30.447279"
          y="18.395868" />
       <path
          inkscape:connector-curvature="0"
          id="path5961"
-         d="M 24.990362,12.938891 H 34.0853 l 0,4.547472 h -5.457032 v 10.004559 l -3.637906,5.4e-5 z"
+         d="M 24.990362,12.938891 H 34.0853 v 4.547472 h -4.547527 v 10.004559 l -4.547411,5.4e-5 z"
          style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.0682128px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          sodipodi:nodetypes="ccccccc" />
     </g>

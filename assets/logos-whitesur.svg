@@ -21,15 +21,22 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      showgrid="false"
-     inkscape:zoom="3.5039666"
-     inkscape:cx="112.72938"
-     inkscape:cy="81.193695"
+     inkscape:zoom="0.87599165"
+     inkscape:cx="-95.320543"
+     inkscape:cy="180.9378"
      inkscape:window-width="1920"
-     inkscape:window-height="1020"
+     inkscape:window-height="1014"
      inkscape:window-x="0"
-     inkscape:window-y="28"
+     inkscape:window-y="34"
      inkscape:window-maximized="1"
-     inkscape:current-layer="manjaro" />
+     inkscape:current-layer="svg1041"
+     inkscape:snap-bbox="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-nodes="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid1326" />
+  </sodipodi:namedview>
   <defs
      id="defs304">
     <linearGradient
@@ -277,7 +284,7 @@
        x2="7.9373"
        y1="15.081"
        y2="1.852"
-       gradientTransform="matrix(1.8898 0 0 1.8898 136.41 60.217)"
+       gradientTransform="matrix(1.8898,0,0,1.8898,136.41,60.217)"
        gradientUnits="userSpaceOnUse">
       <stop
          stop-color="#0edabd"
@@ -886,10 +893,10 @@
     </filter>
     <filter
        id="filter8721"
-       x="-0.17642541"
-       y="-0.37592546"
-       width="1.3528508"
-       height="1.7518509"
+       x="-0.91879601"
+       y="-0.91879601"
+       width="2.837592"
+       height="2.837592"
        color-interpolation-filters="sRGB">
       <feGaussianBlur
          stdDeviation="1.9141583"
@@ -2924,14 +2931,16 @@
        id="path1023" />
   </g>
   <g
-     id="manjaro">
+     id="manjaro"
+     transform="translate(0.3061616,0.94440997)">
     <path
-       d="m144.91 62.202c-3.6016 0-6.5009 2.8993-6.5009 6.5009v14.999c0 3.6016 2.8993 6.5009 6.5009 6.5009h14.999c3.6016 0 6.5009-2.8993 6.5009-6.5009v-14.999c0-3.6016-2.8993-6.5009-6.5009-6.5009z"
+       d="m 144.91,62.202 c -3.6016,0 -6.5009,2.8993 -6.5009,6.5009 v 14.999 c 0,3.6016 2.8993,6.5009 6.5009,6.5009 h 14.999 c 3.6016,0 6.5009,-2.8993 6.5009,-6.5009 v -14.999 c 0,-3.6016 -2.8993,-6.5009 -6.5009,-6.5009 z"
        fill="url(#linearGradient1404)"
-       id="path1030" />
+       id="path1030"
+       style="fill:url(#linearGradient1404)" />
     <rect
        x="136.41"
-       y="60.217"
+       y="60.216999"
        width="32"
        height="32"
        rx="0"
@@ -2941,7 +2950,8 @@
        id="rect1026" />
     <path
        id="rect1032"
-       style="fill:url(#linearGradient9063);stroke-width:1.0995;fill-opacity:1"
-       d="M 144.40625 68.203125 L 144.40625 84.203125 L 148.40625 84.203125 L 148.40625 73.203125 L 154.40625 73.203125 L 154.40625 68.203125 L 144.40625 68.203125 z M 155.40625 68.203125 L 155.40625 84.203125 L 160.40625 84.203125 L 160.40625 68.203125 L 155.40625 68.203125 z M 149.40625 74.203125 L 149.40625 84.203125 L 154.40625 84.203125 L 154.40625 74.203125 L 149.40625 74.203125 z " />
+       style="fill:url(#linearGradient9063);fill-opacity:1;stroke-width:1.0995"
+       d="m 144.40625,68.203125 v 16 H 149.41 v -11 h 4.99625 v -5 z m 11,0 v 16 h 5 v -16 z m -4.99625,6 v 10 h 3.99625 v -10 z"
+       sodipodi:nodetypes="ccccccccccccccccc" />
   </g>
 </svg>
