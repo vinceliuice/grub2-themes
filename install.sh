@@ -371,31 +371,46 @@ remove() {
 
   # Check for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
+
     echo -e "\n Checking for the existence of themes directory..."
     if [[ -d "${THEME_DIR}/${theme}" ]]; then
       rm -rf "${THEME_DIR}/${theme}"
     else
-      prompt -e "\n ${theme} grub theme not exist!"
+      prompt -e "\n Specified ${theme} theme does not exist!"
       exit 0
     fi
 
-    # Backup grub config
-    if [[ -f "/etc/default/grub.bak" ]]; then
-      rm -rf /etc/default/grub && mv /etc/default/grub.bak /etc/default/grub
+    local grub_config_location=""
+    if [[ -f "/etc/default/grub" ]]; then
+    
+      grub_config_location="/etc/default/grub"
+    elif [[ -f "/etc/default/grub.d/kali-themes.cfg" ]]; then
+
+      grub_config_location="/etc/default/grub.d/kali-themes.cfg"
     else
-      prompt -e "\n grub.bak not exist!"
-      exit 0
+
+      prompt -e "\nCannot find grub config file in default locations!"
+      prompt -e "\nPlease inform the developers by opening an issue on github."
+      prompt -e "\nExiting..."
+      exit 1
     fi
 
-    # For Kali linux
-    if [[ -f "/etc/default/grub.d/kali-themes.cfg.bak" ]]; then
-      rm -rf /etc/default/grub.d/kali-themes.cfg && mv /etc/default/grub.d/kali-themes.cfg.bak /etc/default/grub.d/kali-themes.cfg
+    local current_theme="" # Declaration and assignment should be done seperately ==> https://github.com/koalaman/shellcheck/wiki/SC2155
+    current_theme="$(grep 'GRUB_THEME=' $grub_config_location | grep -v \#)"
+    if [[ -n "$current_theme" ]]; then
+    
+      # Backup with --in-place option to grub.bak within the same directory; then remove the current theme.
+      sed --in-place='.bak' "s|$current_theme|#GRUB_THEME=|" "$grub_config_location"
+
+      # Update grub config
+      prompt -s "\n Resetting grub theme...\n"
+      updating_grub
+    else
+
+      prompt -e "\nNo active theme found."
+      prompt -e "\nExiting..."
+      exit 1
     fi
-
-    # Update grub config
-    prompt -s "\n Resetting grub theme...\n"
-
-    updating_grub
 
   else
     #Check if password is cached (if cache timestamp not expired yet)
