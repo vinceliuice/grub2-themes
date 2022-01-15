@@ -29,8 +29,6 @@ b_CWAR=" \033[1;33m"                                # bold warning color
 # ────────────────────────────────────────────────────────────────
 #
 
-[  GLOBAL::CONF  ]
-{
 readonly ROOT_UID=0
 readonly Project_Name="GRUB2::THEMES"
 readonly MAX_DELAY=20                               # max delay for user to enter root password
@@ -38,7 +36,6 @@ tui_root_login=
 
 THEME_DIR="/usr/share/grub/themes"
 REO_DIR="$(cd $(dirname $0) && pwd)"
-}
 
 THEME_VARIANTS=('tela' 'vimix' 'stylish' 'whitesur')
 ICON_VARIANTS=('color' 'white' 'whitesur')
@@ -225,7 +222,7 @@ install() {
     else
 
       prompt -e "\n [ Error! ] -> Run me as root! "
-      read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
+      read -r -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
 
       if sudo -S echo <<< $REPLY 2> /dev/null && echo; then
 
@@ -408,7 +405,7 @@ remove() {
     else
       #Ask for password
       prompt -e "\n [ Error! ] -> Run me as root! "
-      read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
+      read -r -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s #when using "read" command, "-r" option must be supplied ==> https://github.com/koalaman/shellcheck/wiki/SC2162
 
       if sudo -S echo <<< $REPLY 2> /dev/null && echo; then
         #Correct password, use with sudo's stdin
@@ -435,7 +432,7 @@ dialog_installer() {
       else
         #Ask for password
         prompt -e "\n [ Error! ] -> Run me as root! "
-        read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
+        read -r -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
 
         if sudo -S echo <<< $REPLY 2> /dev/null && echo; then
           #Correct password, use with sudo's stdin
