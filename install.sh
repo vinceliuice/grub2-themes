@@ -1,24 +1,16 @@
 #! /usr/bin/env bash
 
-# Grub2 Themes
-set  -o errexit
 
-[  GLOBAL::CONF  ]
-{
-readonly ROOT_UID=0
-readonly Project_Name="GRUB2::THEMES"
-readonly MAX_DELAY=20                               # max delay for user to enter root password
-tui_root_login=
+# Exit Immediately if a command fails
+set -o errexit
 
-THEME_DIR="/usr/share/grub/themes"
-REO_DIR="$(cd $(dirname $0) && pwd)"
-}
 
-THEME_VARIANTS=('tela' 'vimix' 'stylish' 'whitesur')
-ICON_VARIANTS=('color' 'white' 'whitesur')
-SCREEN_VARIANTS=('1080p' '2k' '4k' 'ultrawide' 'ultrawide2k')
+#
+# ──────────────────────────────────────────────────── I ──────────
+#   :::::: C O L O R S : :  :   :    :     :        :          :
+# ──────────────────────────────────────────────────────────────
+#
 
-#COLORS
 CDEF=" \033[0m"                                     # default color
 CCIN=" \033[0;36m"                                  # info color
 CGSC=" \033[0;32m"                                  # success color
@@ -29,6 +21,32 @@ b_CCIN=" \033[1;36m"                                # bold info color
 b_CGSC=" \033[1;32m"                                # bold success color
 b_CRER=" \033[1;31m"                                # bold error color
 b_CWAR=" \033[1;33m"                                # bold warning color
+
+
+#
+# ────────────────────────────────────────────────────── II ──────────
+#   :::::: G L O B A L S : :  :   :    :     :        :          :
+# ────────────────────────────────────────────────────────────────
+#
+
+readonly ROOT_UID=0
+readonly Project_Name="GRUB2::THEMES"
+readonly MAX_DELAY=20                               # max delay for user to enter root password
+tui_root_login=
+
+THEME_DIR="/usr/share/grub/themes"
+REO_DIR="$(cd $(dirname $0) && pwd)"
+
+THEME_VARIANTS=('tela' 'vimix' 'stylish' 'whitesur')
+ICON_VARIANTS=('color' 'white' 'whitesur')
+SCREEN_VARIANTS=('1080p' '2k' '4k' 'ultrawide' 'ultrawide2k')
+
+
+#
+# ────────────────────────────────────────────────────────── III ──────────
+#   :::::: F U N C T I O N S : :  :   :    :     :        :          :
+# ────────────────────────────────────────────────────────────────────
+#
 
 # echo like ... with flag type and display message colors
 prompt () {
@@ -49,7 +67,7 @@ prompt () {
 
 # Check command availability
 function has_command() {
-  command -v $1 > /dev/null
+  command -v $1 &> /dev/null #with "&>", all output will be redirected.
 }
 
 usage() {
@@ -72,7 +90,7 @@ install() {
   if [[ "$UID" -eq "$ROOT_UID" ]]; then
     clear
 
-    # Create themes directory if it didn't exist
+    # Make a themes directory if it doesn't exist
     prompt -s "\n Checking for the existence of themes directory..."
 
     [[ -d "${THEME_DIR}/${theme}" ]] && rm -rf "${THEME_DIR}/${theme}"
@@ -187,46 +205,45 @@ install() {
     updating_grub
 
     prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
+
+  #Check if password is cached (if cache timestamp has not expired yet)
+  elif sudo -n true 2> /dev/null && echo; then #No need for "$?" ==> https://github.com/koalaman/shellcheck/wiki/SC2181
+
+    sudo "$0" -t ${theme} -i ${icon} -s ${screen}
   else
-    #Check if password is cached (if cache timestamp not expired yet)
-    sudo -n true 2> /dev/null && echo
 
-    if [[ $? == 0 ]]; then
-      #No need to ask for password
-      sudo "$0" -t ${theme} -i ${icon} -s ${screen}
+    #Ask for password
+    if [[ -n ${tui_root_login} ]] ; then
+
+      if [[ -n "${theme}" && -n "${screen}" ]]; then
+
+        sudo -S $0 -t ${theme} -i ${icon} -s ${screen} <<< ${tui_root_login}
+      fi
     else
-      #Ask for password
-      if [[ -n ${tui_root_login} ]] ; then
-        if [[ -n "${theme}" && -n "${screen}" ]]; then
-          sudo -S $0 -t ${theme} -i ${icon} -s ${screen} <<< ${tui_root_login}
-        fi
+
+      prompt -e "\n [ Error! ] -> Run me as root! "
+      read -r -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
+
+      if sudo -S echo <<< $REPLY 2> /dev/null && echo; then
+
+        #Correct password, use with sudo's stdin
+        sudo -S "$0" -t ${theme} -i ${icon} -s ${screen} <<< ${REPLY}
       else
-        prompt -e "\n [ Error! ] -> Run me as root! "
-        read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
 
-        sudo -S echo <<< $REPLY 2> /dev/null && echo
-
-        if [[ $? == 0 ]]; then
-          #Correct password, use with sudo's stdin
-          sudo -S "$0" -t ${theme} -i ${icon} -s ${screen} <<< ${REPLY}
-        else
-          #block for 3 seconds before allowing another attempt
-          sleep 3
-          prompt -e "\n [ Error! ] -> Incorrect password!\n"
-          exit 1
-        fi
+        #block for 3 seconds before allowing another attempt
+        sleep 3
+        prompt -e "\n [ Error! ] -> Incorrect password!\n"
+        exit 1
       fi
     fi
- fi
+  fi
 }
 
 run_dialog() {
   if [[ -x /usr/bin/dialog ]]; then
     if [[ "$UID" -ne "$ROOT_UID"  ]]; then
       #Check if password is cached (if cache timestamp not expired yet)
-      sudo -n true 2> /dev/null && echo
-
-      if [[ $? == 0 ]]; then
+      if sudo -n true 2> /dev/null && echo; then
         #No need to ask for password
         sudo $0
       else
@@ -237,9 +254,7 @@ run_dialog() {
         --passwordbox  "require root permission" 8 50 \
         --output-fd 1 )
 
-        sudo -S echo <<< $tui_root_login 2> /dev/null && echo
-
-        if [[ $? == 0 ]]; then
+        if sudo -S echo <<< $tui_root_login 2> /dev/null && echo; then
           #Correct password, use with sudo's stdin
           sudo -S "$0" <<< $tui_root_login
         else
@@ -324,20 +339,30 @@ updating_grub() {
   prompt -s "\n * All done!"
 }
 
+function install_program () {
+
+  if has_command zypper; then
+    
+    zypper in "$@"
+  elif has_command apt-get; then
+    
+    apt-get install "$@"
+  elif has_command dnf; then
+    
+    dnf install -y "$@"
+  elif has_command yum; then
+    
+    yum install "$@"
+  elif has_command pacman; then
+    
+    pacman -S --noconfirm "$@"
+  fi
+}
+
 install_dialog() {
   if [ ! "$(which dialog 2> /dev/null)" ]; then
     prompt -w "\n 'dialog' need to be installed for this shell"
-    if has_command zypper; then
-      sudo zypper in dialog
-    elif has_command apt-get; then
-      sudo apt-get install dialog
-    elif has_command dnf; then
-      sudo dnf install -y dialog
-    elif has_command yum; then
-      sudo yum install dialog
-    elif has_command pacman; then
-      sudo pacman -S --noconfirm dialog
-    fi
+    install_program "dialog"
   fi
 }
 
@@ -346,47 +371,58 @@ remove() {
 
   # Check for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
+
     echo -e "\n Checking for the existence of themes directory..."
     if [[ -d "${THEME_DIR}/${theme}" ]]; then
       rm -rf "${THEME_DIR}/${theme}"
     else
-      prompt -e "\n ${theme} grub theme not exist!"
+      prompt -e "\n Specified ${theme} theme does not exist!"
       exit 0
     fi
 
-    # Backup grub config
-    if [[ -f "/etc/default/grub.bak" ]]; then
-      rm -rf /etc/default/grub && mv /etc/default/grub.bak /etc/default/grub
+    local grub_config_location=""
+    if [[ -f "/etc/default/grub" ]]; then
+    
+      grub_config_location="/etc/default/grub"
+    elif [[ -f "/etc/default/grub.d/kali-themes.cfg" ]]; then
+
+      grub_config_location="/etc/default/grub.d/kali-themes.cfg"
     else
-      prompt -e "\n grub.bak not exist!"
-      exit 0
+
+      prompt -e "\nCannot find grub config file in default locations!"
+      prompt -e "\nPlease inform the developers by opening an issue on github."
+      prompt -e "\nExiting..."
+      exit 1
     fi
 
-    # For Kali linux
-    if [[ -f "/etc/default/grub.d/kali-themes.cfg.bak" ]]; then
-      rm -rf /etc/default/grub.d/kali-themes.cfg && mv /etc/default/grub.d/kali-themes.cfg.bak /etc/default/grub.d/kali-themes.cfg
+    local current_theme="" # Declaration and assignment should be done seperately ==> https://github.com/koalaman/shellcheck/wiki/SC2155
+    current_theme="$(grep 'GRUB_THEME=' $grub_config_location | grep -v \#)"
+    if [[ -n "$current_theme" ]]; then
+    
+      # Backup with --in-place option to grub.bak within the same directory; then remove the current theme.
+      sed --in-place='.bak' "s|$current_theme|#GRUB_THEME=|" "$grub_config_location"
+
+      # Update grub config
+      prompt -s "\n Resetting grub theme...\n"
+      updating_grub
+    else
+
+      prompt -e "\nNo active theme found."
+      prompt -e "\nExiting..."
+      exit 1
     fi
-
-    # Update grub config
-    prompt -s "\n Resetting grub theme...\n"
-
-    updating_grub
 
   else
     #Check if password is cached (if cache timestamp not expired yet)
-    sudo -n true 2> /dev/null && echo
-
-    if [[ $? == 0 ]]; then
+    if sudo -n true 2> /dev/null && echo; then
       #No need to ask for password
       sudo "$0" "${PROG_ARGS[@]}"
     else
       #Ask for password
       prompt -e "\n [ Error! ] -> Run me as root! "
-      read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
+      read -r -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s #when using "read" command, "-r" option must be supplied ==> https://github.com/koalaman/shellcheck/wiki/SC2162
 
-      sudo -S echo <<< $REPLY 2> /dev/null && echo
-
-      if [[ $? == 0 ]]; then
+      if sudo -S echo <<< $REPLY 2> /dev/null && echo; then
         #Correct password, use with sudo's stdin
         sudo -S "$0" "${PROG_ARGS[@]}" <<< $REPLY
       else
@@ -404,19 +440,16 @@ dialog_installer() {
   if [[ ! -x /usr/bin/dialog ]];  then
     if [[ $UID -ne $ROOT_UID ]];  then
       #Check if password is cached (if cache timestamp not expired yet)
-      sudo -n true 2> /dev/null && echo
 
-      if [[ $? == 0 ]]; then
+      if sudo -n true 2> /dev/null && echo; then
         #No need to ask for password
         exec sudo $0
       else
         #Ask for password
         prompt -e "\n [ Error! ] -> Run me as root! "
-        read -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
+        read -r -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
 
-        sudo -S echo <<< $REPLY 2> /dev/null && echo
-
-        if [[ $? == 0 ]]; then
+        if sudo -S echo <<< $REPLY 2> /dev/null && echo; then
           #Correct password, use with sudo's stdin
           sudo $0 <<< $REPLY
         else
@@ -432,6 +465,13 @@ dialog_installer() {
   run_dialog
   install "${theme}" "${icon}" "${screen}"
 }
+
+
+#
+# ────────────────────────────────────────────────────────────────────────── IV ──────────
+#   :::::: A R G U M E N T   H A N D L I N G : :  :   :    :     :        :          :
+# ────────────────────────────────────────────────────────────────────────────────────
+#
 
 while [[ $# -gt 0 ]]; do
   PROG_ARGS+=("${1}")
@@ -465,7 +505,7 @@ while [[ $# -gt 0 ]]; do
             themes+=("${THEME_VARIANTS[3]}")
             shift
             ;;
-          -*|--*)
+          -*) # "-*" overrides "--*"
             break
             ;;
           *)
@@ -492,7 +532,7 @@ while [[ $# -gt 0 ]]; do
             icons+=("${ICON_VARIANTS[2]}")
             shift
             ;;
-          -*|--*)
+          -*)
             break
             ;;
           *)
@@ -527,7 +567,7 @@ while [[ $# -gt 0 ]]; do
             screens+=("${SCREEN_VARIANTS[4]}")
             shift
             ;;
-          -*|--*)
+          -*)
             break
             ;;
           *)
@@ -549,6 +589,13 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+
+#
+# ──────────────────────────────────────────────── V ──────────
+#   :::::: M A I N : :  :   :    :     :        :          :
+# ──────────────────────────────────────────────────────────
+#
 
 # Show terminal user interface for better use
 if [[ "${dialog:-}" == 'false' ]]; then
