@@ -1,33 +1,7 @@
 #! /usr/bin/env bash
 
-
 # Exit Immediately if a command fails
 set -o errexit
-
-
-#
-# ──────────────────────────────────────────────────── I ──────────
-#   :::::: C O L O R S : :  :   :    :     :        :          :
-# ──────────────────────────────────────────────────────────────
-#
-
-CDEF=" \033[0m"                                     # default color
-CCIN=" \033[0;36m"                                  # info color
-CGSC=" \033[0;32m"                                  # success color
-CRER=" \033[0;31m"                                  # error color
-CWAR=" \033[0;33m"                                  # waring color
-b_CDEF=" \033[1;37m"                                # bold default color
-b_CCIN=" \033[1;36m"                                # bold info color
-b_CGSC=" \033[1;32m"                                # bold success color
-b_CRER=" \033[1;31m"                                # bold error color
-b_CWAR=" \033[1;33m"                                # bold warning color
-
-
-#
-# ────────────────────────────────────────────────────── II ──────────
-#   :::::: G L O B A L S : :  :   :    :     :        :          :
-# ────────────────────────────────────────────────────────────────
-#
 
 readonly ROOT_UID=0
 readonly Project_Name="GRUB2::THEMES"
@@ -41,12 +15,24 @@ THEME_VARIANTS=('tela' 'vimix' 'stylish' 'whitesur')
 ICON_VARIANTS=('color' 'white' 'whitesur')
 SCREEN_VARIANTS=('1080p' '2k' '4k' 'ultrawide' 'ultrawide2k')
 
+#################################
+#   :::::: C O L O R S ::::::   #
+#################################
 
-#
-# ────────────────────────────────────────────────────────── III ──────────
-#   :::::: F U N C T I O N S : :  :   :    :     :        :          :
-# ────────────────────────────────────────────────────────────────────
-#
+CDEF=" \033[0m"                                     # default color
+CCIN=" \033[0;36m"                                  # info color
+CGSC=" \033[0;32m"                                  # success color
+CRER=" \033[0;31m"                                  # error color
+CWAR=" \033[0;33m"                                  # waring color
+b_CDEF=" \033[1;37m"                                # bold default color
+b_CCIN=" \033[1;36m"                                # bold info color
+b_CGSC=" \033[1;32m"                                # bold success color
+b_CRER=" \033[1;31m"                                # bold error color
+b_CWAR=" \033[1;33m"                                # bold warning color
+
+#######################################
+#   :::::: F U N C T I O N S ::::::   #
+#######################################
 
 # echo like ... with flag type and display message colors
 prompt () {
@@ -201,22 +187,17 @@ install() {
 
     # Update grub config
     prompt -s "\n Updating grub config...\n"
-
     updating_grub
-
     prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
 
   #Check if password is cached (if cache timestamp has not expired yet)
   elif sudo -n true 2> /dev/null && echo; then #No need for "$?" ==> https://github.com/koalaman/shellcheck/wiki/SC2181
-
     sudo "$0" -t ${theme} -i ${icon} -s ${screen}
   else
 
     #Ask for password
     if [[ -n ${tui_root_login} ]] ; then
-
       if [[ -n "${theme}" && -n "${screen}" ]]; then
-
         sudo -S $0 -t ${theme} -i ${icon} -s ${screen} <<< ${tui_root_login}
       fi
     else
@@ -340,21 +321,15 @@ updating_grub() {
 }
 
 function install_program () {
-
   if has_command zypper; then
-    
     zypper in "$@"
   elif has_command apt-get; then
-    
     apt-get install "$@"
   elif has_command dnf; then
-    
     dnf install -y "$@"
   elif has_command yum; then
-    
     yum install "$@"
   elif has_command pacman; then
-    
     pacman -S --noconfirm "$@"
   fi
 }
@@ -382,7 +357,7 @@ remove() {
 
     local grub_config_location=""
     if [[ -f "/etc/default/grub" ]]; then
-    
+
       grub_config_location="/etc/default/grub"
     elif [[ -f "/etc/default/grub.d/kali-themes.cfg" ]]; then
 
@@ -398,7 +373,7 @@ remove() {
     local current_theme="" # Declaration and assignment should be done seperately ==> https://github.com/koalaman/shellcheck/wiki/SC2155
     current_theme="$(grep 'GRUB_THEME=' $grub_config_location | grep -v \#)"
     if [[ -n "$current_theme" ]]; then
-    
+
       # Backup with --in-place option to grub.bak within the same directory; then remove the current theme.
       sed --in-place='.bak' "s|$current_theme|#GRUB_THEME=|" "$grub_config_location"
 
@@ -466,12 +441,9 @@ dialog_installer() {
   install "${theme}" "${icon}" "${screen}"
 }
 
-
-#
-# ────────────────────────────────────────────────────────────────────────── IV ──────────
-#   :::::: A R G U M E N T   H A N D L I N G : :  :   :    :     :        :          :
-# ────────────────────────────────────────────────────────────────────────────────────
-#
+#######################################################
+#   :::::: A R G U M E N T   H A N D L I N G ::::::   #
+#######################################################
 
 while [[ $# -gt 0 ]]; do
   PROG_ARGS+=("${1}")
@@ -590,12 +562,9 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-
-#
-# ──────────────────────────────────────────────── V ──────────
-#   :::::: M A I N : :  :   :    :     :        :          :
-# ──────────────────────────────────────────────────────────
-#
+#############################
+#   :::::: M A I N ::::::   #
+#############################
 
 # Show terminal user interface for better use
 if [[ "${dialog:-}" == 'false' ]]; then
