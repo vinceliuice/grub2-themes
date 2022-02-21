@@ -69,8 +69,6 @@ usage() {
 }
 
 generate() {
-    clear
-
     # Make a themes directory if it doesn't exist
     prompt -s "\n Checking for the existence of themes directory..."
 
@@ -115,6 +113,8 @@ install() {
 
   # Check for root access and proceed if it is present
   if [[ "$UID" -eq "$ROOT_UID" ]]; then
+    clear
+
     # Generate the theme in "/usr/share/grub/themes"
     generate "${theme}" "${icon}" "${screen}"
 
