@@ -64,16 +64,11 @@ usage() {
   printf "  %-25s%s\n" "-i, --icon" "icon variant(s) [color|white|whitesur] (default is color)"
   printf "  %-25s%s\n" "-s, --screen" "screen display variant(s) [1080p|2k|4k|ultrawide|ultrawide2k] (default is 1080p)"
   printf "  %-25s%s\n" "-r, --remove" "Remove theme (must add theme name option)"
+  printf "  %-25s%s\n" "-g, --generate" "do not install, but generate theme into chosen directory"
   printf "  %-25s%s\n" "-h, --help" "Show this help"
 }
 
-install() {
-  local theme=${1}
-  local icon=${2}
-  local screen=${3}
-
-  # Check for root access and proceed if it is present
-  if [[ "$UID" -eq "$ROOT_UID" ]]; then
+generate() {
     clear
 
     # Make a themes directory if it doesn't exist
@@ -110,6 +105,18 @@ install() {
       cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-${screen}/"*.png "${THEME_DIR}/${theme}"
       cp -a --no-preserve=ownership "${REO_DIR}/assets/info-${screen}.png" "${THEME_DIR}/${theme}/info.png"
     fi
+
+}
+
+install() {
+  local theme=${1}
+  local icon=${2}
+  local screen=${3}
+
+  # Check for root access and proceed if it is present
+  if [[ "$UID" -eq "$ROOT_UID" ]]; then
+    # Generate the theme in "/usr/share/grub/themes"
+    generate "${theme}" "${icon}" "${screen}"
 
     # Set theme
     prompt -s "\n Setting ${theme} as default..."
@@ -445,6 +452,7 @@ dialog_installer() {
 #   :::::: A R G U M E N T   H A N D L I N G ::::::   #
 #######################################################
 
+install=install
 while [[ $# -gt 0 ]]; do
   PROG_ARGS+=("${1}")
   dialog='false'
@@ -455,6 +463,12 @@ while [[ $# -gt 0 ]]; do
       ;;
     -r|--remove)
       remove='true'
+      shift 1
+      ;;
+    -g|--generate)
+      shift 1
+      THEME_DIR="${1}"
+      install=generate
       shift 1
       ;;
     -t|--theme)
@@ -572,7 +586,7 @@ if [[ "${dialog:-}" == 'false' ]]; then
     for theme in "${themes[@]-${THEME_VARIANTS[0]}}"; do
       for icon in "${icons[@]-${ICON_VARIANTS[0]}}"; do
         for screen in "${screens[@]-${SCREEN_VARIANTS[0]}}"; do
-          install "${theme}" "${icon}" "${screen}"
+          $install "${theme}" "${icon}" "${screen}"
         done
       done
     done
