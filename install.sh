@@ -599,4 +599,4 @@ if [[ "${dialog:-}" == 'false' ]]; then
   dialog_installer
 fi
 
-exit 1
+exit 0
