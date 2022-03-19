@@ -42,6 +42,7 @@ neon
 artix
 kernel
 zorin
+nixos
 gpart
 
 recovery

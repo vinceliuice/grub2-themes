@@ -6,25 +6,11 @@
    viewBox="0 0 95.25 105.83"
    id="svg453"
    sodipodi:docname="logos-white.svg"
-   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20, custom)"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <metadata
-     id="metadata457">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
+   xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
      pagecolor="#adadad"
      bordercolor="#666666"
@@ -34,22 +20,22 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="1920"
-     inkscape:window-height="1020"
+     inkscape:window-width="1600"
+     inkscape:window-height="832"
      id="namedview455"
      showgrid="false"
-     inkscape:zoom="1.8375"
-     inkscape:cx="109.65986"
-     inkscape:cy="160.27211"
+     inkscape:zoom="1.2993087"
+     inkscape:cx="570.30327"
+     inkscape:cy="210.11173"
      inkscape:window-x="0"
-     inkscape:window-y="28"
+     inkscape:window-y="32"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg453"
      inkscape:document-rotation="0"
      inkscape:snap-bbox="true"
      inkscape:bbox-nodes="true"
      inkscape:snap-bbox-edge-midpoints="true"
-     inkscape:snap-nodes="true"
+     inkscape:snap-nodes="false"
      inkscape:pagecheckerboard="0">
     <inkscape:grid
        type="xygrid"
@@ -57,45 +43,6 @@
   </sodipodi:namedview>
   <defs
      id="defs30">
-    <style
-       id="current-color-scheme"
-       type="text/css">.ColorScheme-Text { color:#565656; } .ColorScheme-Highlight { color:#5294e2; }</style>
-    <style
-       type="text/css"
-       id="style3">.ColorScheme-Text { color:#565656; } .ColorScheme-Highlight { color:#5294e2; }</style>
-    <style
-       type="text/css"
-       id="style5">.ColorScheme-Text { color:#565656; } .ColorScheme-Highlight { color:#5294e2; }</style>
-    <style
-       type="text/css"
-       id="style7">.ColorScheme-Text { color:#565656; } .ColorScheme-Highlight { color:#5294e2; }</style>
-    <style
-       type="text/css"
-       id="style9">.ColorScheme-Text { color:#565656; } .ColorScheme-Highlight { color:#5294e2; }</style>
-    <style
-       type="text/css"
-       id="style11">.ColorScheme-Text { color:#565656; } .ColorScheme-Highlight { color:#5294e2; }</style>
-    <style
-       type="text/css"
-       id="style13">.ColorScheme-Text { color:#565656; } .ColorScheme-Highlight { color:#5294e2; }</style>
-    <style
-       type="text/css"
-       id="style15">.ColorScheme-Text { color:#565656; } .ColorScheme-Highlight { color:#5294e2; }</style>
-    <style
-       type="text/css"
-       id="style17">.ColorScheme-Text { color:#565656; } .ColorScheme-Highlight { color:#5294e2; }</style>
-    <style
-       type="text/css"
-       id="style19" />
-    <style
-       type="text/css"
-       id="style21" />
-    <style
-       type="text/css"
-       id="style23">.ColorScheme-Text { color:#565656; } .ColorScheme-Highlight { color:#5294e2; }</style>
-    <style
-       type="text/css"
-       id="style25">.ColorScheme-Text { color:#565656; } .ColorScheme-Highlight { color:#5294e2; }</style>
     <filter
        id="filter4972"
        color-interpolation-filters="sRGB"
@@ -1351,7 +1298,6 @@
        id="rect450" />
   </g>
   <g
-     inkscape:label="#artix"
      id="artix"
      transform="matrix(0.13953898,0,0,0.13953898,71.913326,82.296988)"
      style="stroke-width:0.999258;stroke-miterlimit:4;stroke-dasharray:none">
@@ -1438,36 +1384,6 @@
        r="0.79374874" />
   </g>
   <g
-     id="g1188"
-     transform="matrix(0.18405798,0,0,0.18405798,117.82492,49.811069)" />
-  <g
-     id="g1200"
-     transform="matrix(0.18405798,0,0,0.18405798,117.82492,49.811069)">
-    <g
-       id="g1198">
-      <g
-         transform="translate(1,1)"
-         id="g1196">
-        <g
-           style="opacity:0.1"
-           id="g1194">
-          <!-- color: #1f4a5e -->
-        </g>
-      </g>
-    </g>
-  </g>
-  <g
-     id="g1204"
-     transform="matrix(0.18405798,0,0,0.18405798,117.82492,49.811069)">
-    <g
-       id="g1202">
-      <!-- color: #1f4a5e -->
-    </g>
-  </g>
-  <g
-     id="g1210"
-     transform="matrix(0.18405798,0,0,0.18405798,117.82492,49.811069)" />
-  <g
      id="gpart"
      transform="matrix(0.18405798,0,0,0.18405798,117.82492,49.811069)">
     <path
@@ -1493,7 +1409,7 @@
   </g>
   <g
      id="zorin"
-     transform="translate(53.91364,41.540259)">
+     transform="translate(54.096389,42.236273)">
     <g
        id="g1234">
       <path
@@ -1544,5 +1460,41 @@
          style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.0682128px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
          sodipodi:nodetypes="ccccccc" />
     </g>
+  </g>
+  <g
+     id="nixos"
+     transform="translate(67.325556,31.376585)">
+    <path
+       d="m 80.84111,14.923832 c 2.338089,0 4.233334,1.895245 4.233334,4.233333 0,2.338088 -1.895245,4.233333 -4.233334,4.233333 -2.338088,0 -4.233333,-1.895245 -4.233333,-4.233333 0,-2.338088 1.895245,-4.233333 4.233333,-4.233333 z"
+       style="fill:none;fill-opacity:1;stroke-width:0.184058"
+       id="path2724" />
+    <path
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#5277c3;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.0364711;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       d="m 79.652108,19.223255 1.485551,2.57334 -0.682703,0.0064 -0.396606,-0.691361 -0.399437,0.687666 -0.33921,-1.33e-4 -0.173734,-0.300153 0.569076,-0.978521 -0.403972,-0.702988 z"
+       id="path4861" />
+    <path
+       d="m 80.188302,18.163269 -1.485803,2.573195 -0.346898,-0.588036 0.400433,-0.689152 -0.795255,-0.0021 -0.169486,-0.293833 0.173072,-0.300534 1.131963,0.0036 0.406819,-0.701343 z"
+       id="use4863"
+       style="fill:#ffffff;fill-opacity:1" />
+    <path
+       d="m 80.302287,20.220242 2.971353,1.46e-4 -0.335805,0.59444 -0.797039,-0.0022 0.395818,0.689754 -0.169724,0.293696 -0.346806,3.89e-4 -0.562886,-0.982095 -0.810791,-0.0016 z"
+       id="use4865"
+       style="fill:#ffffff;fill-opacity:1" />
+    <path
+       d="m 82.03172,19.092731 -1.485551,-2.573341 0.682703,-0.0064 0.396606,0.691361 0.399437,-0.687666 0.33921,1.33e-4 0.173735,0.300153 -0.569077,0.978521 0.403972,0.702988 z"
+       id="use4867"
+       style="fill:#ffffff;fill-opacity:1" />
+    <path
+       id="path4873"
+       d="m 79.652108,19.223255 1.485551,2.57334 -0.682703,0.0064 -0.396606,-0.691361 -0.399437,0.687666 -0.33921,-1.33e-4 -0.173734,-0.300153 0.569076,-0.978521 -0.403972,-0.702988 z"
+       style="fill:#ffffff;fill-opacity:1" />
+    <path
+       id="use4875"
+       d="m 81.377589,18.089241 -2.971353,-1.46e-4 0.335805,-0.594441 0.797039,0.0022 -0.395818,-0.689756 0.169724,-0.293695 0.346807,-3.83e-4 0.562886,0.982095 0.810791,0.0016 z"
+       style="fill:#ffffff;fill-opacity:1" />
+    <path
+       id="use4877"
+       d="m 81.493511,20.152169 1.485803,-2.573194 0.346898,0.588036 -0.400433,0.689151 0.795254,0.0021 0.169486,0.293833 -0.173072,0.300535 -1.131962,-0.0036 -0.406819,0.701344 z"
+       style="fill:#ffffff;fill-opacity:1" />
   </g>
 </svg>
