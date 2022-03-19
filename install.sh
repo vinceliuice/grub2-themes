@@ -69,41 +69,40 @@ usage() {
 }
 
 generate() {
-    # Make a themes directory if it doesn't exist
-    prompt -s "\n Checking for the existence of themes directory..."
+  # Make a themes directory if it doesn't exist
+  prompt -s "\n Checking for the existence of themes directory..."
 
-    [[ -d "${THEME_DIR}/${theme}" ]] && rm -rf "${THEME_DIR}/${theme}"
-    mkdir -p "${THEME_DIR}/${theme}"
+  [[ -d "${THEME_DIR}/${theme}" ]] && rm -rf "${THEME_DIR}/${theme}"
+  mkdir -p "${THEME_DIR}/${theme}"
 
-    # Copy theme
-    prompt -s "\n Installing ${theme} ${icon} ${screen} theme..."
+  # Copy theme
+  prompt -s "\n Installing ${theme} ${icon} ${screen} theme..."
 
-    # Don't preserve ownership because the owner will be root, and that causes the script to crash if it is ran from terminal by sudo
-    cp -a --no-preserve=ownership "${REO_DIR}/common/"{*.png,*.pf2} "${THEME_DIR}/${theme}"
-    cp -a --no-preserve=ownership "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${theme}/theme.txt"
-    cp -a --no-preserve=ownership "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${theme}/background.jpg"
+  # Don't preserve ownership because the owner will be root, and that causes the script to crash if it is ran from terminal by sudo
+  cp -a --no-preserve=ownership "${REO_DIR}/common/"{*.png,*.pf2} "${THEME_DIR}/${theme}"
+  cp -a --no-preserve=ownership "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${theme}/theme.txt"
+  cp -a --no-preserve=ownership "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${theme}/background.jpg"
 
-    # Use custom background.jpg as grub background image
-    if [[ -f "${REO_DIR}/background.jpg" ]]; then
-      prompt -w "\n Using custom background.jpg as grub background image..."
-      cp -a --no-preserve=ownership "${REO_DIR}/background.jpg" "${THEME_DIR}/${theme}/background.jpg"
-      convert -auto-orient "${THEME_DIR}/${theme}/background.jpg" "${THEME_DIR}/${theme}/background.jpg"
-    fi
+  # Use custom background.jpg as grub background image
+  if [[ -f "${REO_DIR}/background.jpg" ]]; then
+    prompt -w "\n Using custom background.jpg as grub background image..."
+    cp -a --no-preserve=ownership "${REO_DIR}/background.jpg" "${THEME_DIR}/${theme}/background.jpg"
+    convert -auto-orient "${THEME_DIR}/${theme}/background.jpg" "${THEME_DIR}/${theme}/background.jpg"
+  fi
 
-    if [[ ${screen} == 'ultrawide' ]]; then
-      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-1080p" "${THEME_DIR}/${theme}/icons"
-      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-1080p/"*.png "${THEME_DIR}/${theme}"
-      cp -a --no-preserve=ownership "${REO_DIR}/assets/info-1080p.png" "${THEME_DIR}/${theme}/info.png"
-    elif [[ ${screen} == 'ultrawide2k' ]]; then
-      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-2k" "${THEME_DIR}/${theme}/icons"
-      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-2k/"*.png "${THEME_DIR}/${theme}"
-      cp -a --no-preserve=ownership "${REO_DIR}/assets/info-2k.png" "${THEME_DIR}/${theme}/info.png"
-    else
-      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${theme}/icons"
-      cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-${screen}/"*.png "${THEME_DIR}/${theme}"
-      cp -a --no-preserve=ownership "${REO_DIR}/assets/info-${screen}.png" "${THEME_DIR}/${theme}/info.png"
-    fi
-
+  if [[ ${screen} == 'ultrawide' ]]; then
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-1080p" "${THEME_DIR}/${theme}/icons"
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-1080p/"*.png "${THEME_DIR}/${theme}"
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/info-1080p.png" "${THEME_DIR}/${theme}/info.png"
+  elif [[ ${screen} == 'ultrawide2k' ]]; then
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-2k" "${THEME_DIR}/${theme}/icons"
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-2k/"*.png "${THEME_DIR}/${theme}"
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/info-2k.png" "${THEME_DIR}/${theme}/info.png"
+  else
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-${screen}" "${THEME_DIR}/${theme}/icons"
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-${screen}/"*.png "${THEME_DIR}/${theme}"
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/info-${screen}.png" "${THEME_DIR}/${theme}/info.png"
+  fi
 }
 
 install() {
@@ -198,7 +197,7 @@ install() {
     prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
 
   #Check if password is cached (if cache timestamp has not expired yet)
-  elif sudo -n true 2> /dev/null && echo; then #No need for "$?" ==> https://github.com/koalaman/shellcheck/wiki/SC2181
+  elif sudo -n true 2> /dev/null && echo; then
     sudo "$0" -t ${theme} -i ${icon} -s ${screen}
   else
 
@@ -446,6 +445,7 @@ dialog_installer() {
   fi
   run_dialog
   install "${theme}" "${icon}" "${screen}"
+  exit 1
 }
 
 #######################################################
@@ -453,6 +453,7 @@ dialog_installer() {
 #######################################################
 
 install=install
+
 while [[ $# -gt 0 ]]; do
   PROG_ARGS+=("${1}")
   dialog='false'
@@ -491,7 +492,7 @@ while [[ $# -gt 0 ]]; do
             themes+=("${THEME_VARIANTS[3]}")
             shift
             ;;
-          -*) # "-*" overrides "--*"
+          -*)
             break
             ;;
           *)
