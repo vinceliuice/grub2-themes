@@ -312,7 +312,7 @@ updating_grub() {
   elif has_command zypper; then
     grub2-mkconfig -o /boot/grub2/grub.cfg
   elif has_command dnf; then
-    if [[ -f /boot/efi/EFI/fedora/grub.cfg ]]; then
+    if [[ -f /boot/efi/EFI/fedora/grub.cfg ]] && (( $(cat /etc/fedora-release | awk '{print $3}') < 34 )); then
       prompt -i "Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
       grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
     fi
