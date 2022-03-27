@@ -17,6 +17,7 @@
       nixosModule = { config, ... }:
         let
           cfg = config.boot.loader.grub2-theme;
+          splashImage = if cfg.splashImage == null then "" else cfg.splashImage;
           resolutions = {
             "1080p" = "1920x1080";
             "ultrawide" = "2560x1080";
@@ -35,8 +36,8 @@
                 --theme ${cfg.theme} \
                 --icon ${cfg.icon};
 
-              if [ -f ${cfg.splashImage} ]; then
-                cp ${cfg.splashImage} $out/grub/themes/${cfg.theme}/background.jpg;
+              if [ -n "${splashImage}" ]; then
+                cp ${splashImage} $out/grub/themes/${cfg.theme}/background.jpg;
               fi;
               if [ ${pkgs.lib.trivial.boolToString cfg.footer} == "false" ]; then
                 sed -i ':again;$!N;$!b again; s/\+ image {[^}]*}//g' $out/grub/themes/${cfg.theme}/theme.txt;
@@ -81,9 +82,9 @@
                 '';
               };
               splashImage = mkOption {
-                default = "";
+                default = null;
                 example = "/my/path/background.jpg";
-                type = types.path;
+                type = types.nullOr types.path;
                 description = ''
                   The path of the image to use for background (must be jpg).
                 '';
