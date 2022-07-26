@@ -44,6 +44,7 @@ kernel
 zorin
 nixos
 gpart
+archcraft
 
 recovery
 restart
