@@ -51,6 +51,7 @@ _If no options are used, a user interface `dialog` will show up instead_
  - If any issues occur, report then to the [issue](https://github.com/vinceliuice/grub2-themes/issues) page
 
 ## Preview:
+Images shown: tela/vimix/stylish/whitesur
 ![preview](preview.png?raw=true)
 
 ## Documents
