@@ -1,31 +1,16 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
    sodipodi:docname="logos-white.svg"
    id="svg453"
    viewBox="0 0 80.433333 118.5296"
    version="1.1"
    height="448"
-   width="304">
-  <metadata
-     id="metadata275">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
+   width="304"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
      inkscape:pagecheckerboard="0"
      inkscape:snap-nodes="false"
@@ -35,15 +20,15 @@
      inkscape:document-rotation="0"
      inkscape:current-layer="svg453"
      inkscape:window-maximized="1"
-     inkscape:window-y="-8"
-     inkscape:window-x="-8"
-     inkscape:cy="569.38428"
-     inkscape:cx="-1585.5017"
-     inkscape:zoom="0.2296875"
+     inkscape:window-y="32"
+     inkscape:window-x="0"
+     inkscape:cy="162.72109"
+     inkscape:cx="232.78912"
+     inkscape:zoom="3.675"
      showgrid="false"
      id="namedview455"
-     inkscape:window-height="1377"
-     inkscape:window-width="2560"
+     inkscape:window-height="701"
+     inkscape:window-width="1368"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0"
      guidetolerance="10"
@@ -51,7 +36,9 @@
      objecttolerance="10"
      borderopacity="1"
      bordercolor="#666666"
-     pagecolor="#adadad">
+     pagecolor="#adadad"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#adadad">
     <inkscape:grid
        enabled="true"
        id="grid1090"

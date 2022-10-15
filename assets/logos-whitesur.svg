@@ -1,32 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   inkscape:version="1.2.1 (9c6d41e410, 2022-07-14)"
    sodipodi:docname="logos-whitesur.svg"
    id="svg1041"
    viewBox="0 0 304 448"
    version="1.1"
    height="448"
-   width="304">
-  <metadata
-     id="metadata522">
-    <rdf:RDF>
-      <cc:Work
-         rdf:about="">
-        <dc:format>image/svg+xml</dc:format>
-        <dc:type
-           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
-      </cc:Work>
-    </rdf:RDF>
-  </metadata>
+   width="304"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
      showguides="true"
      showborder="true"
@@ -36,21 +21,23 @@
      inkscape:snap-bbox="true"
      inkscape:current-layer="svg1041"
      inkscape:window-maximized="1"
-     inkscape:window-y="-8"
-     inkscape:window-x="2552"
-     inkscape:window-height="1377"
-     inkscape:window-width="2560"
-     inkscape:cy="173.6991"
-     inkscape:cx="186.38177"
-     inkscape:zoom="3.5039666"
-     showgrid="true"
+     inkscape:window-y="32"
+     inkscape:window-x="0"
+     inkscape:window-height="701"
+     inkscape:window-width="1368"
+     inkscape:cy="163.24357"
+     inkscape:cx="154.96723"
+     inkscape:zoom="1.7519833"
+     showgrid="false"
      inkscape:pagecheckerboard="0"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
      borderopacity="1.0"
      bordercolor="#666666"
      pagecolor="#adadad"
-     id="namedview1043">
+     id="namedview1043"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#adadad">
     <inkscape:grid
        enabled="true"
        id="grid1326"
@@ -868,10 +855,10 @@
     </filter>
     <filter
        color-interpolation-filters="sRGB"
-       height="3.3561363"
-       width="2.5342071"
-       y="-1.1780682"
-       x="-0.76710349"
+       height="2.5046632"
+       width="2.5324723"
+       y="-0.75233162"
+       x="-0.76623614"
        id="filter8657">
       <feGaussianBlur
          id="feGaussianBlur265"
@@ -881,8 +868,8 @@
        color-interpolation-filters="sRGB"
        height="1.4700729"
        width="1.4615375"
-       y="-0.23503643"
-       x="-0.23076876"
+       y="-0.23503644"
+       x="-0.23076877"
        id="filter8681">
       <feGaussianBlur
          id="feGaussianBlur268"
@@ -892,8 +879,8 @@
        color-interpolation-filters="sRGB"
        height="3.1469669"
        width="1.6314609"
-       y="-1.0734833"
-       x="-0.31573042"
+       y="-1.0734834"
+       x="-0.31573043"
        id="filter8693">
       <feGaussianBlur
          id="feGaussianBlur271"
@@ -901,10 +888,10 @@
     </filter>
     <filter
        color-interpolation-filters="sRGB"
-       height="3.7321775"
-       width="1.650883"
+       height="3.7321774"
+       width="1.6508829"
        y="-1.3660887"
-       x="-0.32544148"
+       x="-0.32544147"
        id="filter8709">
       <feGaussianBlur
          id="feGaussianBlur274"
@@ -912,10 +899,10 @@
     </filter>
     <filter
        color-interpolation-filters="sRGB"
-       height="2.8375919"
-       width="2.8375919"
-       y="-0.918796"
-       x="-0.918796"
+       height="2.837592"
+       width="2.837592"
+       y="-0.91879601"
+       x="-0.91879601"
        id="filter8721">
       <feGaussianBlur
          id="feGaussianBlur277"
@@ -925,8 +912,8 @@
        color-interpolation-filters="sRGB"
        height="1.4250232"
        width="1.6625463"
-       y="-0.21251161"
-       x="-0.33127317"
+       y="-0.21251162"
+       x="-0.33127316"
        id="filter8737">
       <feGaussianBlur
          id="feGaussianBlur280"
