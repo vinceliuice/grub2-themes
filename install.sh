@@ -459,7 +459,6 @@ while [[ $# -gt 0 ]]; do
   dialog='false'
   case "${1}" in
     -b|--boot)
-      THEME_DIR="/boot/grub/themes"
       shift 1
       ;;
     -r|--remove)
