@@ -6,7 +6,6 @@ Usage:  `sudo ./install.sh [OPTIONS...]`
 
 |  Options:              | Description: |
 |:-----------------------|:-------------|
-| -b, --boot             | Install grub theme into `/boot/grub/themes` |
 | -t, --theme            | theme variant(s) [tela/vimix/stylish/whitesur] (default is tela)"
 | -i, --icon             | icon variant(s) [color/white/whitesur] (default is color)"
 | -s, --screen           | screen resolution variant(s) [1080p/2k/4k/ultrawide/ultrawide2k] (default is 1080p)"
