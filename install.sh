@@ -68,6 +68,14 @@ usage() {
 }
 
 generate() {
+  if [[ "${install_boot}" == 'true' ]]; then
+    if [[ -d "/boot/grub" ]]; then
+      THEME_DIR='/boot/grub/themes'
+    elif [[ -d "/boot/grub2" ]]; then
+      THEME_DIR='/boot/grub2/themes'
+    fi
+  fi
+
   # Make a themes directory if it doesn't exist
   prompt -s "\n Checking for the existence of themes directory..."
 
@@ -191,31 +199,39 @@ install() {
     fi
 
     # Update grub config
-    prompt -s "\n Updating grub config...\n"
+    prompt -s "\n Updating grub config..."
     updating_grub
     prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
 
   #Check if password is cached (if cache timestamp has not expired yet)
   elif sudo -n true 2> /dev/null && echo; then
-    sudo "$0" -t ${theme} -i ${icon} -s ${screen}
+    if [[ "${install_boot}" == 'true' ]]; then
+      sudo "$0" -t ${theme} -i ${icon} -s ${screen} -b
+    else
+      sudo "$0" -t ${theme} -i ${icon} -s ${screen}
+    fi
   else
-
+  
     #Ask for password
     if [[ -n ${tui_root_login} ]] ; then
       if [[ -n "${theme}" && -n "${screen}" ]]; then
-        sudo -S $0 -t ${theme} -i ${icon} -s ${screen} <<< ${tui_root_login}
+        if [[ "${install_boot}" == 'true' ]]; then
+          sudo -S $0 -t ${theme} -i ${icon} -s ${screen} -b <<< ${tui_root_login}
+        else
+          sudo -S $0 -t ${theme} -i ${icon} -s ${screen} <<< ${tui_root_login}
+        fi
       fi
     else
-
       prompt -e "\n [ Error! ] -> Run me as root! "
       read -r -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
-
       if sudo -S echo <<< $REPLY 2> /dev/null && echo; then
-
         #Correct password, use with sudo's stdin
-        sudo -S "$0" -t ${theme} -i ${icon} -s ${screen} <<< ${REPLY}
+        if [[ "${install_boot}" == 'true' ]]; then
+          sudo -S "$0" -t ${theme} -i ${icon} -s ${screen} -b <<< ${REPLY}
+        else
+          sudo -S "$0" -t ${theme} -i ${icon} -s ${screen} <<< ${REPLY}
+        fi
       else
-
         #block for 3 seconds before allowing another attempt
         sleep 3
         prompt -e "\n [ Error! ] -> Incorrect password!\n"
@@ -312,11 +328,11 @@ updating_grub() {
     grub2-mkconfig -o /boot/grub2/grub.cfg
   elif has_command dnf; then
     if [[ -f /boot/efi/EFI/fedora/grub.cfg ]] && (( $(cat /etc/fedora-release | awk '{print $3}') < 34 )); then
-      prompt -i "Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
+      prompt -i "\n Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
       grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
     fi
     if [[ -f /boot/grub2/grub.cfg ]]; then
-      prompt -i "Find config file on /boot/grub2/grub.cfg ...\n"
+      prompt -i "\n Find config file on /boot/grub2/grub.cfg ...\n"
       grub2-mkconfig -o /boot/grub2/grub.cfg
     fi
   fi
@@ -351,10 +367,19 @@ remove() {
 
   # Check for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
-
-    echo -e "\n Checking for the existence of themes directory..."
+    prompt -i "\n Checking for the existence of themes directory..."
     if [[ -d "${THEME_DIR}/${theme}" ]]; then
+      prompt -s "\n Find installed theme: '${THEME_DIR}/${theme}'..."
       rm -rf "${THEME_DIR}/${theme}"
+      prompt -w "Removed: '${THEME_DIR}/${theme}'..."
+    elif [[ -d "/boot/grub/themes/${theme}" ]]; then
+      prompt -s "\n Find installed theme: '/boot/grub/themes/${theme}'..."
+      rm -rf "/boot/grub/themes/${theme}"
+      prompt -w "\n Removed: '/boot/grub/themes/${theme}'..."
+    elif [[ -d "/boot/grub2/themes/${theme}" ]]; then
+      prompt -s "\n Find installed theme: '/boot/grub2/themes/${theme}'..."
+      rm -rf "/boot/grub2/themes/${theme}"
+      prompt -w "\n Removed: '/boot/grub2/themes/${theme}'..."
     else
       prompt -e "\n Specified ${theme} theme does not exist!"
       exit 0
@@ -362,13 +387,10 @@ remove() {
 
     local grub_config_location=""
     if [[ -f "/etc/default/grub" ]]; then
-
       grub_config_location="/etc/default/grub"
     elif [[ -f "/etc/default/grub.d/kali-themes.cfg" ]]; then
-
       grub_config_location="/etc/default/grub.d/kali-themes.cfg"
     else
-
       prompt -e "\nCannot find grub config file in default locations!"
       prompt -e "\nPlease inform the developers by opening an issue on github."
       prompt -e "\nExiting..."
@@ -378,15 +400,12 @@ remove() {
     local current_theme="" # Declaration and assignment should be done seperately ==> https://github.com/koalaman/shellcheck/wiki/SC2155
     current_theme="$(grep 'GRUB_THEME=' $grub_config_location | grep -v \#)"
     if [[ -n "$current_theme" ]]; then
-
       # Backup with --in-place option to grub.bak within the same directory; then remove the current theme.
       sed --in-place='.bak' "s|$current_theme|#GRUB_THEME=|" "$grub_config_location"
-
       # Update grub config
       prompt -s "\n Resetting grub theme...\n"
       updating_grub
     else
-
       prompt -e "\nNo active theme found."
       prompt -e "\nExiting..."
       exit 1
@@ -396,7 +415,7 @@ remove() {
     #Check if password is cached (if cache timestamp not expired yet)
     if sudo -n true 2> /dev/null && echo; then
       #No need to ask for password
-      sudo "$0" "${PROG_ARGS[@]}"
+      sudo "$0" -t ${theme} "${PROG_ARGS[@]}"
     else
       #Ask for password
       prompt -e "\n [ Error! ] -> Run me as root! "
@@ -404,7 +423,7 @@ remove() {
 
       if sudo -S echo <<< $REPLY 2> /dev/null && echo; then
         #Correct password, use with sudo's stdin
-        sudo -S "$0" "${PROG_ARGS[@]}" <<< $REPLY
+        sudo -S "$0" -t ${theme} "${PROG_ARGS[@]}" <<< $REPLY
       else
         #block for 3 seconds before allowing another attempt
         sleep 3
@@ -465,6 +484,10 @@ while [[ $# -gt 0 ]]; do
       shift 1
       THEME_DIR="${1}"
       install=generate
+      shift 1
+      ;;
+    -b|--boot)
+      install_boot='true'
       shift 1
       ;;
     -t|--theme)
