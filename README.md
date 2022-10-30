@@ -20,13 +20,22 @@ _If no options are used, a user interface `dialog` will show up instead_
 
 ### Examples:
  - Install Tela theme on 2k display device:
-   - `sudo ./install.sh -t tela -s 2k`
+
+```sh
+sudo ./install.sh -t tela -s 2k
+```
 
  - Install Tela theme into /boot/grub/themes:
-   - `sudo ./install.sh -b -t tela`
+
+```sh
+sudo ./install.sh -b -t tela
+```
 
  - Uninstall Tela theme:
-   - `sudo ./install.sh -r -t tela`
+
+```sh
+sudo ./install.sh -r -t tela
+```
 
 ## Issues / tweaks:
 
