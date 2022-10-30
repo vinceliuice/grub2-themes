@@ -57,14 +57,22 @@ function has_command() {
 }
 
 usage() {
-  printf "%s\n" "Usage: ${0##*/} [OPTIONS...]"
-  printf "\n%s\n" "OPTIONS:"
-  printf "  %-25s%s\n" "-t, --theme" "theme variant(s) [tela|vimix|stylish|whitesur] (default is tela)"
-  printf "  %-25s%s\n" "-i, --icon" "icon variant(s) [color|white|whitesur] (default is color)"
-  printf "  %-25s%s\n" "-s, --screen" "screen display variant(s) [1080p|2k|4k|ultrawide|ultrawide2k] (default is 1080p)"
-  printf "  %-25s%s\n" "-r, --remove" "Remove theme (must add theme name option)"
-  printf "  %-25s%s\n" "-g, --generate" "do not install, but generate theme into chosen directory"
-  printf "  %-25s%s\n" "-h, --help" "Show this help"
+cat << EOF
+
+Usage: $0 [OPTION]...
+
+OPTIONS:
+  -t, --theme     theme variant(s)          [tela|vimix|stylish|whitesur]       (default is tela)
+  -i, --icon      icon variant(s)           [color|white|whitesur]              (default is color)
+  -s, --screen    screen display variant(s) [1080p|2k|4k|ultrawide|ultrawide2k] (default is 1080p)
+  -r, --remove    Remove theme              [tela|vimix|stylish|whitesur]       (must add theme name option, default is tela)
+
+  -b, --boot      install theme into '/boot/grub' or '/boot/grub2'
+  -g, --generate  do not install but generate theme into chosen directory       (must add your directory)
+
+  -h, --help      Show this help
+
+EOF
 }
 
 generate() {
@@ -371,7 +379,7 @@ remove() {
     if [[ -d "${THEME_DIR}/${theme}" ]]; then
       prompt -s "\n Find installed theme: '${THEME_DIR}/${theme}'..."
       rm -rf "${THEME_DIR}/${theme}"
-      prompt -w "Removed: '${THEME_DIR}/${theme}'..."
+      prompt -w "\n Removed: '${THEME_DIR}/${theme}'..."
     elif [[ -d "/boot/grub/themes/${theme}" ]]; then
       prompt -s "\n Find installed theme: '/boot/grub/themes/${theme}'..."
       rm -rf "/boot/grub/themes/${theme}"
@@ -478,7 +486,35 @@ while [[ $# -gt 0 ]]; do
   case "${1}" in
     -r|--remove)
       remove='true'
-      shift 1
+      shift
+      for theme in "${@}"; do
+        case "${theme}" in
+          tela)
+            themes+=("${THEME_VARIANTS[0]}")
+            shift
+            ;;
+          vimix)
+            themes+=("${THEME_VARIANTS[1]}")
+            shift
+            ;;
+          stylish)
+            themes+=("${THEME_VARIANTS[2]}")
+            shift
+            ;;
+          whitesur)
+            themes+=("${THEME_VARIANTS[3]}")
+            shift
+            ;;
+          -*)
+            break
+            ;;
+          *)
+            prompt -e "ERROR: Unrecognized theme variant '$1'."
+            prompt -i "Try '$0 --help' for more information."
+            exit 1
+            ;;
+        esac
+      done
       ;;
     -g|--generate)
       shift 1
