@@ -50,7 +50,11 @@ sudo ./install.sh -r -t tela
 
  - Make sure you have `imagemagick` installed, or at least something that provides `convert`
  - Find the resolution of your display, and make sure your background matches the resolution
-   - (1920x1080 -> --1080p, 2560x1080 -> --ultrawide, 2560x1440 -> --2k, 3440x1440 -> --ultrawide2k, 3840x2160 -> --4k)
+   - 1920x1080 >> 1080p
+   - 2560x1080 >> ultrawide
+   - 2560x1440 >> 2k
+   - 3440x1440 >> ultrawide2k
+   - 3840x2160 >> 4k
  - Place your custom background inside the root of the project, and name it `background.jpg`
  - Run the installer like normal, but with -s `[YOUR_RESOLUTION]` and -t `[THEME]` and -i `[ICON]`
    - Make sure to replace `[YOUR_RESOLUTION]` with your resolution and `[THEME]` with the theme
