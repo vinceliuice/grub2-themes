@@ -67,7 +67,6 @@ sudo ./install.sh -r -t tela
  - If any issues occur, report then to the [issue](https://github.com/vinceliuice/grub2-themes/issues) page
 
 ## Preview:
-Images shown: tela/vimix/stylish/whitesur
 ![preview](preview.png?raw=true)
 
 ## Documents
