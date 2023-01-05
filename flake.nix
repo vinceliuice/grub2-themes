@@ -14,10 +14,12 @@
     in
     with nixpkgs.lib;
     rec {
-      nixosModule = { config, ... }:
+      nixosModules.default = { config, ... }:
         let
           cfg = config.boot.loader.grub2-theme;
           splashImage = if cfg.splashImage == null then "" else cfg.splashImage;
+          hasBootMenuConfig = cfg.bootMenuConfig != null;
+          hasTerminalConfig = cfg.terminalConfig != null;
           resolutions = {
             "1080p" = "1920x1080";
             "ultrawide" = "2560x1080";
@@ -37,10 +39,29 @@
                 --icon ${cfg.icon};
 
               if [ -n "${splashImage}" ]; then
-                cp ${splashImage} $out/grub/themes/${cfg.theme}/background.jpg;
+                filename=$(basename -- "${splashImage}")
+                extension="''${filename##*.}"
+                rm $out/grub/themes/${cfg.theme}/background.jpg;
+                cp ${splashImage} $out/grub/themes/${cfg.theme}/background.$extension;
+                cp ${splashImage} $out/grub/themes/${cfg.theme}/background;
+                sed -i "s/background.jpg/background.$extension/g" $out/grub/themes/${cfg.theme}/theme.txt;
               fi;
               if [ ${pkgs.lib.trivial.boolToString cfg.footer} == "false" ]; then
                 sed -i ':again;$!N;$!b again; s/\+ image {[^}]*}//g' $out/grub/themes/${cfg.theme}/theme.txt;
+              fi;
+              if [ ${pkgs.lib.trivial.boolToString hasBootMenuConfig} == "true" ]; then
+                sed -i ':again;$!N;$!b again; s/\+ boot_menu {[^}]*}//g' $out/grub/themes/${cfg.theme}/theme.txt;
+                cat << EOF >> $out/grub/themes/${cfg.theme}/theme.txt
+              + boot_menu {
+                  ${if cfg.bootMenuConfig == null then "" else cfg.bootMenuConfig}
+              }
+              EOF
+              fi;
+              if [ ${pkgs.lib.trivial.boolToString hasTerminalConfig} == "true" ]; then
+                sed -i 's/^terminal-.*$//g' $out/grub/themes/${cfg.theme}/theme.txt
+                cat << EOF >> $out/grub/themes/${cfg.theme}/theme.txt
+              ${if cfg.terminalConfig == null then "" else cfg.terminalConfig}
+              EOF
               fi;
             '';
           };
@@ -86,7 +107,25 @@
                 example = "/my/path/background.jpg";
                 type = types.nullOr types.path;
                 description = ''
-                  The path of the image to use for background (must be jpg).
+                  The path of the image to use for background (must be jpg or png).
+                '';
+              };
+              bootMenuConfig = mkOption {
+                default = null;
+                example = "left = 30%";
+                type = types.nullOr types.string;
+                description = ''
+                  Grub theme definition for boot_menu.
+                  Refer to config/theme-*.txt for reference.
+                '';
+              };
+              terminalConfig = mkOption {
+                default = null;
+                example = "terminal-font: \"Terminus Regular 18\"";
+                type = types.nullOr types.string;
+                description = ''
+                  Replaces grub theme definition for terminial-*.
+                  Refer to config/theme-*.txt for reference.
                 '';
               };
               footer = mkOption {
@@ -103,17 +142,22 @@
             environment.systemPackages = [
               grub2-theme
             ];
-            boot.loader.grub = {
-              theme = "${grub2-theme}/grub/themes/${cfg.theme}";
-              splashImage = "${grub2-theme}/grub/themes/${cfg.theme}/background.jpg";
-              gfxmodeEfi = "${resolution},auto";
-              gfxmodeBios = "${resolution},auto";
-              extraConfig = ''
-                insmod gfxterm
-                insmod png
-                set icondir=($root)/theme/icons
-              '';
-            };
+            boot.loader.grub =
+              let
+                ext = if cfg.splashImage == null then "jpg" else last (splitString "." cfg.splashImage);
+              in
+              {
+                theme = "${grub2-theme}/grub/themes/${cfg.theme}";
+                splashImage =
+                  "${grub2-theme}/grub/themes/${cfg.theme}/background.${ext}";
+                gfxmodeEfi = "${resolution},auto";
+                gfxmodeBios = "${resolution},auto";
+                extraConfig = ''
+                  insmod gfxterm
+                  insmod png
+                  set icondir=($root)/theme/icons
+                '';
+              };
           }]);
         };
     };
