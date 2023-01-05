@@ -45,6 +45,7 @@ zorin
 nixos
 gpart
 ubuntuDDE
+archcraft
 
 recovery
 restart
