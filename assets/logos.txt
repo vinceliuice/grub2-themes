@@ -46,6 +46,7 @@ nixos
 gpart
 ubuntuDDE
 archcraft
+brunch
 
 recovery
 restart
@@ -63,3 +64,4 @@ type
 tz
 unset
 submenu
+brunch-settings
