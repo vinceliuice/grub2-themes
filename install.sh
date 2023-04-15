@@ -120,7 +120,9 @@ install() {
     prompt -s "\n Setting ${theme} as default..."
 
     # Backup grub config
-    cp -an /etc/default/grub /etc/default/grub.bak
+    if [[ ! -f "/etc/default/grub.bak" ]]; then
+      cp -an /etc/default/grub /etc/default/grub.bak
+    fi
 
     # Fedora workaround to fix the missing unicode.pf2 file (tested on fedora 34): https://bugzilla.redhat.com/show_bug.cgi?id=1739762
     # This occurs when we add a theme on grub2 with Fedora.
@@ -352,7 +354,7 @@ remove() {
   # Check for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
 
-    echo -e "\n Checking for the existence of themes directory..."
+    echo -e "Checking for the existence of themes directory..."
     if [[ -d "${THEME_DIR}/${theme}" ]]; then
       rm -rf "${THEME_DIR}/${theme}"
     else
@@ -381,6 +383,7 @@ remove() {
 
       # Backup with --in-place option to grub.bak within the same directory; then remove the current theme.
       sed --in-place='.bak' "s|$current_theme|#GRUB_THEME=|" "$grub_config_location"
+      rm -rf "$grub_config_location".bak
 
       # Update grub config
       prompt -s "\n Resetting grub theme...\n"
