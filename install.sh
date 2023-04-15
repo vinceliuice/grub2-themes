@@ -85,13 +85,13 @@ generate() {
   fi
 
   # Make a themes directory if it doesn't exist
-  prompt -s "\n Checking for the existence of themes directory..."
+  prompt -i "\n Checking for the existence of themes directory..."
 
   [[ -d "${THEME_DIR}/${theme}" ]] && rm -rf "${THEME_DIR}/${theme}"
   mkdir -p "${THEME_DIR}/${theme}"
 
   # Copy theme
-  prompt -s "\n Installing ${theme} ${icon} ${screen} theme..."
+  prompt -i "\n Installing ${theme} ${icon} ${screen} theme..."
 
   # Don't preserve ownership because the owner will be root, and that causes the script to crash if it is ran from terminal by sudo
   cp -a --no-preserve=ownership "${REO_DIR}/common/"{*.png,*.pf2} "${THEME_DIR}/${theme}"
@@ -133,10 +133,12 @@ install() {
     generate "${theme}" "${icon}" "${screen}"
 
     # Set theme
-    prompt -s "\n Setting ${theme} as default..."
+    prompt -i "\n Setting ${theme} as default..."
 
     # Backup grub config
-    cp -an /etc/default/grub /etc/default/grub.bak
+    if [[ ! -f "/etc/default/grub.bak" ]]; then
+      cp -an /etc/default/grub /etc/default/grub.bak
+    fi
 
     # Fedora workaround to fix the missing unicode.pf2 file (tested on fedora 34): https://bugzilla.redhat.com/show_bug.cgi?id=1739762
     # This occurs when we add a theme on grub2 with Fedora.
@@ -200,14 +202,14 @@ install() {
     fi
 
     # For Kali linux
-    if [[ -f "/etc/default/grub.d/kali-themes.cfg" ]]; then
+    if [[ -f "/etc/default/grub.d/kali-themes.cfg" && ! -f "/etc/default/grub.d/kali-themes.cfg.bak" ]]; then
       cp -an /etc/default/grub.d/kali-themes.cfg /etc/default/grub.d/kali-themes.cfg.bak
       sed -i "s|.*GRUB_GFXMODE=.*|${gfxmode}|" /etc/default/grub.d/kali-themes.cfg
       sed -i "s|.*GRUB_THEME=.*|GRUB_THEME=\"${THEME_DIR}/${theme}/theme.txt\"|" /etc/default/grub.d/kali-themes.cfg
     fi
 
     # Update grub config
-    prompt -s "\n Updating grub config..."
+    prompt -i "\n Updating grub config... \n"
     updating_grub
     prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
 
@@ -219,7 +221,6 @@ install() {
       sudo "$0" -t ${theme} -i ${icon} -s ${screen}
     fi
   else
-  
     #Ask for password
     if [[ -n ${tui_root_login} ]] ; then
       if [[ -n "${theme}" && -n "${screen}" ]]; then
@@ -375,17 +376,17 @@ remove() {
 
   # Check for root access and proceed if it is present
   if [ "$UID" -eq "$ROOT_UID" ]; then
-    prompt -i "\n Checking for the existence of themes directory..."
+    prompt -i "Checking for the existence of themes directory..."
     if [[ -d "${THEME_DIR}/${theme}" ]]; then
-      prompt -s "\n Find installed theme: '${THEME_DIR}/${theme}'..."
+      prompt -i "\n Find installed theme: '${THEME_DIR}/${theme}'..."
       rm -rf "${THEME_DIR}/${theme}"
       prompt -w "\n Removed: '${THEME_DIR}/${theme}'..."
     elif [[ -d "/boot/grub/themes/${theme}" ]]; then
-      prompt -s "\n Find installed theme: '/boot/grub/themes/${theme}'..."
+      prompt -i "\n Find installed theme: '/boot/grub/themes/${theme}'..."
       rm -rf "/boot/grub/themes/${theme}"
       prompt -w "\n Removed: '/boot/grub/themes/${theme}'..."
     elif [[ -d "/boot/grub2/themes/${theme}" ]]; then
-      prompt -s "\n Find installed theme: '/boot/grub2/themes/${theme}'..."
+      prompt -i "\n Find installed theme: '/boot/grub2/themes/${theme}'..."
       rm -rf "/boot/grub2/themes/${theme}"
       prompt -w "\n Removed: '/boot/grub2/themes/${theme}'..."
     else
@@ -394,31 +395,38 @@ remove() {
     fi
 
     local grub_config_location=""
+
     if [[ -f "/etc/default/grub" ]]; then
       grub_config_location="/etc/default/grub"
     elif [[ -f "/etc/default/grub.d/kali-themes.cfg" ]]; then
       grub_config_location="/etc/default/grub.d/kali-themes.cfg"
     else
-      prompt -e "\nCannot find grub config file in default locations!"
-      prompt -e "\nPlease inform the developers by opening an issue on github."
-      prompt -e "\nExiting..."
+      prompt -e "\n Cannot find grub config file in default locations!"
+      prompt -w "\n Please inform the developers by opening an issue on github."
+      prompt -i "\n Exiting..."
       exit 1
     fi
 
     local current_theme="" # Declaration and assignment should be done seperately ==> https://github.com/koalaman/shellcheck/wiki/SC2155
+
     current_theme="$(grep 'GRUB_THEME=' $grub_config_location | grep -v \#)"
+
     if [[ -n "$current_theme" ]]; then
       # Backup with --in-place option to grub.bak within the same directory; then remove the current theme.
       sed --in-place='.bak' "s|$current_theme|#GRUB_THEME=|" "$grub_config_location"
+
+      if [[ -f "$grub_config_location".back ]]; then
+        rm -rf "$grub_config_location".back
+      fi
+
       # Update grub config
-      prompt -s "\n Resetting grub theme...\n"
+      prompt -i "\n Resetting grub theme...\n"
       updating_grub
     else
-      prompt -e "\nNo active theme found."
-      prompt -e "\nExiting..."
+      prompt -e "\n No active theme found."
+      prompt -i "\n Exiting..."
       exit 1
     fi
-
   else
     #Check if password is cached (if cache timestamp not expired yet)
     if sudo -n true 2> /dev/null && echo; then
