@@ -136,17 +136,17 @@ install() {
     prompt -i "\n Setting ${theme} as default..."
 
     # Backup grub config
-	if [[ -f /etc/default/grub.bak ]]; then
-		echo -ne "\n${b_CWAR}File '/etc/default/grub.bak' already exists. Remove it? [yN]${CDEF}"
-		read choice
-		if [ "$choice" = 'y' ]; then
-    		cp -a /etc/default/grub /etc/default/grub.bak
-		else
-			echo -ne "\n${b_CWAR}Skipping to save a backup configuration in '/etc/default/grub.bak'${CDEF}"
-		fi
-	else
-		cp -a /etc/default/grub /etc/default/grub.bak
-	fi
+    if [[ -f /etc/default/grub.bak ]]; then
+      prompt -w "\n File '/etc/default/grub.bak' already exists. Remove it? [y/N]"
+      read choice
+      if [[ "$choice" = 'y' ]]; then
+        cp -a /etc/default/grub /etc/default/grub.bak
+      else
+        prompt -w "Skipping to save a backup configuration in '/etc/default/grub.bak'"
+      fi
+    else
+      cp -a /etc/default/grub /etc/default/grub.bak
+    fi
 
     # Fedora workaround to fix the missing unicode.pf2 file (tested on fedora 34): https://bugzilla.redhat.com/show_bug.cgi?id=1739762
     # This occurs when we add a theme on grub2 with Fedora.
@@ -217,9 +217,9 @@ install() {
     fi
 
     # Update grub config
-    prompt -i "\n Updating grub config..."
+    prompt -i "\n Updating grub config... \n"
     updating_grub
-    prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
+    prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' \n"
 
   #Check if password is cached (if cache timestamp has not expired yet)
   elif sudo -n true 2> /dev/null && echo; then
