@@ -209,7 +209,7 @@ install() {
     fi
 
     # Update grub config
-    prompt -i "\n Updating grub config... \n"
+    prompt -i "\n Updating grub config..."
     updating_grub
     prompt -w "\n * At the next restart of your computer you will see your new Grub theme: '$theme' "
 
@@ -337,11 +337,11 @@ updating_grub() {
     grub2-mkconfig -o /boot/grub2/grub.cfg
   elif has_command dnf; then
     if [[ -f /boot/efi/EFI/fedora/grub.cfg ]] && (( $(cat /etc/fedora-release | awk '{print $3}') < 34 )); then
-      prompt -i "\n Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
+      prompt -s "\n Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
       grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
     fi
     if [[ -f /boot/grub2/grub.cfg ]]; then
-      prompt -i "\n Find config file on /boot/grub2/grub.cfg ...\n"
+      prompt -s "\n Find config file on /boot/grub2/grub.cfg ...\n"
       grub2-mkconfig -o /boot/grub2/grub.cfg
     fi
   fi
