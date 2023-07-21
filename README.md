@@ -17,7 +17,7 @@ Usage:  `sudo ./install.sh [OPTIONS...]`
 ```
 
 _If no options are used, a user interface `dialog` will show up instead_
-
+_For fedora replace install.sh with install-fedora.sh
 ### Examples:
  - Install Tela theme on 2k display device:
 
