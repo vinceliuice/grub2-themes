@@ -82,6 +82,9 @@ generate() {
     elif [[ -d "/boot/grub2" ]]; then
       THEME_DIR='/boot/grub2/themes'
     fi
+    if [[ -d "/boot/efi/EFI/fedora" ]]; then
+      THEME_DIR='/boot/efi/EFI/fedora/themes'
+    fi
   fi
 
   # Make a themes directory if it doesn't exist
@@ -136,17 +139,9 @@ install() {
     prompt -i "\n Setting ${theme} as default..."
 
     # Backup grub config
-	if [[ -f /etc/default/grub.bak ]]; then
-		echo -ne "\n${b_CWAR}File '/etc/default/grub.bak' already exists. Remove it? [yN]${CDEF}"
-		read choice
-		if [ "$choice" = 'y' ]; then
-    		cp -a /etc/default/grub /etc/default/grub.bak
-		else
-			echo -ne "\n${b_CWAR}Skipping to save a backup configuration in '/etc/default/grub.bak'${CDEF}"
-		fi
-	else
-		cp -a /etc/default/grub /etc/default/grub.bak
-	fi
+    if [[ ! -f "/etc/default/grub.bak" ]]; then
+      cp -an /etc/default/grub /etc/default/grub.bak
+    fi
 
     # Fedora workaround to fix the missing unicode.pf2 file (tested on fedora 34): https://bugzilla.redhat.com/show_bug.cgi?id=1739762
     # This occurs when we add a theme on grub2 with Fedora.
