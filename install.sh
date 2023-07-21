@@ -137,15 +137,15 @@ install() {
 
     # Backup grub config
     if [[ -f /etc/default/grub.bak ]]; then
-      prompt -w "\n File '/etc/default/grub.bak' already exists. Remove it? [y/N]"
-      read choice
-      if [[ "$choice" = 'y' ]]; then
-        cp -a /etc/default/grub /etc/default/grub.bak
-      else
-        prompt -s "Skipping to save a backup configuration in '/etc/default/grub.bak'"
-      fi
+      prompt -w "\n File '/etc/default/grub.bak' already exists!"
+#      read choice
+#      if [[ "$choice" = 'y' ]]; then
+#        cp -a /etc/default/grub /etc/default/grub.bak
+#      else
+#        prompt -s "Skipping to save a backup configuration in '/etc/default/grub.bak'"
+#      fi
     else
-      cp -a /etc/default/grub /etc/default/grub.bak
+      cp -an /etc/default/grub /etc/default/grub.bak
     fi
 
     # Fedora workaround to fix the missing unicode.pf2 file (tested on fedora 34): https://bugzilla.redhat.com/show_bug.cgi?id=1739762
