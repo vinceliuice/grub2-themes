@@ -142,7 +142,7 @@ install() {
       if [[ "$choice" = 'y' ]]; then
         cp -a /etc/default/grub /etc/default/grub.bak
       else
-        prompt -w "Skipping to save a backup configuration in '/etc/default/grub.bak'"
+        prompt -s "Skipping to save a backup configuration in '/etc/default/grub.bak'"
       fi
     else
       cp -a /etc/default/grub /etc/default/grub.bak
@@ -345,11 +345,11 @@ updating_grub() {
     grub2-mkconfig -o /boot/grub2/grub.cfg
   elif has_command dnf; then
     if [[ -f /boot/efi/EFI/fedora/grub.cfg ]] && (( $(cat /etc/fedora-release | awk '{print $3}') < 34 )); then
-      prompt -s "\n Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
+      prompt -s "Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
       grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
     fi
     if [[ -f /boot/grub2/grub.cfg ]]; then
-      prompt -s "\n Find config file on /boot/grub2/grub.cfg ...\n"
+      prompt -s "Find config file on /boot/grub2/grub.cfg ...\n"
       grub2-mkconfig -o /boot/grub2/grub.cfg
     fi
   fi
