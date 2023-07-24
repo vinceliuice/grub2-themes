@@ -77,7 +77,7 @@ EOF
 
 generate() {
   if [[ "${install_boot}" == 'true' ]]; then
-   if [[ -d "/boot/efi/EFI/fedora" ]]; then
+    if [[ -d "/boot/efi/EFI/fedora" ]]; then
       THEME_DIR='/boot/efi/EFI/fedora/themes'
     fi
     if [[ -d "/boot/grub" ]]; then
