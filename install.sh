@@ -181,6 +181,14 @@ install() {
       echo "GRUB_THEME=\"${THEME_DIR}/${theme}/theme.txt\"" >> /etc/default/grub
     fi
 
+    if grep "GRUB_BACKGROUND=" /etc/default/grub 2>&1 >/dev/null; then
+      #Replace GRUB_BACKGROUND
+      sed -i "s|.*GRUB_BACKGROUND=.*|GRUB_BACKGROUND=\"${THEME_DIR}/${theme}/background.jpg\"|" /etc/default/grub
+    else
+      #Append GRUB_BACKGROUND
+      echo "GRUB_BACKGROUND=\"${THEME_DIR}/${theme}/background.jpg\"" >> /etc/default/grub
+    fi
+
     # Make sure the right resolution for grub is set
     if [[ ${screen} == '1080p' ]]; then
       gfxmode="GRUB_GFXMODE=1920x1080,auto"
