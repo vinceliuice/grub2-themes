@@ -130,7 +130,7 @@ install() {
 
   # Check for root access and proceed if it is present
   if [[ "$UID" -eq "$ROOT_UID" ]]; then
-    clear
+    echo -e '\0033\0143'
 
     # Generate the theme in "/usr/share/grub/themes"
     generate "${theme}" "${icon}" "${screen}"
@@ -290,7 +290,7 @@ run_dialog() {
         else
           #block for 3 seconds before allowing another attempt
           sleep 3
-          clear
+          echo -e '\0033\0143'
           prompt -e "\n [ Error! ] -> Incorrect password!\n"
           exit 1
         fi
@@ -342,7 +342,7 @@ run_dialog() {
 }
 
 operation_canceled() {
-  clear
+  echo -e '\0033\0143'
   prompt -i "\n Operation canceled by user, Bye!"
   exit 1
 }
@@ -462,7 +462,7 @@ remove() {
       else
         #block for 3 seconds before allowing another attempt
         sleep 3
-        clear
+        echo -e '\0033\0143'
         prompt -e "\n [ Error! ] -> Incorrect password!\n"
         exit 1
       fi
