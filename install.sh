@@ -352,13 +352,17 @@ updating_grub() {
     update-grub
   elif has_command grub-mkconfig; then
     grub-mkconfig -o /boot/grub/grub.cfg
-  elif has_command zypper; then
+  # Check for OpenSuse (regular or microOS)
+  elif has_command zypper || has_command transactional-update; then
     grub2-mkconfig -o /boot/grub2/grub.cfg
-  elif has_command dnf; then
-    if [[ -f /boot/efi/EFI/fedora/grub.cfg ]] && (( $(cat /etc/fedora-release | awk '{print $3}') < 34 )); then
+  # Check for Fedora (regular or Atomic)
+  elif has_command dnf || has_command rpm-ostree; then
+    # check for UEFI
+    if [[ -f /boot/efi/EFI/fedora/grub.cfg ]]; then
       prompt -s "Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
       grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
     fi
+    # Check for Bios
     if [[ -f /boot/grub2/grub.cfg ]]; then
       prompt -s "Find config file on /boot/grub2/grub.cfg ...\n"
       grub2-mkconfig -o /boot/grub2/grub.cfg
