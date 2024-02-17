@@ -71,7 +71,6 @@ sudo ./install.sh -r -t tela
 
 ## Documents
 
-[Grub2 theme reference](http://wiki.rosalab.ru/en/index.php/Grub2_theme_/_reference)
+[Grub2 theme reference](https://wiki.rosalab.ru/en/index.php/Grub2_theme_/_reference)
 
-[Grub2 theme tutorial](http://wiki.rosalab.ru/en/index.php/Grub2_theme_tutorial)
-
+[Grub2 theme tutorial](https://wiki.rosalab.ru/en/index.php/Grub2_theme_tutorial)
