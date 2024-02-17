@@ -39,12 +39,8 @@
                 --icon ${cfg.icon};
 
               if [ -n "${splashImage}" ]; then
-                filename=$(basename -- "${splashImage}")
-                extension="''${filename##*.}"
                 rm $out/grub/themes/${cfg.theme}/background.jpg;
-                cp ${splashImage} $out/grub/themes/${cfg.theme}/background.$extension;
-                cp ${splashImage} $out/grub/themes/${cfg.theme}/background;
-                sed -i "s/background.jpg/background.$extension/g" $out/grub/themes/${cfg.theme}/theme.txt;
+                ${pkgs.imagemagick}/bin/convert ${splashImage} $out/grub/themes/${cfg.theme}/background.jpg;
               fi;
               if [ ${pkgs.lib.trivial.boolToString cfg.footer} == "false" ]; then
                 sed -i ':again;$!N;$!b again; s/\+ image {[^}]*}//g' $out/grub/themes/${cfg.theme}/theme.txt;
