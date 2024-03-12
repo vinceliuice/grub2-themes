@@ -77,12 +77,10 @@ EOF
 
 generate() {
   if [[ "${install_boot}" == 'true' ]]; then
-    if [[ -d "/boot/efi/EFI/fedora" ]]; then
-      THEME_DIR='/boot/efi/EFI/fedora/themes'
-    fi
     if [[ -d "/boot/grub" ]]; then
       THEME_DIR='/boot/grub/themes'
-    elif [[ -d "/boot/grub2" ]]; then
+    fi
+    if [[ -d "/boot/grub2" ]]; then
       THEME_DIR='/boot/grub2/themes'
     fi
   fi
@@ -357,10 +355,10 @@ updating_grub() {
     grub2-mkconfig -o /boot/grub2/grub.cfg
   # Check for Fedora (regular or Atomic)
   elif has_command dnf || has_command rpm-ostree; then
-    # check for UEFI
+    # DON'T TOUCH UEFI 
     if [[ -f /boot/efi/EFI/fedora/grub.cfg ]]; then
-      prompt -s "Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
-      grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+      prompt -s "Find config file on /etc/grub2.cfg ...\n"
+      grub2-mkconfig -o /etc/grub2.cfg
     fi
     # Check for Bios
     if [[ -f /boot/grub2/grub.cfg ]]; then
