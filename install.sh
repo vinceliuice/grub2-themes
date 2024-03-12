@@ -347,11 +347,7 @@ updating_grub() {
     grub2-mkconfig -o /boot/grub2/grub.cfg
   # Check for Fedora (regular or Atomic)
   elif has_command dnf || has_command rpm-ostree; then 
-    if [[ -f /boot/grub2/grub.cfg ]]; then
-      prompt -s "Find config file on /boot/grub2/grub.cfg ...\n"
-      grub2-mkconfig -o /boot/grub2/grub.cfg
-    fi
-    # Check for Bios
+    #Check for BIOS
     if [[ -f /boot/grub2/grub.cfg ]]; then
       prompt -s "Find config file on /boot/grub2/grub.cfg ...\n"
       grub2-mkconfig -o /boot/grub2/grub.cfg
