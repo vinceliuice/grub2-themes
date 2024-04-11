@@ -139,13 +139,10 @@
               grub2-theme
             ];
             boot.loader.grub =
-              let
-                ext = if cfg.splashImage == null then "jpg" else last (splitString "." cfg.splashImage);
-              in
               {
                 theme = "${grub2-theme}/grub/themes/${cfg.theme}";
                 splashImage =
-                  "${grub2-theme}/grub/themes/${cfg.theme}/background.${ext}";
+                  "${grub2-theme}/grub/themes/${cfg.theme}/background.jpg";
                 gfxmodeEfi = "${resolution},auto";
                 gfxmodeBios = "${resolution},auto";
                 extraConfig = ''
