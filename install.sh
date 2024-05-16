@@ -628,7 +628,7 @@ while [[ $# -gt 0 ]]; do
             break
             ;;
           *)
-            prompt -e "ERROR: Unrecognized icon variant '$1'."
+            prompt -e "ERROR: Unrecognized screen variant '$1'."
             prompt -i "Try '$0 --help' for more information."
             exit 1
             ;;
