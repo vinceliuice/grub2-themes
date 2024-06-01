@@ -37,6 +37,54 @@ sudo ./install.sh -b -t tela
 sudo ./install.sh -r -t tela
 ```
 
+## Installation with NixOS:
+To use this theme with NixOS you will have to enable [flakes](https://nixos.wiki/wiki/flakes). Before you do this, please inform yourself if you really want to, because flakes are still an unstable feature.
+
+First you will have to add grub2 to your `flake.nix` file as a new input.
+```nix
+# flake.nix
+{
+  description = "NixOS configuration";
+
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Add grub2 themes to your inputs ...
+    grub2-themes = {
+      url = "github:vinceliuice/grub2-themes";
+    };
+  };
+
+  outputs = inputs@{ nixpkgs,  grub2-themes, ... }: {
+    nixosConfigurations = {
+      my_host = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        specialArgs = { inherit inputs; };
+
+        # ... and then to your modules
+        modules = [
+          ./configuration.nix
+          grub2-themes.nixosModules.default
+        ];
+      };
+    };
+  };
+}
+```
+
+After that, you can configure the theme as shown below. In this example it is inside the `configuration.nix` file but it can be any file you choose.
+```nix
+# configuration.nix
+{ inputs, config, pkgs, lib, ... }:
+{
+  boot.loader.grub = { ... };
+  boot.loader.grub2-theme = {
+    enable = true;
+    theme = "stylish";
+    footer = true;
+  };
+}
+```
+
 ## Issues / tweaks:
 
 ### Correcting display resolution:
