@@ -38,7 +38,7 @@ sudo ./install.sh -r -t tela
 ```
 
 ## Installation with NixOS:
-To use this theme with NixOS you will have to enable [flakes](https://nixos.wiki/wiki/flakes). Before you do this, please inform yourself if you really want to, because flakes are still an unstable feature.
+To use this theme with NixOS you will have to enable [flakes](https://wiki.nixos.org/wiki/flakes). Before you do this, please inform yourself if you really want to, because flakes are still an unstable feature.
 
 First you will have to add grub2 to your `flake.nix` file as a new input.
 ```nix
