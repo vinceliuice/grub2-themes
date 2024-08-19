@@ -334,7 +334,8 @@ run_dialog() {
         *) operation_canceled   ;;
      esac
 
-     clear
+     # clear
+     echo -e '\0033\0143'
   fi
 }
 
