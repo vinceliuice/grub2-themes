@@ -47,6 +47,7 @@ gpart
 ubuntuDDE
 archcraft
 brunch
+nobara
 
 recovery
 restart
