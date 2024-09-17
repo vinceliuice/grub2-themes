@@ -26,7 +26,7 @@
             "2k" = "2560x1440";
             "4k" = "3840x2160";
             "ultrawide2k" = "3440x1440";
-          } // (if cfg.customResolution != null then { "custom" = cfg.customResolution; } else {});
+          };
           grub2-theme = pkgs.stdenv.mkDerivation {
             name = "grub2-theme";
             src = "${self}";
@@ -36,7 +36,8 @@
                 --generate $out/grub/themes \
                 --screen ${cfg.screen} \
                 --theme ${cfg.theme} \
-                --icon ${cfg.icon};
+                --icon ${cfg.icon} \
+                ${if cfg.customResolution != null then "--custom-resolution ${cfg.customResolution}" else ""}
 
               if [ -n "${splashImage}" ]; then
                 rm $out/grub/themes/${cfg.theme}/background.jpg;
@@ -95,9 +96,9 @@
               screen = mkOption {
                 default = "1080p";
                 example = "1080p";
-                type = types.enum ([ "1080p" "2k" "4k" "ultrawide" "ultrawide2k" ] ++ (if cfg.customResolution != null then [ "custom" ] else []));
+                type = types.enum [ "1080p" "2k" "4k" "ultrawide" "ultrawide2k" ];
                 description = ''
-                  The screen resolution to use for grub2. Use "custom" if you've set a customResolution.
+                  The screen resolution to use for grub2.
                 '';
               };
               customResolution = mkOption {
@@ -106,6 +107,7 @@
                 type = types.nullOr (types.strMatching "[0-9]+x[0-9]+");
                 description = ''
                   Custom resolution for grub2 theme. Should be in the format "WIDTHxHEIGHT".
+                  If set, this will override the 'screen' option.
                 '';
               };
               splashImage = mkOption {
