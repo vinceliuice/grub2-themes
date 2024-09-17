@@ -26,7 +26,7 @@
             "2k" = "2560x1440";
             "4k" = "3840x2160";
             "ultrawide2k" = "3440x1440";
-          };
+          } // (if cfg.customResolution != null then { "custom" = cfg.customResolution; } else {});
           grub2-theme = pkgs.stdenv.mkDerivation {
             name = "grub2-theme";
             src = "${self}";
@@ -61,7 +61,9 @@
               fi;
             '';
           };
-          resolution = resolutions."${cfg.screen}";
+          resolution = if cfg.customResolution != null
+            then cfg.customResolution
+            else resolutions."${cfg.screen}";
         in
         rec {
           options = {
@@ -93,9 +95,17 @@
               screen = mkOption {
                 default = "1080p";
                 example = "1080p";
-                type = types.enum [ "1080p" "2k" "4k" "ultrawide" "ultrawide2k" ];
+                type = types.enum ([ "1080p" "2k" "4k" "ultrawide" "ultrawide2k" ] ++ (if cfg.customResolution != null then [ "custom" ] else []));
                 description = ''
-                  The screen resolution to use for grub2.
+                  The screen resolution to use for grub2. Use "custom" if you've set a customResolution.
+                '';
+              };
+              customResolution = mkOption {
+                default = null;
+                example = "1600x900";
+                type = types.nullOr (types.strMatching "[0-9]+x[0-9]+");
+                description = ''
+                  Custom resolution for grub2 theme. Should be in the format "WIDTHxHEIGHT".
                 '';
               };
               splashImage = mkOption {
@@ -138,19 +148,17 @@
             environment.systemPackages = [
               grub2-theme
             ];
-            boot.loader.grub =
-              {
-                theme = "${grub2-theme}/grub/themes/${cfg.theme}";
-                splashImage =
-                  "${grub2-theme}/grub/themes/${cfg.theme}/background.jpg";
-                gfxmodeEfi = "${resolution},auto";
-                gfxmodeBios = "${resolution},auto";
-                extraConfig = ''
-                  insmod gfxterm
-                  insmod png
-                  set icondir=($root)/theme/icons
-                '';
-              };
+            boot.loader.grub = {
+              theme = "${grub2-theme}/grub/themes/${cfg.theme}";
+              splashImage = "${grub2-theme}/grub/themes/${cfg.theme}/background.jpg";
+              gfxmodeEfi = "${resolution},auto";
+              gfxmodeBios = "${resolution},auto";
+              extraConfig = ''
+                insmod gfxterm
+                insmod png
+                set icondir=($root)/theme/icons
+              '';
+            };
           }]);
         };
     };
