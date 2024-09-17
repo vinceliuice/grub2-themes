@@ -12,7 +12,7 @@ Usage:  `sudo ./install.sh [OPTIONS...]`
   -b, --boot                  install theme into '/boot/grub' or '/boot/grub2'
   -g, --generate              do not install but generate theme into chosen directory       (must add your directory)
 
-  -h, --help                  Show this help
+  -h, --help                  show this help
 ```
 *If no options are used, a user interface *`dialog`* will show up instead*
 
@@ -109,5 +109,7 @@ After that, you can configure the theme as shown below. In this example it is in
 ![preview](preview.png?raw=true)
 
 ## Documents
+
 [Grub2 theme reference](https://wiki.rosalab.ru/en/index.php/Grub2_theme_/_reference)  
+
 [Grub2 theme tutorial](https://wiki.rosalab.ru/en/index.php/Grub2_theme_tutorial)
