@@ -63,11 +63,11 @@ cat << EOF
 Usage: $0 [OPTION]...
 
 OPTIONS:
-  -t, --theme     theme variant(s)          [tela|vimix|stylish|whitesur]       (default is tela)
-  -i, --icon      icon variant(s)           [color|white|whitesur]              (default is color)
-  -s, --screen    screen display variant(s) [1080p|2k|4k|ultrawide|ultrawide2k] (default is 1080p)
-  -c, --custom-resolution     set custom resolution                             (e.g., 1600x900)
-  -r, --remove    Remove theme              [tela|vimix|stylish|whitesur]       (must add theme name option, default is tela)
+  -t, --theme                 theme variant(s)          [tela|vimix|stylish|whitesur]       (default is tela)
+  -i, --icon                  icon variant(s)           [color|white|whitesur]              (default is color)
+  -s, --screen                screen display variant(s) [1080p|2k|4k|ultrawide|ultrawide2k] (default is 1080p)
+  -c, --custom-resolution     set custom resolution     (e.g., 1600x900)                    (disabled in default)
+  -r, --remove                remove theme              [tela|vimix|stylish|whitesur]       (must add theme name option, default is tela)
 
   -b, --boot      install theme into '/boot/grub' or '/boot/grub2'
   -g, --generate  do not install but generate theme into chosen directory       (must add your directory)
