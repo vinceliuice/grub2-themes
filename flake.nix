@@ -30,6 +30,7 @@
           grub2-theme = pkgs.stdenv.mkDerivation {
             name = "grub2-theme";
             src = "${self}";
+            buildInputs = [ pkgs.imagemagick ];
             installPhase = ''
               mkdir -p $out/grub/themes;
               bash ./install.sh \
