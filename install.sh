@@ -69,10 +69,10 @@ OPTIONS:
   -c, --custom-resolution     set custom resolution     (e.g., 1600x900)                    (disabled in default)
   -r, --remove                remove theme              [tela|vimix|stylish|whitesur]       (must add theme name option, default is tela)
 
-  -b, --boot      install theme into '/boot/grub' or '/boot/grub2'
-  -g, --generate  do not install but generate theme into chosen directory       (must add your directory)
+  -b, --boot                  install theme into '/boot/grub' or '/boot/grub2'
+  -g, --generate              do not install but generate theme into chosen directory       (must add your directory)
 
-  -h, --help      Show this help
+  -h, --help                  show this help
 
 EOF
 }
