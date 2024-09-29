@@ -42,7 +42,7 @@
 
               if [ -n "${splashImage}" ]; then
                 rm $out/grub/themes/${cfg.theme}/background.jpg;
-                ${pkgs.imagemagick}/bin/convert ${splashImage} $out/grub/themes/${cfg.theme}/background.jpg;
+                ${pkgs.imagemagick}/bin/magick ${splashImage} $out/grub/themes/${cfg.theme}/background.jpg;
               fi;
               if [ ${pkgs.lib.trivial.boolToString cfg.footer} == "false" ]; then
                 sed -i ':again;$!N;$!b again; s/\+ image {[^}]*}//g' $out/grub/themes/${cfg.theme}/theme.txt;
