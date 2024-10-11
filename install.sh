@@ -14,6 +14,7 @@ REO_DIR="$(cd $(dirname $0) && pwd)"
 THEME_VARIANTS=('tela' 'vimix' 'stylish' 'whitesur')
 ICON_VARIANTS=('color' 'white' 'whitesur')
 SCREEN_VARIANTS=('1080p' '2k' '4k' 'ultrawide' 'ultrawide2k')
+custom_resolution=""
 
 #################################
 #   :::::: C O L O R S ::::::   #
@@ -62,15 +63,16 @@ cat << EOF
 Usage: $0 [OPTION]...
 
 OPTIONS:
-  -t, --theme     theme variant(s)          [tela|vimix|stylish|whitesur]       (default is tela)
-  -i, --icon      icon variant(s)           [color|white|whitesur]              (default is color)
-  -s, --screen    screen display variant(s) [1080p|2k|4k|ultrawide|ultrawide2k] (default is 1080p)
-  -r, --remove    Remove theme              [tela|vimix|stylish|whitesur]       (must add theme name option, default is tela)
+  -t, --theme                 theme variant(s)          [tela|vimix|stylish|whitesur]       (default is tela)
+  -i, --icon                  icon variant(s)           [color|white|whitesur]              (default is color)
+  -s, --screen                screen display variant(s) [1080p|2k|4k|ultrawide|ultrawide2k] (default is 1080p)
+  -c, --custom-resolution     set custom resolution     (e.g., 1600x900)                    (disabled in default)
+  -r, --remove                remove theme              [tela|vimix|stylish|whitesur]       (must add theme name option, default is tela)
 
-  -b, --boot      install theme into '/boot/grub' or '/boot/grub2'
-  -g, --generate  do not install but generate theme into chosen directory       (must add your directory)
+  -b, --boot                  install theme into '/boot/grub' or '/boot/grub2'
+  -g, --generate              do not install but generate theme into chosen directory       (must add your directory)
 
-  -h, --help      Show this help
+  -h, --help                  show this help
 
 EOF
 }
@@ -99,6 +101,33 @@ generate() {
   cp -a --no-preserve=ownership "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${theme}/theme.txt"
   cp -a --no-preserve=ownership "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${theme}/background.jpg"
 
+  # Function to determine which assets to use based on resolution
+  get_asset_type() {
+    local width=$(echo $1 | cut -d'x' -f1)
+    local height=$(echo $1 | cut -d'x' -f2)
+    if [ $width -le 1920 ] && [ $height -le 1080 ]; then
+      echo "1080p"
+    elif [ $width -le 2560 ] && [ $height -le 1440 ]; then
+      echo "2k"
+    else
+      echo "4k"
+    fi
+  }
+
+  # Determine which configuration file and assets to use
+  if [[ -n "$custom_resolution" ]]; then
+    asset_type=$(get_asset_type "$custom_resolution")
+    cp -a --no-preserve=ownership "${REO_DIR}/config/theme-${asset_type}.txt" "${THEME_DIR}/${theme}/theme.txt"
+    # Replace resolution in theme.txt
+    sed -i "s/[0-9]\+x[0-9]\+/${custom_resolution}/" "${THEME_DIR}/${theme}/theme.txt"
+    # Use appropriate background as base and resize it
+    cp -a --no-preserve=ownership "${REO_DIR}/backgrounds/${asset_type}/background-${theme}.jpg" "${THEME_DIR}/${theme}/background.jpg"
+    convert "${THEME_DIR}/${theme}/background.jpg" -resize ${custom_resolution}^ -gravity center -extent ${custom_resolution} "${THEME_DIR}/${theme}/background.jpg"
+  else
+    cp -a --no-preserve=ownership "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${theme}/theme.txt"
+    cp -a --no-preserve=ownership "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${theme}/background.jpg"
+  fi
+
   # Use custom background.jpg as grub background image
   if [[ -f "${REO_DIR}/background.jpg" ]]; then
     prompt -w "\n Using custom background.jpg as grub background image..."
@@ -106,7 +135,13 @@ generate() {
     convert -auto-orient "${THEME_DIR}/${theme}/background.jpg" "${THEME_DIR}/${theme}/background.jpg"
   fi
 
-  if [[ ${screen} == 'ultrawide' ]]; then
+  # Determine which assets to use based on custom resolution or screen
+  if [[ -n "$custom_resolution" ]]; then
+    asset_type=$(get_asset_type "$custom_resolution")
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-${asset_type}" "${THEME_DIR}/${theme}/icons"
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-${asset_type}/"*.png "${THEME_DIR}/${theme}"
+    cp -a --no-preserve=ownership "${REO_DIR}/assets/info-${asset_type}.png" "${THEME_DIR}/${theme}/info.png"
+  elif [[ ${screen} == 'ultrawide' ]]; then
     cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-${icon}/icons-1080p" "${THEME_DIR}/${theme}/icons"
     cp -a --no-preserve=ownership "${REO_DIR}/assets/assets-select/select-1080p/"*.png "${THEME_DIR}/${theme}"
     cp -a --no-preserve=ownership "${REO_DIR}/assets/info-1080p.png" "${THEME_DIR}/${theme}/info.png"
@@ -186,7 +221,9 @@ install() {
     fi
 
     # Make sure the right resolution for grub is set
-    if [[ ${screen} == '1080p' ]]; then
+    if [[ -n "$custom_resolution" ]]; then
+      gfxmode="GRUB_GFXMODE=${custom_resolution},auto"
+    elif [[ ${screen} == '1080p' ]]; then
       gfxmode="GRUB_GFXMODE=1920x1080,auto"
     elif [[ ${screen} == 'ultrawide' ]]; then
       gfxmode="GRUB_GFXMODE=2560x1080,auto"
@@ -651,6 +688,11 @@ while [[ $# -gt 0 ]]; do
             ;;
         esac
       done
+      ;;
+    -c|--custom-resolution)
+      shift
+      custom_resolution="$1"
+      shift
       ;;
     -h|--help)
       usage
