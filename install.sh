@@ -354,14 +354,21 @@ updating_grub() {
     grub2-mkconfig -o /boot/grub2/grub.cfg
   # Check for Fedora (regular or Atomic)
   elif has_command dnf || has_command rpm-ostree; then
-    # Check for UEFI
-    if [[ -f /boot/efi/EFI/fedora/grub.cfg ]]; then
-      prompt -s "Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
-      grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
     # Check for BIOS
-    elif [[ -f /boot/grub2/grub.cfg ]]; then
+    if [[ -f /boot/grub2/grub.cfg ]]; then
       prompt -s "Find config file on /boot/grub2/grub.cfg ...\n"
       grub2-mkconfig -o /boot/grub2/grub.cfg
+    # Check for UEFI
+    elif [[ -f /boot/efi/EFI/fedora/grub.cfg ]]; then
+      prompt -s "Find config file on /boot/efi/EFI/fedora/grub.cfg ...\n"
+      grub2-mkconfig -o /boot/efi/EFI/fedora/grub.cfg
+    fi
+
+    if [[ -f /boot/grub2/grub.cfg && -f /boot/efi/EFI/fedora/grub.cfg ]]; then
+      prompt -w "Under EFI, GRUB2 looks for its configuration in /boot/efi/EFI/fedora/grub.cfg,\n however the postinstall script of grub2-common installs a small shim which chains to the standard configuration at /boot/grub2/grub.cfg which is generated above.\n To reset this shim to defaults, delete the existing /boot/efi/EFI/fedora/grub.cfg and then reinstall grub2-common."
+
+      prompt -i "sudo rm -f /boot/efi/EFI/fedora/grub.cfg"
+      prompt -i "sudo dnf reinstall grub2-common"
     fi
   fi
 
