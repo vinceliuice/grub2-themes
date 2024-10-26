@@ -32,7 +32,15 @@
             src = "${self}";
             buildInputs = [ pkgs.imagemagick ];
             installPhase = ''
-              mkdir -p $out/grub/themes;
+              mkdir -p $out/grub/themes
+
+              # Create placeholder terminal box PNGs that install.sh expects
+              mkdir -p common
+              for box in c e n ne nw s se sw w; do
+                touch common/terminal_box_$box.png
+              done
+
+              # Run the install script
               bash ./install.sh \
                 --generate $out/grub/themes \
                 --screen ${cfg.screen} \
@@ -44,9 +52,11 @@
                 rm $out/grub/themes/${cfg.theme}/background.jpg;
                 ${pkgs.imagemagick}/bin/magick ${splashImage} $out/grub/themes/${cfg.theme}/background.jpg;
               fi;
+
               if [ ${pkgs.lib.trivial.boolToString cfg.footer} == "false" ]; then
                 sed -i ':again;$!N;$!b again; s/\+ image {[^}]*}//g' $out/grub/themes/${cfg.theme}/theme.txt;
               fi;
+
               if [ ${pkgs.lib.trivial.boolToString hasBootMenuConfig} == "true" ]; then
                 sed -i ':again;$!N;$!b again; s/\+ boot_menu {[^}]*}//g' $out/grub/themes/${cfg.theme}/theme.txt;
                 cat << EOF >> $out/grub/themes/${cfg.theme}/theme.txt
@@ -55,6 +65,7 @@
               }
               EOF
               fi;
+
               if [ ${pkgs.lib.trivial.boolToString hasTerminalConfig} == "true" ]; then
                 sed -i 's/^terminal-.*$//g' $out/grub/themes/${cfg.theme}/theme.txt
                 cat << EOF >> $out/grub/themes/${cfg.theme}/theme.txt
