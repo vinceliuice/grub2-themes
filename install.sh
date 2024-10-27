@@ -97,7 +97,7 @@ generate() {
   prompt -i "\n Installing ${theme} ${icon} ${screen} theme..."
 
   # Don't preserve ownership because the owner will be root, and that causes the script to crash if it is ran from terminal by sudo
-  cp -a --no-preserve=ownership "${REO_DIR}/common/"{*.png,*.pf2} "${THEME_DIR}/${theme}"
+  cp -a --no-preserve=ownership "${REO_DIR}/common/"*.pf2 "${THEME_DIR}/${theme}"
   cp -a --no-preserve=ownership "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${theme}/theme.txt"
   cp -a --no-preserve=ownership "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${theme}/background.jpg"
 
@@ -402,9 +402,9 @@ updating_grub() {
     fi
 
     if [[ -f /boot/grub2/grub.cfg && -f /boot/efi/EFI/fedora/grub.cfg ]]; then
-      prompt -w "Under EFI, GRUB2 looks for its configuration in /boot/efi/EFI/fedora/grub.cfg,\n however the postinstall script of grub2-common installs a small shim which chains to the standard configuration at /boot/grub2/grub.cfg which is generated above.\n To reset this shim to defaults, delete the existing /boot/efi/EFI/fedora/grub.cfg and then reinstall grub2-common."
+      prompt -w "\n Under EFI, GRUB2 looks for its configuration in /boot/efi/EFI/fedora/grub.cfg,\n however the postinstall script of grub2-common installs a small shim which chains to the standard configuration at /boot/grub2/grub.cfg which is generated above.\n To reset this shim to defaults, delete the existing /boot/efi/EFI/fedora/grub.cfg and then reinstall grub2-common."
 
-      prompt -i "sudo rm -f /boot/efi/EFI/fedora/grub.cfg"
+      prompt -i "\n  sudo rm -f /boot/efi/EFI/fedora/grub.cfg"
       prompt -i "sudo dnf reinstall grub2-common"
     fi
   fi
