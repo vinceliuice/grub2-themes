@@ -116,13 +116,14 @@ generate() {
 
   # Determine which configuration file and assets to use
   if [[ -n "$custom_resolution" ]]; then
+    install_depends ImageMagick
     asset_type=$(get_asset_type "$custom_resolution")
     cp -a --no-preserve=ownership "${REO_DIR}/config/theme-${asset_type}.txt" "${THEME_DIR}/${theme}/theme.txt"
     # Replace resolution in theme.txt
     sed -i "s/[0-9]\+x[0-9]\+/${custom_resolution}/" "${THEME_DIR}/${theme}/theme.txt"
     # Use appropriate background as base and resize it
     cp -a --no-preserve=ownership "${REO_DIR}/backgrounds/${asset_type}/background-${theme}.jpg" "${THEME_DIR}/${theme}/background.jpg"
-    convert "${THEME_DIR}/${theme}/background.jpg" -resize ${custom_resolution}^ -gravity center -extent ${custom_resolution} "${THEME_DIR}/${theme}/background.jpg"
+    magick "${THEME_DIR}/${theme}/background.jpg" -resize ${custom_resolution}^ -gravity center -extent ${custom_resolution} "${THEME_DIR}/${theme}/background.jpg"
   else
     cp -a --no-preserve=ownership "${REO_DIR}/config/theme-${screen}.txt" "${THEME_DIR}/${theme}/theme.txt"
     cp -a --no-preserve=ownership "${REO_DIR}/backgrounds/${screen}/background-${theme}.jpg" "${THEME_DIR}/${theme}/background.jpg"
@@ -130,9 +131,10 @@ generate() {
 
   # Use custom background.jpg as grub background image
   if [[ -f "${REO_DIR}/background.jpg" ]]; then
+    install_depends ImageMagick
     prompt -w "\n Using custom background.jpg as grub background image..."
     cp -a --no-preserve=ownership "${REO_DIR}/background.jpg" "${THEME_DIR}/${theme}/background.jpg"
-    convert -auto-orient "${THEME_DIR}/${theme}/background.jpg" "${THEME_DIR}/${theme}/background.jpg"
+    magick -auto-orient "${THEME_DIR}/${theme}/background.jpg" "${THEME_DIR}/${theme}/background.jpg"
   fi
 
   # Determine which assets to use based on custom resolution or screen
@@ -267,10 +269,18 @@ install() {
 
   #Check if password is cached (if cache timestamp has not expired yet)
   elif sudo -n true 2> /dev/null && echo; then
-    if [[ "${install_boot}" == 'true' ]]; then
-      sudo "$0" -t ${theme} -i ${icon} -s ${screen} -b
+    if [[ -n "$custom_resolution" ]]; then
+      if [[ "${install_boot}" == 'true' ]]; then
+        sudo "$0" -t ${theme} -i ${icon} -c ${custom_resolution} -b
+      else
+        sudo "$0" -t ${theme} -i ${icon} -c ${custom_resolution}
+      fi
     else
-      sudo "$0" -t ${theme} -i ${icon} -s ${screen}
+      if [[ "${install_boot}" == 'true' ]]; then
+        sudo "$0" -t ${theme} -i ${icon} -s ${screen} -b
+      else
+        sudo "$0" -t ${theme} -i ${icon} -s ${screen}
+      fi
     fi
   else
     #Ask for password
@@ -281,16 +291,30 @@ install() {
         else
           sudo -S $0 -t ${theme} -i ${icon} -s ${screen} <<< ${tui_root_login}
         fi
+      elif [[ -n "$custom_resolution" ]]; then
+        if [[ "${install_boot}" == 'true' ]]; then
+          sudo -S $0 -t ${theme} -i ${icon} -c ${custom_resolution} -b <<< ${tui_root_login}
+        else
+          sudo -S $0 -t ${theme} -i ${icon} -c ${custom_resolution} <<< ${tui_root_login}
+        fi
       fi
     else
       prompt -e "\n [ Error! ] -> Run me as root! "
       read -r -p " [ Trusted ] Specify the root password : " -t ${MAX_DELAY} -s
       if sudo -S echo <<< $REPLY 2> /dev/null && echo; then
         #Correct password, use with sudo's stdin
-        if [[ "${install_boot}" == 'true' ]]; then
-          sudo -S "$0" -t ${theme} -i ${icon} -s ${screen} -b <<< ${REPLY}
+        if [[ -n "$custom_resolution" ]]; then
+          if [[ "${install_boot}" == 'true' ]]; then
+            sudo "$0" -t ${theme} -i ${icon} -c ${custom_resolution} -b <<< ${REPLY}
+          else
+            sudo "$0" -t ${theme} -i ${icon} -c ${custom_resolution} <<< ${REPLY}
+          fi
         else
-          sudo -S "$0" -t ${theme} -i ${icon} -s ${screen} <<< ${REPLY}
+          if [[ "${install_boot}" == 'true' ]]; then
+            sudo "$0" -t ${theme} -i ${icon} -s ${screen} -b <<< ${REPLY}
+          else
+            sudo "$0" -t ${theme} -i ${icon} -s ${screen} <<< ${REPLY}
+          fi
         fi
       else
         #block for 3 seconds before allowing another attempt
@@ -427,10 +451,12 @@ function install_program () {
   fi
 }
 
-install_dialog() {
-  if [ ! "$(which dialog 2> /dev/null)" ]; then
-    prompt -w "\n 'dialog' need to be installed for this shell"
-    install_program "dialog"
+install_depends() {
+  local depend=${1}
+
+  if [ ! "$(which '${depend}' 2> /dev/null)" ]; then
+    prompt -w "\n '${depend}' need to be installed for this shell"
+    install_program "${depend}"
   fi
 }
 
@@ -537,7 +563,7 @@ dialog_installer() {
         fi
       fi
     fi
-    install_dialog
+    install_depends dialog
   fi
   run_dialog
   install "${theme}" "${icon}" "${screen}"
