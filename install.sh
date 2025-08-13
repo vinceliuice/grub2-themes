@@ -116,7 +116,11 @@ generate() {
 
   # Determine which configuration file and assets to use
   if [[ -n "$custom_resolution" ]]; then
-    install_depends ImageMagick
+    if has_command pacman; then
+      install_depends imagemagick
+    else
+      install_depends ImageMagick
+    fi
     asset_type=$(get_asset_type "$custom_resolution")
     cp -a --no-preserve=ownership "${REO_DIR}/config/theme-${asset_type}.txt" "${THEME_DIR}/${theme}/theme.txt"
     # Replace resolution in theme.txt
@@ -131,7 +135,11 @@ generate() {
 
   # Use custom background.jpg as grub background image
   if [[ -f "${REO_DIR}/background.jpg" ]]; then
-    install_depends ImageMagick
+    if has_command pacman; then
+      install_depends imagemagick
+    else
+      install_depends ImageMagick
+    fi
     prompt -w "\n Using custom background.jpg as grub background image..."
     cp -a --no-preserve=ownership "${REO_DIR}/background.jpg" "${THEME_DIR}/${theme}/background.jpg"
     magick -auto-orient "${THEME_DIR}/${theme}/background.jpg" "${THEME_DIR}/${theme}/background.jpg"
