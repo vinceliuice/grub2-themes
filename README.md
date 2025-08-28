@@ -86,7 +86,7 @@ After that, you can configure the theme as shown below. In this example it is in
  - Finally, run `grub-mkconfig -o /boot/grub/grub.cfg` to update your grub config
 
 ### Setting a custom background:
- - Make sure you have `imagemagick` installed, or at least something that provides `convert`
+ - Make sure you have `imagemagick` installed, or at least something that provides `convert` or `magick`
  - Find the resolution of your display, and make sure your background matches the resolution
    - 1920x1080 >> 1080p
    - 2560x1080 >> ultrawide
