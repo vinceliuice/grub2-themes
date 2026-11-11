@@ -3,8 +3,10 @@
 # Define which command to use for ImageMagick
 if command -v magick &> /dev/null; then
   _MAGICK="magick"
-else
+elif command -v convert &> /dev/null; then
   _MAGICK="convert"
+else
+  _MAGICK="magick"   # default; install_depends will handle installation
 fi
 
 # Exit Immediately if a command fails
@@ -472,7 +474,14 @@ function install_program () {
 install_depends() {
   local depend=${1}
 
-  if [ ! "$(which '${depend}' 2> /dev/null)" ]; then
+  # For ImageMagick, accept either 'magick' (v7) or 'convert' (v6)
+  if [[ "${depend}" == "imagemagick" || "${depend}" == "ImageMagick" ]]; then
+    if has_command magick || has_command convert; then
+      return 0
+    fi
+  fi
+
+  if [ ! "$(which "${depend}" 2> /dev/null)" ]; then
     prompt -w "\n '${depend}' need to be installed for this shell"
     install_program "${depend}"
   fi
